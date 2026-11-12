@@ -1,0 +1,26 @@
+# ---- Credentials: NEVER commit ----
+apieky
+apieky.*
+KEY/
+*.key
+*.pem
+.env
+*accessKeys*.csv
+credentials.csv
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# ---- OS / editors ----
+.DS_Store
+*.swp
+
+# ---- Generated run artifacts (regenerate with run_trek.py / score_trek.py) ----
+trek_results/
+trek_scores/
+outputs/
+*.log

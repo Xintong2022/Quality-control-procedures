@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>旅游 AI 质检平台 · 生成器+TREK+轻量裁判</title>
+</head>
+<style>
+:root{
+  --bg:#0c0d10; --nav:#0f1013; --panel:#14161a; --panel-2:#181b20; --hover:#1b1e24;
+  --line:#23262c; --line-soft:#1c1f24;
+  --text:#e6e8ec; --text-2:#9aa0aa; --text-3:#6b717c;
+  --accent:#6b96ff; --teal:#37c9a5; --violet:#9f8cff; --amber:#e2ab4e; --red:#f0746a; --green:#48c07d;
+  --bg-input:#0f1115; --border:#2a2f38;
+  --r:12px;
+}
+*{box-sizing:border-box}
+html{min-width:980px;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font:400 13.5px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","Inter","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p,ul,ol{margin:0;padding:0}
+ul,ol{list-style:none}
+button{font-family:inherit}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(107,150,255,.28)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace}
+
+/* ---------- 左侧导航 ---------- */
+.nav{
+  position:fixed;top:0;left:0;bottom:0;width:264px;z-index:20;
+  display:flex;flex-direction:column;padding:14px 12px 10px;
+  background:linear-gradient(180deg,#101114 0%,#0e0f12 100%);
+  border-right:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 6px 14px}
+.brand-mark{
+  width:30px;height:30px;border-radius:9px;flex:0 0 30px;display:grid;place-items:center;
+  background:linear-gradient(150deg,#3f5df3,#7b4bff);box-shadow:0 2px 10px rgba(80,90,255,.28);
+}
+.brand-mark svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2}
+.brand-txt{min-width:0}
+.brand-title{font-size:13.5px;font-weight:600;letter-spacing:.2px;white-space:nowrap}
+.brand-sub{font-size:10.5px;color:var(--text-3);letter-spacing:.4px;white-space:nowrap}
+
+.run-btn{
+  display:flex;align-items:center;justify-content:center;gap:7px;width:100%;height:36px;
+  margin-bottom:6px;border-radius:9px;border:1px solid #303747;background:#232936;
+  color:#e2e8f4;font-size:12.5px;cursor:pointer;transition:.15s;
+}
+.run-btn:hover{background:#2a3243;border-color:#3a4356}
+.run-btn svg{width:13px;height:13px;stroke:var(--teal);fill:none;stroke-width:2}
+
+.nav-scroll{flex:1;min-height:0;overflow-y:auto;padding-bottom:6px}
+.nav-label{font-size:10.5px;letter-spacing:.1em;color:var(--text-3);padding:16px 9px 7px;text-transform:uppercase}
+.nav-item{
+  display:flex;align-items:center;gap:9px;width:100%;height:35px;padding:0 9px;margin:1px 0;
+  border:0;border-radius:8px;background:transparent;color:#b3b9c4;font-size:13px;
+  text-align:left;cursor:pointer;transition:.13s;
+}
+.nav-item svg{width:15px;height:15px;flex:0 0 15px;stroke:currentColor;fill:none;stroke-width:1.7;opacity:.9}
+.nav-item .cnt{margin-left:auto;font-size:10.5px;color:var(--text-3);font-variant-numeric:tabular-nums}
+.nav-item:hover{background:#191c22;color:#eef1f6}
+.nav-item.is-active{background:#1f232c;color:#f4f6fa;box-shadow:inset 0 0 0 1px #2b303b}
+.nav-item.is-active svg{stroke:var(--accent);opacity:1}
+.nav-item.is-active .cnt{color:#8f9bb3}
+
+.nav-foot{border-top:1px solid var(--line-soft);padding-top:9px;position:relative}
+.env{display:flex;align-items:center;gap:7px;padding:3px 9px 9px;font-size:11px;color:var(--text-3)}
+.user{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:9px;cursor:pointer;position:relative}
+.user:hover{background:#191c22}
+.user.open{background:#1f232c}
+.user-meta{flex:1 1 auto;min-width:0}
+.user-chev{width:16px;height:16px;flex:0 0 16px;stroke:var(--text-3);fill:none;stroke-width:2;opacity:.8;transition:transform .15s}
+.user.open .user-chev{transform:rotate(180deg)}
+.admin-menu{position:absolute;left:0;right:0;bottom:calc(100% + 8px);background:#161a21;border:1px solid #2b303b;border-radius:10px;padding:6px;box-shadow:0 14px 34px rgba(0,0,0,.55);display:none;z-index:30}
+.admin-menu.show{display:block}
+.admin-menu-item{display:flex;align-items:center;gap:9px;width:100%;padding:9px 10px;background:none;border:none;color:#d8dce4;font-size:13px;font-family:inherit;border-radius:7px;cursor:pointer;text-align:left}
+.admin-menu-item:hover{background:#1f232c;color:#fff}
+.admin-menu-item svg{width:15px;height:15px;flex:0 0 15px;stroke:currentColor;fill:none;stroke-width:1.7;opacity:.9}
+.user:hover{background:#191c22}
+.avatar{
+  width:26px;height:26px;border-radius:50%;flex:0 0 26px;display:grid;place-items:center;
+  font-size:11px;font-weight:600;color:#fff;background:linear-gradient(140deg,#4b6ef5,#a24bff);
+}
+.user-name{font-size:12.5px;color:#d8dce4;line-height:1.3}
+.user-role{font-size:10.5px;color:var(--text-3);line-height:1.3}
+.dot{width:6px;height:6px;border-radius:50%;background:#3a4150;display:inline-block;flex:0 0 6px}
+.dot.ok{background:var(--green);box-shadow:0 0 0 3px rgba(72,192,125,.14)}
+.dot.warn{background:var(--amber);box-shadow:0 0 0 3px rgba(226,171,78,.14)}
+.dot.bad{background:var(--red);box-shadow:0 0 0 3px rgba(240,116,106,.14)}
+
+/* ---------- 主区 ---------- */
+.main{margin-left:264px;min-width:0;min-height:100vh;display:flex;flex-direction:column}
+.topbar{
+  position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:16px;
+  height:52px;padding:0 30px;border-bottom:1px solid var(--line-soft);
+  background:rgba(12,13,16,.88);backdrop-filter:blur(10px);
+}
+.crumbs{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-2);min-width:0}
+.crumbs .sep{color:#3d434e}
+.crumbs .here{color:#e9ecf1}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:11.5px;color:var(--text-3);white-space:nowrap}
+.status{display:flex;align-items:center;gap:6px}
+.clock{padding-left:14px;border-left:1px solid var(--line-soft)}
+
+.views{flex:1;padding:26px 30px 40px;max-width:1400px;margin:0 auto;width:100%}
+.view{display:none;animation:fade .18s ease-out}
+.view.is-active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+.view-head{display:flex;align-items:flex-end;gap:18px;margin-bottom:18px}
+.view-head h2{font-size:19px;font-weight:600;letter-spacing:.2px}
+.view-head p{font-size:12px;color:var(--text-3);margin-top:3px;max-width:820px}
+.view-head .head-actions{margin-left:auto;display:flex;gap:8px;align-items:center;white-space:nowrap}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 17px}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.card-h h3{font-size:12.5px;font-weight:600;letter-spacing:.2px;color:#dfe3ea}
+.card-h .hint{font-size:11px;color:var(--text-3)}
+.card-h .right{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-3)}
+.grid{display:grid;gap:14px}
+.g-kpi{grid-template-columns:repeat(5,minmax(0,1fr))}
+.g-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g-chart{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr)}
+.g-report{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr)}
+.mt14{margin-top:14px}
+.mt10{margin-top:10px}
+
+/* ---------- 通用元素 ---------- */
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 15px 13px}
+.kpi .k-label{font-size:11.5px;color:var(--text-3);display:flex;align-items:center;gap:6px}
+.kpi .k-val{font-size:25px;font-weight:600;line-height:1.25;margin-top:6px;letter-spacing:-.4px}
+.kpi .k-val small{font-size:12px;font-weight:400;color:var(--text-3);margin-left:3px;letter-spacing:0}
+.kpi .k-foot{font-size:11px;color:var(--text-3);margin-top:3px;display:flex;gap:7px;align-items:center}
+.up{color:var(--green)}.down{color:var(--red)}.flat{color:var(--text-2)}
+
+.tag{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 7px;border-radius:6px;
+  font-size:11px;line-height:1;border:1px solid transparent;white-space:nowrap}
+.tag.pass{color:#79dcbc;background:rgba(55,201,165,.1);border-color:rgba(55,201,165,.24)}
+.tag.fail{color:#f89a92;background:rgba(240,116,106,.1);border-color:rgba(240,116,106,.24)}
+.tag.warn{color:#eec381;background:rgba(226,171,78,.1);border-color:rgba(226,171,78,.24)}
+.tag.info{color:#a5bcf5;background:rgba(107,150,255,.1);border-color:rgba(107,150,255,.22)}
+.tag.new{color:#bda9ff;background:rgba(159,140,255,.1);border-color:rgba(159,140,255,.26)}
+.tag.mute{color:#9aa0aa;background:#1b1e24;border-color:#282c34}
+.tag.solid{background:#242936;color:#cfd6e4;border-color:#333a48}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{font-size:11px;font-weight:500;color:var(--text-3);text-align:left;padding:0 10px 8px;white-space:nowrap;
+  border-bottom:1px solid var(--line)}
+.tbl td{padding:10px;border-bottom:1px solid var(--line-soft);vertical-align:top;color:#cdd2da}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tbody tr:hover td{background:#17191e}
+.tbl .id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:#aab3c4;white-space:nowrap}
+.tbl .sub{display:block;font-size:11px;color:var(--text-3);margin-top:2px}
+.tbl .strong{color:#eef1f6}
+.row-active td{background:#181c24}
+.row-active td:first-child{box-shadow:inset 2px 0 0 var(--accent)}
+.tbl.assert{table-layout:fixed}
+.tbl.assert th:nth-child(1),.tbl.assert td:nth-child(1){width:150px}
+.tbl.assert th:nth-child(3),.tbl.assert td:nth-child(3){width:158px}
+.tbl.assert th:nth-child(4),.tbl.assert td:nth-child(4){width:64px}
+.tbl.assert td:nth-child(2){word-break:break-word}
+.tbl-wrap{max-height:520px;overflow:auto;border:1px solid var(--line-soft);border-radius:9px}
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px}
+.filter-bar label{display:flex;flex-direction:column;font-size:11px;color:var(--text-3);gap:4px;min-width:120px;flex:1}
+.filter-bar input,.filter-bar select{background:#0f1115;border:1px solid #2a2f38;color:var(--text);border-radius:7px;padding:6px 8px;font-size:12.5px}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--accent,#6b96ff);outline:none}
+.t-right{text-align:right}
+.t-nowrap{white-space:nowrap}
+
+.meter{height:5px;border-radius:3px;background:#22262e;overflow:hidden;min-width:44px}
+.meter > i{display:block;height:100%;border-radius:3px;background:var(--accent)}
+.meter.teal > i{background:var(--teal)}
+.meter.violet > i{background:var(--violet)}
+.meter.red > i{background:var(--red)}
+
+.bar-row{display:flex;align-items:center;gap:10px;font-size:12px;padding:5px 0}
+.bar-row .nm{width:88px;color:var(--text-2);flex:0 0 88px}
+.bar-row .meter{flex:1}
+.bar-row .v{width:34px;text-align:right;color:#dfe3ea;font-variant-numeric:tabular-nums}
+
+.note{font-size:11.5px;color:var(--text-3);line-height:1.7}
+.note b{color:#b9c0cc;font-weight:500}
+.rule-box{background:#111318;border:1px solid var(--line-soft);border-radius:9px;padding:10px 12px;font-size:11.5px;color:var(--text-2);line-height:1.75}
+.rule-box .k{color:#cfd6e2}
+
+/* ---------- 报告页 ---------- */
+.case-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 16px;background:#14161a;border:1px solid var(--line);border-radius:var(--r)}
+.case-head .cid{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:#e8ecf3}
+.case-head .cname{font-size:13px;color:#fff;font-weight:600}
+.case-head .meta{margin-left:auto;display:flex;gap:14px;font-size:11px;color:var(--text-3);white-space:nowrap}
+.score-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.score-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 15px;position:relative;overflow:hidden}
+.score-card::after{content:"";position:absolute;inset:0 0 auto auto;width:2px;height:100%;background:var(--line)}
+.score-card.teal::after{background:var(--teal)}.score-card.violet::after{background:var(--violet)}
+.score-card.red::after{background:var(--red)}.score-card.accent::after{background:var(--accent)}
+.score-card .s-label{font-size:11px;color:var(--text-3);letter-spacing:.2px}
+.score-card .s-val{font-size:27px;font-weight:600;letter-spacing:-.6px;line-height:1.3;margin-top:4px;font-variant-numeric:tabular-nums}
+.score-card .s-val span{font-size:12px;font-weight:400;color:var(--text-3);margin-left:3px;letter-spacing:0}
+.score-card .s-note{font-size:11px;color:var(--text-3);margin-top:2px}
+
+.pit{display:flex;gap:11px;padding:11px 0;border-top:1px solid var(--line-soft)}
+.pit:first-of-type{border-top:0;padding-top:2px}
+.pit-sev{flex:0 0 3px;border-radius:2px;background:#2a2f38;margin-top:2px}
+.pit-sev.s3{background:var(--red)}.pit-sev.s2{background:var(--amber)}.pit-sev.s1{background:#4a5260}
+.pit-body{min-width:0;flex:1}
+.pit-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.pit-name{font-size:12.5px;color:#eef1f6;font-weight:500}
+.pit-desc{font-size:11.5px;color:var(--text-2);margin-top:4px;line-height:1.7}
+.pit-fix{font-size:11.5px;color:#8d97a8;margin-top:5px;padding-left:9px;border-left:2px solid #2a303b;line-height:1.7}
+.pit-fix b{color:#a9b3c4;font-weight:500}
+
+.dim{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:12px}
+.dim .nm{width:74px;color:var(--text-2);flex:0 0 74px}
+.dim .meter{flex:1;height:6px}
+.dim .v{width:30px;text-align:right;color:#e6eaf1;font-variant-numeric:tabular-nums}
+
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pane{border:1px solid var(--line-soft);border-radius:10px;padding:12px 13px;background:#111318}
+.pane h4{font-size:11px;color:var(--text-3);font-weight:500;letter-spacing:.3px;margin-bottom:8px;display:flex;gap:6px;align-items:center}
+.pane p{font-size:11.8px;color:#c2c8d2;line-height:1.8}
+.pane .json{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:1.75;color:#a9b6cb;white-space:pre-wrap;word-break:break-word;max-height:340px;overflow:auto;margin:0}
+
+/* ---------- 看板 ---------- */
+.legend{display:flex;gap:14px;font-size:11px;color:var(--text-2);align-items:center}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:14px;height:2px;border-radius:1px;display:inline-block}
+.legend i.dot{width:7px;height:7px;border-radius:50%}
+.chart{width:100%;height:auto;display:block}
+.rank{display:flex;flex-direction:column}
+.rank li{display:flex;align-items:center;gap:9px;padding:8px 0;border-top:1px solid var(--line-soft);font-size:12px}
+.rank li:first-child{border-top:0}
+.rank .no{width:16px;flex:0 0 16px;font-size:11px;color:var(--text-3);font-variant-numeric:tabular-nums}
+.rank .nm{min-width:0;color:#d5dae3;line-height:1.5}
+.rank .right{margin-left:auto;display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:11px;color:var(--text-3)}
+.sev-bar{display:flex;height:9px;border-radius:5px;overflow:hidden;background:#1e222a;margin:4px 0 12px}
+.sev-bar i{height:100%}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#c3cad6;background:#181b21;
+  border:1px solid #262b34;border-radius:999px;padding:4px 9px}
+.chip em{font-style:normal;color:var(--text-3);font-variant-numeric:tabular-nums}
+.mini-list li{display:flex;gap:8px;align-items:baseline;font-size:11.5px;color:#b6bdc8;padding:6px 0;border-top:1px solid var(--line-soft)}
+.mini-list li:first-child{border-top:0}
+.mini-list .id{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#96a0b1}
+.mini-list .right{margin-left:auto;white-space:nowrap}
+
+/* ---------- 流水线 ---------- */
+.pipe{display:flex;align-items:stretch;gap:0;flex-wrap:nowrap;overflow-x:auto}
+.pipe-step{flex:1 1 0;min-width:126px;padding:11px 12px;background:#111318;border:1px solid var(--line-soft);border-radius:9px}
+.pipe-step .n{font-size:10px;color:var(--text-3);letter-spacing:.6px}
+.pipe-step .t{font-size:12px;color:#e2e7ef;margin-top:3px;font-weight:500}
+.pipe-step .d{font-size:10.5px;color:var(--text-3);margin-top:3px;line-height:1.6}
+.pipe-arrow{flex:0 0 22px;display:grid;place-items:center;color:#3c434f;font-size:11px}
+
+/* ---------- 设置 ---------- */
+.field{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;align-items:baseline;
+  padding:9px 0;border-top:1px solid var(--line-soft);font-size:12px}
+.field:first-of-type{border-top:0}
+.field .lb{color:var(--text-3)}
+.field .vl{color:#dde2ea;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;word-break:break-all}
+.field input,.field select{background:#0f1115;border:1px solid #2a2f38;color:var(--text);border-radius:7px;
+  padding:6px 9px;font-size:12px;font-family:inherit;width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:var(--accent)}
+.gen-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.gen-row label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#b7bec9}
+.gen-row input{background:var(--bg-input);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:13px;width:150px}
+.gen-row input:focus{outline:none;border-color:var(--accent)}
+.gen-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:12px}
+.gen-card{background:var(--bg-input);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.gen-card .gc-h{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.gen-card .gc-meta{font-size:12px;color:#9aa4b2;margin:4px 0}
+.gen-card .gc-up{font-size:13px;color:var(--text);line-height:1.5}
+ul.bul{margin:6px 0 2px;padding-left:18px;list-style:disc}
+ul.bul li{font-size:12.5px;line-height:1.7;color:var(--text-2)}
+.field-row{display:flex;align-items:center;gap:12px;padding:12px 0 2px}
+.test-result{font-size:12px;line-height:1.5;word-break:break-word;max-width:520px}
+.test-result::before{margin-right:4px}
+.test-result.ok{color:var(--green)}
+.test-result.err{color:var(--red)}
+.test-result:not(.ok):not(.err){color:var(--text-2)}
+
+.btn{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 14px;border-radius:8px;
+  border:1px solid #303747;background:#232936;color:#e2e8f4;font-size:12.5px;cursor:pointer;transition:.15s}
+.btn:hover{background:#2a3243}
+.btn.primary{background:linear-gradient(150deg,#3f5df3,#7b4bff);border-color:transparent;color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{height:28px;padding:0 10px;font-size:11.5px}
+.btn.danger{border-color:rgba(240,116,106,.4);color:#f89a92;background:rgba(240,116,106,.06)}
+
+.foot{margin-top:22px;padding-top:14px;border-top:1px solid var(--line-soft);
+  font-size:11px;color:#5d636e;display:flex;gap:12px;flex-wrap:wrap}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:none;align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.modal h3{font-size:15px;margin-bottom:14px}
+.modal-lg{width:720px;max-width:94vw}
+.detail-grid{display:grid;grid-template-columns:140px 1fr;gap:8px 14px;font-size:12.5px;margin:6px 0 14px}
+.detail-grid .k{color:var(--text-3)}
+.detail-grid .v{color:#d6dbe3;line-height:1.7;word-break:break-word}
+.detail-grid .v.block{grid-column:1 / -1;background:#111318;border:1px solid var(--line-soft);border-radius:8px;padding:10px 12px}
+.btn.xs{height:24px;padding:0 8px;font-size:11px;border-radius:6px}
+.form-row{margin-bottom:11px}
+.form-row label{display:block;font-size:11.5px;color:var(--text-3);margin-bottom:4px}
+.form-row input,.form-row textarea,.form-row select{width:100%;background:#0f1115;border:1px solid #2a2f38;color:var(--text);
+  border-radius:8px;padding:8px 10px;font-size:12.5px;font-family:inherit}
+.form-row textarea{min-height:74px;resize:vertical;line-height:1.6}
+.form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+
+/* ---------- 坑类型词表编辑器 ---------- */
+.vocab-modal{width:900px;max-width:95vw}
+.vocab-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.vocab-bar input{flex:1;min-width:180px;background:#0f1115;border:1px solid #2a2f38;color:var(--text);
+  border-radius:8px;padding:7px 10px;font-size:12.5px;font-family:inherit}
+.vocab-bar input:focus{outline:none;border-color:var(--accent)}
+.vocab-stats{font-size:11.5px;color:var(--text-3);white-space:nowrap}
+.vocab-stats b{color:#cdd6e6;font-weight:600;font-variant-numeric:tabular-nums}
+.vocab-body{display:grid;grid-template-columns:270px 1fr;gap:14px;min-height:400px}
+.vocab-l1{border:1px solid var(--line-soft);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.vocab-l1-head{padding:9px 12px;font-size:11px;color:var(--text-3);border-bottom:1px solid var(--line-soft);
+  background:#111318;display:flex;justify-content:space-between;align-items:center}
+.vocab-l1-list{overflow:auto;max-height:430px}
+.vocab-l1-item{display:flex;align-items:center;gap:8px;padding:7px 12px;cursor:pointer;font-size:12.5px;
+  color:#c6cdd8;border-bottom:1px solid var(--line-soft)}
+.vocab-l1-item:hover{background:var(--hover)}
+.vocab-l1-item.active{background:rgba(107,150,255,.12);color:#e8eeff}
+.vocab-l1-item .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vocab-l1-item .ct{font-size:10.5px;color:var(--text-3);font-variant-numeric:tabular-nums}
+.vocab-l2{border:1px solid var(--line-soft);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.vocab-l2-head{padding:9px 12px;font-size:11px;color:var(--text-3);border-bottom:1px solid var(--line-soft);
+  background:#111318;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.vocab-l2-head .t{font-size:13px;color:#e8edf5;font-weight:600}
+.vocab-l2-list{overflow:auto;max-height:330px;padding:10px 12px}
+.vocab-l2-foot{border-top:1px solid var(--line-soft);padding:9px 12px;display:flex;gap:7px;align-items:center;background:#111318}
+.vocab-l2-foot input{flex:1;background:#0f1115;border:1px solid #2a2f38;color:var(--text);
+  border-radius:7px;padding:6px 9px;font-size:12px;font-family:inherit}
+.vocab-l2-foot input:focus{outline:none;border-color:var(--accent)}
+.vocab-item{display:inline-flex;align-items:center;gap:7px;background:#181b21;border:1px solid #262b34;
+  border-radius:999px;padding:4px 6px 4px 10px;font-size:11.5px;color:#c3cad6;margin:0 6px 6px 0}
+.vocab-item.in-lib{border-color:rgba(55,201,165,.3)}
+.vocab-item .x{cursor:pointer;color:var(--text-3);font-size:13px;line-height:1;padding:2px 4px;border-radius:50%}
+.vocab-item .x:hover{color:var(--red);background:rgba(240,116,106,.12)}
+.vocab-item .mk{font-size:10px;color:var(--teal)}
+.vocab-hint{font-size:11px;color:var(--text-3);line-height:1.7}
+.vocab-empty{color:var(--text-3);font-size:12px;padding:22px;text-align:center}
+
+/* ---------- toast ---------- */
+.toast-box{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);z-index:90;display:flex;
+  flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast-item{background:#1c2028;border:1px solid #2e3542;color:#d8dfe9;font-size:12.5px;
+  padding:9px 16px;border-radius:9px;box-shadow:0 10px 30px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
+.toast-item.show{opacity:1;transform:translateY(0)}
+
+.empty{color:var(--text-3);font-size:12px;padding:18px;text-align:center}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid #3a4356;border-top-color:var(--teal);border-radius:50%;animation:rot .7s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes rot{to{transform:rotate(360deg)}}
+.live{color:var(--green)} .sample{color:var(--amber)}
+@media (max-width:1240px){
+  .nav{width:224px}
+  .main{margin-left:224px}
+  .g-kpi{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .score-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .views{padding:22px 22px 36px}
+  .g-report,.g-chart{grid-template-columns:minmax(0,1fr)}
+  .three{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:1060px){
+  .nav{width:196px;padding-left:9px;padding-right:9px}
+  .main{margin-left:196px}
+  .topbar{padding:0 20px}
+  .topbar-right .clock{display:none}
+  .nav-item .cnt{display:none}
+}
+
+/* ---------- 登录页 ---------- */
+.login-screen{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
+  background:radial-gradient(1200px 600px at 50% -10%,#16202e 0%,#0d1117 60%);padding:20px}
+.login-screen.show{display:flex}
+.login-card{width:380px;max-width:100%;background:#12161d;border:1px solid #2b303b;border-radius:16px;
+  padding:30px 28px;box-shadow:0 24px 60px rgba(0,0,0,.5);text-align:center}
+.login-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px}
+.login-logo .badge-img{width:44px;height:44px;border-radius:11px;object-fit:contain;background:#fff;padding:5px;box-sizing:border-box}
+.login-logo .t{font-size:15px;font-weight:600;color:#eef1f6}
+.login-logo .s{font-size:11.5px;color:var(--text-3)}
+.login-card h2{font-size:18px;margin:0 0 14px;color:#f4f6fa}
+.login-card .sub2{font-size:12.5px;color:var(--text-3);margin:0 0 18px}
+.login-card .field{display:block;max-width:300px;margin:0 auto 14px;text-align:left}
+.login-card .field .lb{display:block;margin-bottom:6px}
+.login-result{font-size:12.5px;min-height:16px;margin-top:10px}
+.login-result.ok{color:var(--green)} .login-result.err{color:var(--red)}
+body.locked{overflow:hidden}
+.btn.ghost{background:transparent;border:1px solid #2b303b;color:var(--text-2)}
+
+/* ---------- 主题切换控件 ---------- */
+.theme-seg{display:inline-flex;gap:6px;background:#0f1115;border:1px solid #2a2f38;border-radius:10px;padding:4px}
+.theme-opt{height:30px;padding:0 14px;border:1px solid transparent;background:transparent;color:var(--text-2);border-radius:7px;font-size:12.5px;cursor:pointer;font-family:inherit;transition:.15s}
+.theme-opt:hover{background:#1b1e24;color:var(--text)}
+.theme-opt.is-on{background:linear-gradient(120deg,#7c3aed,#c026d3);color:#fff;border-color:transparent}
+
+/* ============ 浅色主题（高对比明快） ============ */
+:root[data-theme="light"]{
+  --bg:#f5f4ff; --nav:#ffffff; --panel:#ffffff; --panel-2:#f8f7ff; --hover:#f1edff;
+  --line:#e7e2f7; --line-soft:#efebfb;
+  --text:#16112b; --text-2:#4b4266; --text-3:#7a6f96;
+  --accent:#7c3aed; --teal:#0891b2; --violet:#7c3aed; --amber:#d97706; --red:#e11d48; --green:#059669;
+  --bg-input:#ffffff; --border:#e4dcf6;
+}
+:root[data-theme="light"] .theme-seg{background:#efeafd;border-color:#d9cef4}
+:root[data-theme="light"] .theme-opt{color:var(--text-2)}
+:root[data-theme="light"] .theme-opt:hover{background:#e9e2ff;color:#5b21b6}
+:root[data-theme="light"] .nav{background:#ffffff}
+:root[data-theme="light"] .topbar{background:rgba(255,255,255,.9);backdrop-filter:blur(10px)}
+:root[data-theme="light"] .crumbs .sep{color:#c8bee0}
+:root[data-theme="light"] .crumbs .here{color:#16112b}
+:root[data-theme="light"] .brand-mark{background:linear-gradient(120deg,#7c3aed,#c026d3);box-shadow:0 8px 18px -8px rgba(124,58,237,.85)}
+:root[data-theme="light"] .run-btn{background:linear-gradient(120deg,#7c3aed,#c026d3);border-color:transparent;color:#fff}
+:root[data-theme="light"] .run-btn:hover{filter:brightness(1.06)}
+:root[data-theme="light"] .run-btn svg{stroke:#fff;fill:#fff}
+:root[data-theme="light"] .nav-item{color:#4b4266}
+:root[data-theme="light"] .nav-item:hover{background:var(--hover);color:#2b1e4d}
+:root[data-theme="light"] .nav-item.is-active{background:linear-gradient(120deg,#7c3aed,#c026d3);color:#fff;box-shadow:0 8px 18px -10px rgba(124,58,237,.9)}
+:root[data-theme="light"] .nav-item.is-active .cnt{color:rgba(255,255,255,.85)}
+:root[data-theme="light"] .user:hover,:root[data-theme="light"] .user.open{background:var(--hover)}
+:root[data-theme="light"] .user-name{color:#16112b}
+:root[data-theme="light"] .avatar{background:linear-gradient(120deg,#7c3aed,#c026d3)}
+:root[data-theme="light"] .dot{background:#cabfe4}
+:root[data-theme="light"] .admin-menu{background:#ffffff;border-color:#c9bcf0;box-shadow:0 14px 34px rgba(76,29,149,.18)}
+:root[data-theme="light"] .admin-menu-item{color:#4b4266}
+:root[data-theme="light"] .admin-menu-item:hover{background:var(--hover);color:#16112b}
+:root[data-theme="light"] .card-h h3{color:#1a1033}
+:root[data-theme="light"] .tag.mute{color:#5f5578;background:#f4f1fe;border-color:#e6e0f7}
+:root[data-theme="light"] .tag.solid{background:linear-gradient(120deg,#7c3aed,#c026d3);color:#fff;border-color:transparent}
+:root[data-theme="light"] .tbl td{color:#3a3152}
+:root[data-theme="light"] .tbl tbody tr:hover td{background:var(--hover)}
+:root[data-theme="light"] .tbl .id{color:#4a3f68}
+:root[data-theme="light"] .tbl .strong{color:#16112b}
+:root[data-theme="light"] .row-active td{background:#f6f1ff}
+:root[data-theme="light"] .filter-bar input,:root[data-theme="light"] .filter-bar select{background:#fff;border-color:#e4dcf6}
+:root[data-theme="light"] .meter{background:#eeebfa}
+:root[data-theme="light"] .bar-row .v{color:#16112b}
+:root[data-theme="light"] .note b{color:#3a3152}
+:root[data-theme="light"] .rule-box{background:#f8f7ff;border-color:#efebfb}
+:root[data-theme="light"] .rule-box .k{color:#6d28d9}
+:root[data-theme="light"] .case-head{background:#ffffff}
+:root[data-theme="light"] .case-head .cid{color:#16112b}
+:root[data-theme="light"] .case-head .cname{color:#16112b}
+:root[data-theme="light"] .pit-sev{background:#ddd5f0}
+:root[data-theme="light"] .pit-name{color:#16112b}
+:root[data-theme="light"] .pit-fix{color:#524a6b;border-left-color:#e2d9f7}
+:root[data-theme="light"] .pit-fix b{color:#2b1e4d}
+:root[data-theme="light"] .dim .v{color:#16112b}
+:root[data-theme="light"] .pane{background:#f8f7ff}
+:root[data-theme="light"] .pane p{color:#3f3659}
+:root[data-theme="light"] .pane .json{color:#3b3355}
+:root[data-theme="light"] .rank .nm{color:#2b1e4d}
+:root[data-theme="light"] .sev-bar{background:#eeebfa}
+:root[data-theme="light"] .chip{color:#4b4266;background:#f7f4ff;border-color:#e9e3fa}
+:root[data-theme="light"] .mini-list li{color:#3f3659}
+:root[data-theme="light"] .mini-list .id{color:#4a3f68}
+:root[data-theme="light"] .pipe-step{background:#f8f7ff}
+:root[data-theme="light"] .pipe-step .t{color:#16112b}
+:root[data-theme="light"] .pipe-arrow{color:#c2b7dc}
+:root[data-theme="light"] .field .vl{color:#2b1e4d}
+:root[data-theme="light"] .field input,:root[data-theme="light"] .field select{background:#fff;border-color:#e4dcf6}
+:root[data-theme="light"] .gen-row label{color:#4b4266}
+:root[data-theme="light"] .gen-card .gc-meta{color:#7a6f96}
+:root[data-theme="light"] .foot{color:#8d82a8}
+:root[data-theme="light"] .btn{background:#fff;border-color:#d9cef4;color:#3a3152}
+:root[data-theme="light"] .btn:hover{background:#faf6ff}
+:root[data-theme="light"] .btn.primary{background:linear-gradient(120deg,#7c3aed,#c026d3);border-color:transparent;color:#fff}
+:root[data-theme="light"] .btn.primary:hover{filter:brightness(1.06)}
+:root[data-theme="light"] .btn.ghost{background:transparent;border-color:#c9bcf0;color:var(--text-2)}
+:root[data-theme="light"] .detail-grid .v{color:#2b1e4d}
+:root[data-theme="light"] .detail-grid .v.block{background:#f8f7ff}
+:root[data-theme="light"] .form-row input,:root[data-theme="light"] .form-row textarea,:root[data-theme="light"] .form-row select{background:#fff;border-color:#e4dcf6}
+:root[data-theme="light"] .vocab-l1-head,:root[data-theme="light"] .vocab-l2-head,:root[data-theme="light"] .vocab-l2-foot{background:#f8f7ff}
+:root[data-theme="light"] .vocab-l1-item{color:#2b1e4d}
+:root[data-theme="light"] .vocab-l1-item.active{background:rgba(124,58,237,.1);color:#5b21b6}
+:root[data-theme="light"] .vocab-l2-head .t{color:#16112b}
+:root[data-theme="light"] .vocab-l2-foot input{background:#fff;border-color:#e4dcf6}
+:root[data-theme="light"] .vocab-bar input{background:#fff;border-color:#e4dcf6}
+:root[data-theme="light"] .vocab-item{color:#4b4266;background:#f7f4ff;border-color:#e9e3fa}
+:root[data-theme="light"] .toast-item{background:#ffffff;border-color:#e0d9f5;color:#2b1e4d;box-shadow:0 10px 30px rgba(76,29,149,.18)}
+:root[data-theme="light"] .spin{border-color:#c9b6f7}
+:root[data-theme="light"] .login-screen{background:radial-gradient(1200px 600px at 50% -10%,#efe7ff 0%,#f5f4ff 60%)}
+:root[data-theme="light"] .login-card{background:#ffffff;border-color:#e0d9f5}
+:root[data-theme="light"] .login-logo .t{color:#16112b}
+:root[data-theme="light"] .login-card h2{color:#16112b}
+:root[data-theme="light"] .chart line{stroke:#ece4fb}
+:root[data-theme="light"] .chart text{fill:#7a6f96}
+:root[data-theme="light"] #chartHard{fill:#0e7490}
+:root[data-theme="light"] #chartSoft{fill:#6d28d9}
+
+/* 避坑评测：维度热力格 + 断言清单 */
+.pit-cell{border-radius:8px;padding:10px 8px;text-align:center;background:var(--panel);border:1px solid var(--line-soft)}
+.pit-cell .pc-f{font-size:12px;color:var(--text-2);line-height:1.3}
+.pit-cell .pc-v{font-size:20px;font-weight:500;margin-top:5px}
+.assert-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.assert-list li{background:var(--panel);border:1px solid var(--line-soft);border-radius:8px;padding:9px 11px}
+.assert-list .al-top{display:flex;gap:6px;align-items:center;margin-bottom:4px}
+.assert-list .al-fam{font-size:11px;color:var(--text-3);margin-left:auto}
+.assert-list .al-txt{font-size:13px;color:var(--text);line-height:1.5}
+.assert-list .al-ev{font-size:12px;color:var(--text-2);margin-top:3px}
+</style>
+<script>
+(function(){try{var t=localStorage.getItem('ui_theme');if(t==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();
+</script>
+</head>
+<body>
+
+<!-- 登录页 -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <img class="badge-img" src="/static/logo.png" alt="TXin AI">
+      <div class="t">旅游 AI 质检平台</div>
+    </div>
+    <h2>登录</h2>
+    <form id="loginForm" autocomplete="off">
+      <div class="field">
+        <input id="loginPassword" type="password" placeholder="请输入密码" autofocus>
+      </div>
+      <button class="btn primary" id="loginSubmit" type="submit" style="width:100%;justify-content:center">登录</button>
+      <div class="login-result" id="loginResult"></div>
+    </form>
+  </div>
+</div>
+
+<nav class="nav" aria-label="主导航">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <div class="brand-txt">
+      <div class="brand-title">旅游 AI 质检平台</div>
+      <div class="brand-sub">TREK × 轻量裁判</div>
+    </div>
+  </div>
+
+  <button class="run-btn" id="runBtn" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg>
+    运行批量评测
+  </button>
+
+  <div class="nav-scroll">
+    <div class="nav-label">概览</div>
+    <button class="nav-item is-active" type="button" data-nav="dashboard" aria-current="page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      质检看板
+    </button>
+
+    <div class="nav-label">质检流程</div>
+    <button class="nav-item" type="button" data-nav="runs">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg>
+      执行任务
+      <span class="cnt" id="navRunsCnt">0</span>
+    </button>
+    <button class="nav-item" type="button" data-nav="report">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+      质检报告
+      <span class="cnt" id="navReportCnt">0</span>
+    </button>
+    <button class="nav-item" type="button" data-nav="cases">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/><path d="M4 11.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+      案例库
+      <span class="cnt" id="navCasesCnt">0</span>
+    </button>
+
+  </div>
+
+  <div class="nav-foot">
+    <div class="env"><span class="dot ok" id="envDot"></span><span id="envText">Runner 已连接</span></div>
+    <div class="user" id="adminMenuTrigger" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
+      <div class="avatar" aria-hidden="true">TX</div>
+      <div class="user-meta">
+        <div class="user-name">TXin</div>
+        <div class="user-role">管理员</div>
+      </div>
+      <svg class="user-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+    </div>
+    <div class="admin-menu" id="adminMenu" role="menu" aria-label="管理员菜单">
+      <button type="button" class="admin-menu-item" id="adminMenuSettings" role="menuitem">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.5-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 4.6a2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.7 1.7 0 0 0 21 11a2 2 0 1 1 0 4z"/></svg>
+        <span>设置</span>
+      </button>
+      <button type="button" class="admin-menu-item" id="adminMenuLogout" role="menuitem" style="display:none">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7"/><path d="M10 12h10M17 8l4 4-4 4"/></svg>
+        <span>退出登录</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="main">
+  <header class="topbar">
+    <div class="crumbs">
+      <span>质检平台</span><span class="sep">/</span><span class="here" id="crumb">质检看板</span>
+    </div>
+    <div class="topbar-right">
+      <span class="status"><span class="dot" id="botDot"></span><span id="botStatus">Bot API 未配置</span></span>
+      <span class="status"><span class="dot" id="judgeDot"></span><span id="judgeStatus">裁判未配置</span></span>
+      <span class="clock" id="clock">—</span>
+    </div>
+  </header>
+
+  <div class="views">
+
+    <!-- ================= 看板 ================= -->
+    <section class="view is-active" data-view="dashboard" aria-label="质检看板">
+      <div class="view-head">
+        <div>
+          <h2>质检看板</h2>
+          <p>硬逻辑用代码算、软体验交给裁判盲审：两项分开计分，不互相稀释。带 <span class="live">●</span> 为实时数据，<span class="sample">●</span> 为示例。</p>
+        </div>
+        <div class="head-actions">
+          <span class="tag solid">v2.0 · 真实后端</span>
+          <span class="tag mute">实时</span>
+        </div>
+      </div>
+
+      <div class="grid g-kpi">
+        <div class="kpi">
+          <div class="k-label">综合平均得分</div>
+          <div class="k-val" id="kpiOverall">—<small>/ 10</small></div>
+          <div class="k-foot"><span class="flat">轻量裁判软质量加权</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label"><span class="live">●</span> TREK 硬逻辑得分率</div>
+          <div class="k-val" id="kpiHard" style="color:#7fe0c4">—<small>%</small></div>
+          <div class="k-foot"><span class="flat">引擎确定性基准</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label"><span class="live">●</span> 轻量裁判软质量均分</div>
+          <div class="k-val" id="kpiSoft" style="color:#bda9ff">—<small>/ 10</small></div>
+          <div class="k-foot"><span class="flat">轻量裁判加权</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label">触发致命风险</div>
+          <div class="k-val" id="kpiFatal" style="color:#f89a92">—<small>例</small></div>
+          <div class="k-foot"><span class="flat">待评测</span></div>
+        </div>
+        <div class="kpi">
+          <div class="k-label"><span class="live">●</span> 有效样本（案例）</div>
+          <div class="k-val" id="kpiCases">—</div>
+          <div class="k-foot"><span class="flat">案例库规模</span></div>
+        </div>
+      </div>
+
+      <div class="grid g-chart mt14">
+        <div class="card">
+          <div class="card-h">
+            <h3>质检版本演进</h3>
+            <div class="right legend">
+              <span><i style="background:#37c9a5"></i>硬逻辑得分率</span>
+              <span><i style="background:#9f8cff"></i>软质量得分 ×10</span>
+            </div>
+          </div>
+          <svg class="chart" viewBox="0 0 660 240" role="img" aria-label="示例趋势图">
+            <g stroke="#1f232a" stroke-width="1">
+              <line x1="56" y1="200" x2="636" y2="200"/><line x1="56" y1="156" x2="636" y2="156"/>
+              <line x1="56" y1="112" x2="636" y2="112"/><line x1="56" y1="68" x2="636" y2="68"/>
+              <line x1="56" y1="24" x2="636" y2="24" stroke="#23262c"/>
+            </g>
+            <g fill="#6b717c" font-size="10" text-anchor="end">
+              <text x="46" y="204">60</text><text x="46" y="160">70</text><text x="46" y="116">80</text><text x="46" y="72">90</text><text x="46" y="28">100</text>
+            </g>
+            <path d="M56,150.7 L201,140.6 L346,130.5 L491,124.8 L636,119 L636,200 L56,200 Z" fill="url(#fillTeal)"/>
+            <path d="M56,150.7 L201,140.6 L346,130.5 L491,124.8 L636,119" fill="none" stroke="#37c9a5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            <path d="M56,138.4 L201,140.2 L346,128.3 L491,120.8 L636,116.4" fill="none" stroke="#9f8cff" stroke-width="1.8" stroke-dasharray="5 4" stroke-linejoin="round" stroke-linecap="round"/>
+            <g fill="#37c9a5"><circle cx="56" cy="150.7" r="3"/><circle cx="201" cy="140.6" r="3"/><circle cx="346" cy="130.5" r="3"/><circle cx="491" cy="124.8" r="3"/><circle cx="636" cy="119" r="3.4"/></g>
+            <g fill="#0c0d10" stroke="#9f8cff" stroke-width="1.6"><circle cx="56" cy="138.4" r="2.8"/><circle cx="201" cy="140.2" r="2.8"/><circle cx="346" cy="128.3" r="2.8"/><circle cx="491" cy="120.8" r="2.8"/><circle cx="636" cy="116.4" r="3.2"/></g>
+            <g font-size="10.5" text-anchor="end"><text x="632" y="104" fill="#7fe0c4" id="chartHard">—</text><text x="632" y="135" fill="#bda9ff" id="chartSoft">—</text></g>
+            <g fill="#6b717c" font-size="10.5" text-anchor="middle"><text x="56" y="222">v1.0</text><text x="201" y="222">v1.1</text><text x="346" y="222">v1.2</text><text x="491" y="222">v1.3</text><text x="636" y="222">v1.4</text></g>
+          </svg>
+          <p class="note">纵向为示例轨迹；接入真实评测流水后，最新点会替换为实时硬逻辑 / 软质量得分。当前硬逻辑得分率已接入引擎 真实基准。</p>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>坑点严重度分布</h3><div class="right"><span class="sample">示例</span> · 近 30 天</div></div>
+          <div class="sev-bar" role="img" aria-label="示例分布">
+            <i style="width:11.7%;background:#f0746a"></i><i style="width:31.7%;background:#e2ab4e"></i><i style="width:56.6%;background:#4a5568"></i>
+          </div>
+          <div class="bar-row"><span class="nm" style="width:52px;flex:0 0 52px;color:#f89a92">致命</span><span class="meter red" style="background:#1e222a"><i style="width:11.7%"></i></span><span class="v">7</span></div>
+          <div class="bar-row"><span class="nm" style="width:52px;flex:0 0 52px;color:#eec381">严重</span><span class="meter" style="background:#1e222a"><i style="width:31.7%;background:#e2ab4e"></i></span><span class="v">19</span></div>
+          <div class="bar-row"><span class="nm" style="width:52px;flex:0 0 52px;color:#9aa3b2">轻微</span><span class="meter" style="background:#1e222a"><i style="width:56.6%;background:#4a5568"></i></span><span class="v">34</span></div>
+          <div class="rule-box mt10"><span class="k">真实坑点</span>：在「质检报告」运行轻量裁判后，检测到的坑点会进入候选池，此处将按严重度实时聚合。</div>
+        </div>
+      </div>
+
+      <div class="grid g-2 mt14">
+        <div class="card">
+          <div class="card-h"><h3>红榜 · 高频踩坑</h3><div class="right"><span class="sample">示例</span></div></div>
+          <ul class="rank">
+            <li><span class="no">01</span><span class="nm">陕西历史博物馆周一闭馆 / 预约名额不足</span><span class="right"><span class="tag warn">严重</span><span class="num">21</span></span></li>
+            <li><span class="no">02</span><span class="nm">中老年单日步行强度超限</span><span class="right"><span class="tag warn">严重</span><span class="num">18</span></span></li>
+            <li><span class="no">03</span><span class="nm">极端天气无室内备选方案</span><span class="right"><span class="tag warn">新发现</span><span class="num">12</span></span></li>
+            <li><span class="no">04</span><span class="nm">景区预约时段与行程时间冲突</span><span class="right"><span class="tag warn">新发现</span><span class="num">9</span></span></li>
+            <li><span class="no">05</span><span class="nm">酒店与次日集合点通勤未留缓冲</span><span class="right"><span class="tag new">新发现</span><span class="num">8</span></span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>黑榜 · 已收敛坑点</h3><div class="right">近三版命中下降</div></div>
+          <ul class="rank">
+            <li><span class="no">01</span><span class="nm">大交通时间未标注</span><span class="right"><span class="tag pass">收敛</span><span class="num">34 → 4</span><span class="up">-88%</span></span></li>
+            <li><span class="no">02</span><span class="nm">预算未计入门票</span><span class="right"><span class="tag pass">收敛</span><span class="num">26 → 3</span><span class="up">-88%</span></span></li>
+            <li><span class="no">03</span><span class="nm">行程未给每日餐饮建议</span><span class="right"><span class="tag pass">收敛</span><span class="num">41 → 9</span><span class="up">-78%</span></span></li>
+            <li><span class="no">04</span><span class="nm">返程日仍安排高强度景点</span><span class="right"><span class="tag pass">收敛</span><span class="num">15 → 6</span><span class="up">-60%</span></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid g-2 mt14">
+        <div class="card">
+          <div class="card-h"><h3>版本对比</h3><div class="right"><span class="sample">示例</span></div></div>
+          <table class="tbl">
+            <thead><tr><th>版本</th><th class="t-right">硬逻辑得分率</th><th class="t-right">软体验均分</th><th class="t-right">致命风险</th><th class="t-right">有效样本</th></tr></thead>
+            <tbody>
+              <tr><td class="id">v2.0</td><td class="t-right num" id="vcHard">—</td><td class="t-right num" id="vcSoft">—</td><td class="t-right num">—</td><td class="t-right num" id="vcCases">—</td></tr>
+              <tr><td class="id">v1.4</td><td class="t-right num" style="color:#7fe0c4">78.4%</td><td class="t-right num" style="color:#bda9ff">7.9</td><td class="t-right num">3</td><td class="t-right num">126</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>三方对账 · 待处理</h3><div class="right" id="reconRight">实时</div></div>
+          <ul class="mini-list" id="reconList">
+            <li><span class="id">—</span><span>暂无异常</span><span class="right tag pass">正常</span></li>
+          </ul>
+          <div class="rule-box mt10">点开任意案例，到「质检报告」可查看<b>生成器产出的测试输入</b>、<b>Bot 原始回答</b>与<b>生成器+TREK+轻量裁判 裁决明细</b>。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 执行任务 ================= -->
+    <section class="view" data-view="runs" aria-label="执行任务">
+      <div class="view-head">
+        <div>
+          <h2>执行任务</h2>
+          <p>手动选取案例并触发执行；失败样本单独计数，不进入均值。</p>
+        </div>
+        <div class="head-actions"><span class="tag solid">手动触发</span><span class="tag mute">并发 4</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h3>流水线 · Bot Execution Pipeline</h3><div class="right">单条超时 30s · 重试 1 次</div></div>
+        <div class="pipe">
+          <div class="pipe-step"><div class="n">01</div><div class="t">案例生成器</div><div class="d">用埋的坑造对抗输入，用正确应对造期望</div></div>
+          <div class="pipe-arrow">›</div>
+          <div class="pipe-step"><div class="n">02</div><div class="t">请求 Bot API</div><div class="d">并发 4，失败标 status=failed</div></div>
+          <div class="pipe-arrow">›</div>
+          <div class="pipe-step"><div class="n">03</div><div class="t">结构化行程</div><div class="d">输出 bot_output_solution</div></div>
+          <div class="pipe-arrow">›</div>
+          <div class="pipe-step"><div class="n">04</div><div class="t">质检评分</div><div class="d">TREK 硬逻辑 + 轻量裁判软盲区</div></div>
+          <div class="pipe-arrow">›</div>
+          <div class="pipe-step"><div class="n">05</div><div class="t">沉淀与落库</div><div class="d">新坑进候选池，结果写库</div></div>
+        </div>
+      </div>
+
+      <div class="card mt14">
+        <div class="card-h"><h3>执行记录</h3><div class="right" id="runsRight">实时</div></div>
+        <table class="tbl">
+          <thead><tr><th>Run ID</th><th>触发方式</th><th class="t-right">案例</th><th>引擎 源</th><th>轻量裁判</th><th>时间</th></tr></thead>
+          <tbody id="runsBody"><tr><td colspan="6" class="empty">暂无执行记录，去「质检报告」运行一次评测即可生成。</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="grid g-2 mt14">
+        <div class="card">
+          <div class="card-h"><h3>失败样本处理</h3><div class="right">口径</div></div>
+          <div class="rule-box">
+            <span class="k">Bot 接口失败</span>：标记 status=failed，不送入裁判、不计入均值。<br>
+            <span class="k">裁判失败</span>：记 judge_error，分数留空，不写默认分。<br>
+            <span class="k">JSON 解析失败</span>：按裁判失败处理并保留原始返回。<br>
+            <span class="k">模拟数据</span>：仅用于演示开关开启时，标注「模拟」并排除出正式报表。
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>调度配置</h3><div class="right">只读</div></div>
+          <div class="field"><span class="lb">触发器</span><span class="vl">手动触发（由「质检报告」运行评测）</span></div>
+          <div class="field"><span class="lb">并发与限流</span><span class="vl">4 路并发 · 单条 30s 超时 · 重试 1 次</span></div>
+          <div class="field"><span class="lb">案例来源</span><span class="vl">A 区（盲测）· 不含 backend_reference</span></div>
+          <div class="field"><span class="lb">结果落库</span><span class="vl">runs.json · 按 run_id 归档</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 质检报告 ================= -->
+    <section class="view" data-view="report" aria-label="质检报告">
+      <div class="view-head">
+        <div>
+          <h2>质检报告</h2>
+          <p>流程：测试构造器把案例变成测试 → TREK 评硬逻辑 → 轻量裁判补软盲区。硬 / 软分列展示，失败不被平均分掩盖。（案例本身可在「案例库 → AI 造题」由模型生成。）</p>
+        </div>
+        <div class="head-actions">
+          <span class="tag solid">judge-v3</span>
+          <span class="tag mute" id="reportTime">—</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h3>评测控制台</h3><div class="right">选案例 → 测试构造 → TREK+轻量裁判</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end">
+          <div class="form-row" style="margin:0;min-width:240px;flex:1">
+            <label>选择案例</label>
+            <select id="reportCase"><option value="">— 加载中 —</option></select>
+          </div>
+          <div class="form-row" style="margin:0;min-width:200px">
+            <label>引擎数据源</label>
+            <select id="engineASource">
+              <option value="gold">TREK Gold 基准（离线·确定性）</option>
+              <option value="mock">内置 Mock Bot（可注入缺陷）</option>
+              <option value="bot">你的 Bot（结构化计划）</option>
+            </select>
+          </div>
+          <div class="form-row" style="margin:0;min-width:200px">
+            <label>Mock 缺陷注入</label>
+            <select id="engineAFlaw">
+              <option value="none">无</option>
+              <option value="虚构景点（D0-src↓）">虚构景点（D0-src↓ 防幻觉）</option>
+              <option value="预算超支（D3↓）">预算超支（D3↓）</option>
+              <option value="拒答失败（D4↓）">拒答失败（D4↓）</option>
+            </select>
+          </div>
+          <button class="btn primary" id="runReportBtn" type="button">🚀 运行质检</button>
+          <button class="btn sm" id="genPreviewBtn" type="button">🔍 预览测试构造</button>
+        </div>
+        <p class="note mt10">流程：<b>案例生成器</b>用「埋的坑」造对抗输入、用「正确应对」造期望清单 → 发给你的 Bot → <b>TREK</b> 评硬逻辑（结构化行程）→ <b>轻量裁判</b>只补软质量（避坑+主动服务）。轻量裁判需在「设置」配置 Key。</p>
+      </div>
+
+      <div class="card mt14">
+        <div class="card-h"><h3>避坑评测 · 融合三层</h3><div class="right">红线零容忍 + 8维命中 + LLM语义裁判</div></div>
+        <p class="note">对照题库「正确应对」底牌，评 Bot 行程<b>是否真的避坑</b>（而非仅校验行程机械合法性）。沿用上方「选择案例」。gold=完美基线自检、mock=注入缺陷演示、bot=评你的真实 Bot（需配置 Bot API 与裁判 Key）。</p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end">
+          <div class="form-row" style="margin:0;min-width:220px">
+            <label>避坑评测模式</label>
+            <select id="pitfallMode">
+              <option value="gold">gold · 完美基线（管线自检）</option>
+              <option value="mock">mock · 注入缺陷（演示抓漏）</option>
+              <option value="bot">bot · 真实 Bot 回答</option>
+            </select>
+          </div>
+          <button class="btn primary" id="runPitfallBtn" type="button">🛡 运行避坑评测</button>
+          <span id="pitfallErr" class="test-result"></span>
+        </div>
+        <div id="pitfallResult" class="mt14"></div>
+      </div>
+
+      <div id="genPreview" class="card mt14" style="display:none"></div>
+      <div id="reportResult"><div class="card mt14"><div class="empty">尚未运行评测。选择案例后点击「运行质检」。</div></div></div>
+    </section>
+
+    <!-- ================= 案例库 ================= -->
+    <section class="view" data-view="cases" aria-label="案例库">
+      <div class="view-head">
+        <div>
+          <h2>案例库 · 需求测试题库</h2>
+        </div>
+        <div class="head-actions">
+          <span class="tag solid" id="casesTotal">0 条</span>
+          <button class="btn sm" id="addCaseBtn" type="button">➕ 新增案例</button>
+          <button class="btn sm" id="uploadCaseBtn" type="button">⬆ 上传题库(.xlsx/.json/.csv)</button>
+          <button class="btn sm" id="exportCaseBtn" type="button">⬇ 导出</button>
+        </div>
+      </div>
+
+      <div class="card mt14" style="border-color:#3a4d6b">
+        <div class="card-h"><h3>🎲 AI 造题 · 案例生成器</h3><div class="right">从题库词表合成全新案例 · 入库持久
+          <button class="btn xs" id="vocabBtn" type="button" style="margin-left:8px">📖 词表管理</button>
+        </div></div>
+        <p class="note" style="font-size:12px;color:#b7bec9">读取你题库里的「服务类型 / 坑类型 / 目的地」词表 + 真实示例，调用模型合成<strong>全新</strong>测试案例，直接写进案例库，可反复跑、越积越多。与下方「测试构造」不同：这里是<strong>造新题</strong>，后者是把已有案例变成可执行的测试输入。</p>
+        <div class="gen-row">
+          <label>生成数量<input id="genN" type="number" min="1" max="50" value="5"></label>
+          <label>侧重服务<input id="genService" placeholder="如 地陪（可选）"></label>
+          <label>侧重坑类型<input id="genPitfall" placeholder="如 签证（可选）"></label>
+          <button class="btn primary" id="genCasesBtn" type="button">🎲 生成并入库</button>
+        </div>
+        <div id="genStatus" class="note mt10"></div>
+        <div id="genPreview" class="gen-preview"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h3>筛选 · 分类三轴</h3><div class="right"><button class="btn xs" id="clearFilterBtn" type="button">清空筛选</button></div></div>
+        <div class="filter-bar">
+          <label>目的地<input id="fDest" list="destList" placeholder="如 东京"><datalist id="destList"></datalist></label>
+          <label>出行时段<input id="fPeriod" placeholder="如 11月"></label>
+          <label>服务类型<input id="fService" placeholder="如 包车"></label>
+          <label>坑类型(一级)<select id="fPitfall"><option value="">全部</option></select></label>
+          <label>关键词<input id="fSearch" placeholder="编号/客户原话"></label>
+        </div>
+      </div>
+
+      <div class="card mt14">
+        <div class="card-h"><h3>案例清单</h3><div class="right" id="casesShown">—</div></div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>编号</th><th>场景(目的地×时段)</th><th>服务类型(原子项)</th><th>坑类型(一级+二级)</th><th>人数</th><th></th>
+            </tr></thead>
+            <tbody id="casesBody"><tr><td colspan="6" class="empty">案例库为空，点击「新增案例」或「上传题库」开始。</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid g-2 mt14">
+        <div class="card">
+          <div class="card-h"><h3>A 区 · 盲测区</h3><div class="right">Bot 可见</div></div>
+          <p class="note" style="font-size:12px;color:#b7bec9">只下发 user_prompt（客户原话），保持口语化与生活化，禁止出现任何提示性词汇，避免开卷考试。</p>
+          <div class="rule-box mt10"><span class="k">字段</span>：case_id · user_prompt</div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>B 区 · 后台底牌区</h3><div class="right">仅质检程序可见</div></div>
+          <p class="note" style="font-size:12px;color:#b7bec9">存硬约束断言、坑类型、埋的坑与正确应对。其中<b>埋的坑既被案例生成器用来造对抗输入，又作轻量裁判的「应规避」底牌；正确应对作「期望做到」底牌</b>；TREK 只算硬逻辑。</p>
+          <div class="rule-box mt10"><span class="k">字段</span>：hard_assertions · pitfall_types · buried_pitfalls · correct_response<br><span class="k">断言</span>：max_budget · max_daily_walking_limit_km · must_verify_poi_existence · expect_infeasibility_refusal</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 设置 ================= -->
+    <section class="view" data-view="settings" aria-label="设置">
+      <div class="view-head">
+        <div><h2>设置</h2><p>接入参数、评分口径与失败处理规则；本页可保存配置并立即生效。</p></div>
+        <div class="head-actions"><button class="btn primary sm" id="saveSettingsBtn" type="button">保存设置</button></div>
+      </div>
+
+      <div class="grid g-2">
+        <div class="card">
+          <div class="card-h"><h3>接入参数</h3><div class="right">引擎A(TREK) 与 轻量裁判</div></div>
+          <div class="field"><span class="lb">Bot API 地址</span><input id="setBotApi" placeholder="https://your-bot/api/generate"></div>
+          <div class="field"><span class="lb">裁判模型</span><input id="setJudgeModel" placeholder="gpt-4o"></div>
+          <div class="field"><span class="lb">裁判 Base URL</span><input id="setJudgeBase" placeholder="https://api.openai.com/v1"></div>
+          <div class="field"><span class="lb">裁判 API Key</span><input id="setJudgeKey" type="password" placeholder="sk-...（本地保存，页面不展示明文）"></div>
+          <div class="field"><span class="lb">temperature</span><input id="setJudgeTemp" placeholder="0"></div>
+          <div class="field-row">
+            <button class="btn sm" id="testJudgeBtn" type="button">测试裁判连接</button>
+            <span id="judgeTestResult" class="test-result"></span>
+          </div>
+          <p class="note mt6">测试用最小调用（极短对话）校验 Key / endpoint / 模型是否可用；输入框留空则回退已保存的 Key。</p>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>评分口径</h3><div class="right">写死在质检程序里</div></div>
+          <div class="rule-box">
+            <span class="k">硬逻辑得分率</span> = 通过断言数 ÷ 适用断言数，不适用不计入分母（引擎，TREK 确定性）。<br>
+            <span class="k">软质量得分</span> = 埋点规避 ×0.5 + 主动服务 ×0.5（轻量裁判，LLM 盲审，只补 TREK 盲区）。<br>
+            <span class="k">一票否决</span>：has_fatal_risk = true 时综合分置 0，单列「致命风险」。<br>
+            <span class="k">双轨呈现</span>：硬逻辑（TREK）与软质量（轻量裁判）分别出数，不做单一总分的加权合并。
+          </div>
+          <div class="rule-box mt10"><span class="k">TREK 知识库</span>：当前为合成域（375 城）。评真实海外行程需将 data_loader 的数据源替换为你的景点/酒店库。</div>
+        </div>
+      </div>
+
+      <div class="card mt14">
+        <div class="card-h"><h3>失败处理</h3><div class="right">不兜底、不伪造分数</div></div>
+        <table class="tbl">
+          <thead><tr><th>状态</th><th>触发条件</th><th>是否进均值</th><th>报表呈现</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag pass">scored</span></td><td>Bot 与裁判均成功、JSON 结构完整</td><td>是</td><td>计入总得分</td></tr>
+            <tr><td><span class="tag mute">bot_failed</span></td><td>接口超时、非 2xx、返回无法结构化</td><td>否</td><td>单列失败数，不送裁判</td></tr>
+            <tr><td><span class="tag warn">judge_error</span></td><td>裁判调用失败或输出不合 schema</td><td>否</td><td>分数留空，保留原始返回供对账</td></tr>
+            <tr><td><span class="tag fail">vetoed</span></td><td>has_fatal_risk = true</td><td>否，单列</td><td>综合分 0，进入致命风险清单</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card mt14">
+        <div class="card-h"><h3>管理员 · 登录密码</h3><div class="right" id="adminPwStatus">—</div></div>
+        <p class="note">设置后，进入本平台需输入密码；删除后恢复免登录。修改 / 删除均需验证当前密码。</p>
+        <div class="field"><span class="lb">当前密码（首次设置可留空）</span><input id="adminCur" type="password" autocomplete="off"></div>
+        <div class="grid g-2">
+          <div class="field"><span class="lb">新密码（≥4 位）</span><input id="adminNew" type="password" autocomplete="off"></div>
+          <div class="field"><span class="lb">确认新密码</span><input id="adminNew2" type="password" autocomplete="off"></div>
+        </div>
+        <div class="field-row">
+          <button class="btn sm" id="adminSetPwBtn" type="button">保存密码</button>
+          <button class="btn sm danger" id="adminDelPwBtn" type="button">删除密码（免登录）</button>
+          <span id="adminPwResult" class="test-result"></span>
+        </div>
+      </div>
+
+      <div class="card mt14">
+        <div class="card-h"><h3>外观主题</h3><div class="right">立即生效 · 本机保存</div></div>
+        <div class="field"><span class="lb">界面主题</span>
+          <div class="theme-seg" id="themeSeg">
+            <button type="button" class="theme-opt" data-theme-val="dark">深色（当前）</button>
+            <button type="button" class="theme-opt" data-theme-val="light">高对比明快（浅色）</button>
+          </div>
+        </div>
+        <p class="note mt6">浅色主题为「高对比明快」风格（紫→洋红渐变、浅色背景），源自 ui-3-vivid-contrast 方案。选择后立即预览，并保存在本浏览器，刷新不丢失。</p>
+      </div>
+
+      <div class="foot">
+        <span>真实后端 · Flask + TREK + OpenAI 兼容裁判</span>
+        <span>口径与模块命名依据《ai质检平台搭建.md》</span>
+      </div>
+    </section>
+
+  </div><!-- /views -->
+</div><!-- /main -->
+
+<!-- 新增案例弹窗 -->
+<div class="modal-bg" id="caseModal">
+  <div class="modal">
+    <h3>新增案例（对齐需求测试题库格式）</h3>
+    <div class="form-row"><label>编号 case_id（唯一）</label><input id="cCaseId" placeholder="如 1001"></div>
+    <div class="grid g-2">
+      <div class="form-row"><label>场景（目的地×时段，如「东京 11月」）</label><input id="cScene" placeholder="东京 11月"></div>
+      <div class="form-row"><label>出行时间</label><input id="cTravelTime" placeholder="2027年11月8日起"></div>
+    </div>
+    <div class="grid g-2">
+      <div class="form-row"><label>人数</label><input id="cGroupSize" placeholder="2成人"></div>
+      <div class="form-row"><label>预算上限 max_budget（可空）</label><input id="cBudget" type="number" placeholder="例如 6000"></div>
+    </div>
+    <div class="form-row"><label>服务类型（用 / 分隔，如「包车/导游/酒店代订/机票」）</label><input id="cServiceTypes" placeholder="包车/导游/酒店代订/机票"></div>
+    <div class="form-row"><label>坑类型（每行一条，支持「一级(二级)」，如「门票(闭馆)」「签证」）</label><textarea id="cPitfallsRaw" placeholder="门票(闭馆)&#10;季节(登山季结束)&#10;机票&#10;酒店"></textarea></div>
+    <div class="form-row"><label>客户原话（A 区盲测 · 口语化）</label><textarea id="cPrompt"></textarea></div>
+    <div class="form-row"><label>埋的坑</label><textarea id="cBuried" placeholder="故意埋下的陷阱/易错点"></textarea></div>
+    <div class="form-row"><label>正确应对</label><textarea id="cCorrect" placeholder="标准正确答案/应提示内容"></textarea></div>
+    <div class="form-actions">
+      <button class="btn" id="caseCancel" type="button">取消</button>
+      <button class="btn primary" id="caseSubmit" type="button">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 案例详情弹窗 -->
+<div class="modal-bg" id="caseDetailModal">
+  <div class="modal modal-lg">
+    <h3>案例详情 <span id="dCaseId" class="sub"></span></h3>
+    <div class="detail-grid" id="dBody"></div>
+    <div id="dGenTest" class="mt10"></div>
+    <div class="form-actions">
+      <button class="btn sm" id="caseDetailGenBtn" type="button">🔍 测试构造预览</button>
+      <button class="btn primary" id="caseDetailClose" type="button">关闭</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="caseFile" accept=".json,.csv,.xlsx" style="display:none">
+<div class="toast-box" id="toastBox"></div>
+
+<!-- 坑类型词表管理弹窗 -->
+<div class="modal-bg" id="vocabModal">
+  <div class="modal vocab-modal">
+    <h3>📖 坑类型词表管理 <span class="sub" style="font-size:11.5px;color:#6b717c;font-weight:400">造题抽样词表 · 保存后立即生效</span></h3>
+    <div class="vocab-bar">
+      <input id="vocabSearch" placeholder="搜索一级 / 二级…">
+      <span class="vocab-stats" id="vocabStats">—</span>
+      <button class="btn sm" id="vocabMergeLibBtn" type="button">⬇ 从案例库合并</button>
+      <button class="btn sm" id="vocabResetBtn" type="button">↺ 按案例库重建</button>
+    </div>
+    <div class="vocab-body">
+      <div class="vocab-l1">
+        <div class="vocab-l1-head"><span>一级坑类型</span><span id="vocabL1Count">0</span></div>
+        <div class="vocab-l1-list" id="vocabL1List"></div>
+        <div class="vocab-l2-foot">
+          <input id="vocabNewL1" placeholder="新增一级，如 签证">
+          <button class="btn sm" id="vocabAddL1Btn" type="button">＋</button>
+        </div>
+      </div>
+      <div class="vocab-l2">
+        <div class="vocab-l2-head">
+          <span class="t" id="vocabCurL1">请选择左侧一级</span>
+          <span id="vocabCurCount" style="font-size:11px;color:#6b717c"></span>
+        </div>
+        <div class="vocab-l2-list" id="vocabL2List"></div>
+        <div class="vocab-l2-foot">
+          <input id="vocabNewL2" placeholder="新增二级，如 免签（多个用 / 分隔）">
+          <button class="btn sm" id="vocabAddL2Btn" type="button">＋ 添加</button>
+        </div>
+      </div>
+    </div>
+    <div class="vocab-hint mt10">
+      带 <span class="mk" style="color:#37c9a5">●</span> 标记的二级项在当前案例库中实际出现过（造题时优先复用）。改动后点「保存」写回 <span class="mono">pitfall_vocab.json</span>。
+    </div>
+    <div class="form-actions">
+      <button class="btn" id="vocabCancelBtn" type="button">取消</button>
+      <button class="btn primary" id="vocabSaveBtn" type="button">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var API = "";
+  function api(path, opts){
+    opts = opts || {};
+    return fetch(API + path, {
+      method: opts.method || "GET",
+      headers: {"Content-Type":"application/json"},
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    }).then(function(r){ return r.json().then(function(j){
+      if(j && j.need_login){ showLogin(); }
+      return j;
+    }); });
+  }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function $(id){ return document.getElementById(id); }
+  function toast(msg, ms){
+    var box=$("toastBox"); if(!box) return;
+    var el=document.createElement("div");
+    el.className="toast-item"; el.textContent=msg;
+    box.appendChild(el);
+    requestAnimationFrame(function(){ el.classList.add("show"); });
+    setTimeout(function(){
+      el.classList.remove("show");
+      setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 250);
+    }, ms||2200);
+  }
+
+  // ---------- 管理员登录 / 密码 ----------
+  var passwordSet = false;
+  var booted = false;
+  function showLogin(){ var el=$("loginScreen"); if(el) el.classList.add("show"); document.body.classList.add("locked"); }
+  function hideLogin(){ var el=$("loginScreen"); if(el) el.classList.remove("show"); document.body.classList.remove("locked"); }
+  function syncLogoutBtn(){ var b=$("adminMenuLogout"); if(b) b.style.display = passwordSet ? "block" : "none"; }
+  function boot(){
+    if(booted) return; booted = true;
+    loadDashboard(); loadCases(); loadRuns(); loadSettings(); loadReportCases(); loadAdmin();
+  }
+  function checkAuth(){
+    api("/api/auth/status").then(function(d){
+      passwordSet = !!d.password_set;
+      syncLogoutBtn();
+      if(passwordSet && !d.authenticated){ showLogin(); }
+      else { hideLogin(); boot(); }
+    }).catch(function(){ hideLogin(); boot(); });
+  }
+  function doLogin(){
+    var pw = $("loginPassword").value;
+    var res = $("loginResult"); res.className="login-result"; res.textContent="";
+    api("/api/login", {method:"POST", body:{password:pw}}).then(function(d){
+      if(d.ok){ $("loginPassword").value=""; hideLogin(); booted=false; boot(); }
+      else { res.className="login-result err"; res.textContent="✗ "+(d.error||"登录失败"); }
+    }).catch(function(e){ res.className="login-result err"; res.textContent="✗ 请求失败："+e; });
+  }
+  function doLogout(){
+    api("/api/logout", {method:"POST"}).then(function(){ booted=false; checkAuth(); })
+      .catch(function(){ booted=false; checkAuth(); });
+  }
+  function loadAdmin(){
+    api("/api/auth/status").then(function(d){
+      passwordSet = !!d.password_set;
+      $("adminPwStatus").textContent = passwordSet ? "已设置登录密码（进入平台需登录）" : "未设置登录密码（当前免登录）";
+      syncLogoutBtn();
+    }).catch(function(){});
+  }
+
+  var titles = { dashboard:"质检看板", runs:"执行任务", report:"质检报告", cases:"案例库", settings:"设置" };
+  var views = Array.prototype.slice.call(document.querySelectorAll(".view"));
+  var navs  = Array.prototype.slice.call(document.querySelectorAll("[data-nav]"));
+  function show(name){
+    var found=false;
+    views.forEach(function(v){ var on=v.getAttribute("data-view")===name; v.classList.toggle("is-active",on); if(on)found=true; });
+    if(!found) return;
+    navs.forEach(function(n){ var on=n.getAttribute("data-nav")===name; n.classList.toggle("is-active",on); if(on)n.setAttribute("aria-current","page"); else n.removeAttribute("aria-current"); });
+    $("crumb").textContent = titles[name]||"";
+    if(history.replaceState) history.replaceState(null,"","#"+name);
+    if(name==="dashboard") loadDashboard();
+    if(name==="cases") loadCases();
+    if(name==="runs") loadRuns();
+    if(name==="settings") loadSettings();
+    if(name==="report") loadReportCases();
+    window.scrollTo(0,0);
+  }
+  navs.forEach(function(n){ n.addEventListener("click", function(){ show(n.getAttribute("data-nav")); }); });
+  $("runBtn").addEventListener("click", function(){ show("report"); });
+  var initial=(location.hash||"").replace("#",""); if(initial&&titles[initial]) show(initial,false);
+
+  // 时钟
+  function tick(){ var d=new Date(); $("clock").textContent = "数据截至 "+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+" "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2); }
+  tick(); setInterval(tick, 30000);
+
+  // ---------- 看板 ----------
+  function loadDashboard(){
+    api("/api/dashboard").then(function(d){
+      if(!d.ok) return;
+      var hard=d.hard_logic_rate, soft=d.soft_avg;
+      $("kpiHard").innerHTML = (hard!=null?hard:"—")+"<small>%</small>";
+      $("kpiSoft").innerHTML = (soft!=null?soft:"—")+"<small>/ 10</small>";
+      $("kpiOverall").innerHTML = (soft!=null?soft:"—")+"<small>/ 10</small>";
+      $("kpiCases").textContent = d.case_count;
+      $("kpiFatal").innerHTML = "—<small>例</small>";
+      if(hard!=null){ $("chartHard").textContent = hard+"%"; }
+      if(soft!=null){ $("chartSoft").textContent = soft; }
+      $("vcHard").textContent = hard!=null?hard+"%":"—";
+      $("vcSoft").textContent = soft!=null?soft:"—";
+      $("vcCases").textContent = d.case_count;
+      // 状态点
+      setDot("botDot", d.bot_configured); $("botStatus").textContent = d.bot_configured?"Bot API 已配置":"Bot API 未配置";
+      setDot("judgeDot", d.judge_configured); $("judgeStatus").textContent = d.judge_configured?"裁判已配置":"裁判未配置";
+      setDot("envDot", d.trek_available); $("envText").textContent = d.trek_available?"Runner 已连接 · TREK 就绪":"Runner 已连接";
+      $("navCasesCnt").textContent = d.case_count;
+      // 对账
+      var rl=$("reconList");
+      if(d.runs && d.runs.length){
+        rl.innerHTML = d.runs.slice(0,4).map(function(r){
+          return "<li><span class='id'>"+esc(r.run_id)+"</span><span>"+esc(r.case_id)+" · "+(r.engineB_enabled?"轻量裁判已跑":"仅TREK")+"</span><span class='right tag "+(r.engineB_enabled?"info":"mute")+"'>"+(r.engineA_source||"gold")+"</span></li>";
+        }).join("");
+        $("reconRight").textContent = d.runs.length+" 条记录";
+      }
+    }).catch(function(e){ console.error(e); });
+  }
+  function setDot(id, ok){ var el=$(id); el.className = "dot"+(ok?" ok":" warn"); }
+
+  // ---------- 执行记录 ----------
+  function loadRuns(){
+    api("/api/runs").then(function(d){
+      if(!d.ok) return;
+      var b=$("runsBody");
+      if(!d.runs.length){ b.innerHTML="<tr><td colspan='6' class='empty'>暂无执行记录。</td></tr>"; $("runsRight").textContent="实时"; return; }
+      b.innerHTML = d.runs.map(function(r){
+        return "<tr><td class='id'>"+esc(r.run_id)+"</td><td>"+esc(r.trigger)+(r.case_id?"<span class='sub'>"+esc(r.case_id)+"</span>":"")+"</td><td class='t-right num'>1</td><td>"+esc(r.engineA_source||"gold")+"</td><td>"+(r.engineB_enabled?"<span class='tag pass'>轻量裁判已运行</span>":"<span class='tag mute'>未配置</span>")+"</td><td class='t-nowrap num'>"+esc(r.time)+"</td></tr>";
+      }).join("");
+      $("runsRight").textContent = d.runs.length+" 条";
+      $("navRunsCnt").textContent = d.runs.length;
+    }).catch(function(e){ console.error(e); });
+  }
+
+  // ---------- 案例库 ----------
+  var ALL_CASES = [];
+  function uniq(a){ return a.filter(function(x,i){return a.indexOf(x)===i;}); }
+  function loadCases(){
+    api("/api/cases").then(function(d){
+      if(!d.ok) return;
+      ALL_CASES = d.cases || [];
+      var dests = uniq(ALL_CASES.map(function(c){return c.destination||"";}).filter(Boolean));
+      var pits = uniq(ALL_CASES.reduce(function(a,c){return a.concat((c.pitfall_types||[]).map(function(p){return p.level1;}).filter(Boolean));},[]));
+      $("destList").innerHTML = dests.map(function(x){return "<option value='"+esc(x)+"'>";}).join("");
+      $("fPitfall").innerHTML = "<option value=''>全部</option>" + pits.map(function(x){return "<option value='"+esc(x)+"'>"+esc(x)+"</option>";}).join("");
+      renderCases();
+      $("casesTotal").textContent = ALL_CASES.length+" 条";
+      $("navCasesCnt").textContent = ALL_CASES.length;
+    }).catch(function(e){ console.error(e); });
+  }
+  function filteredCases(){
+    var dest=$("fDest").value.trim(), period=$("fPeriod").value.trim(), svc=$("fService").value.trim(),
+        pit=$("fPitfall").value, q=$("fSearch").value.trim().toLowerCase();
+    return ALL_CASES.filter(function(c){
+      if(dest && (c.destination||"")!==dest) return false;
+      if(period && (c.travel_period||"").indexOf(period)<0) return false;
+      if(svc && !(c.service_types||[]).some(function(s){return s.indexOf(svc)>=0;})) return false;
+      if(pit && !(c.pitfall_types||[]).some(function(p){return (p.level1||"")===pit;})) return false;
+      if(q){ var hay=(c.case_id+" "+(c.user_prompt||"")+" "+(c.scene||"")).toLowerCase(); if(hay.indexOf(q)<0) return false; }
+      return true;
+    });
+  }
+  function renderCases(){
+    var list = filteredCases();
+    var b=$("casesBody");
+    if(!ALL_CASES.length){ b.innerHTML="<tr><td colspan='6' class='empty'>案例库为空，点击「新增案例」或「上传题库」开始。</td></tr>"; $("casesShown").textContent="—"; return; }
+    if(!list.length){ b.innerHTML="<tr><td colspan='6' class='empty'>无匹配案例（试试清空筛选）。</td></tr>"; $("casesShown").textContent="0 / "+ALL_CASES.length; return; }
+    b.innerHTML = list.map(function(c){
+      var svc=(c.service_types||[]).join("/")||"—";
+      var pits=(c.pitfall_types||[]).map(function(p){return p.level2? (p.level1+"("+p.level2+")") : p.level1;}).join("、")||"—";
+      return "<tr data-id='"+esc(c.case_id)+"'><td class='id'>"+esc(c.case_id)+"</td>"
+        +"<td>"+esc(c.scene||"")+(c.user_prompt?"<span class='sub'>"+esc(c.user_prompt.slice(0,28))+"</span>":"")+"</td>"
+        +"<td>"+esc(svc)+"</td><td>"+esc(pits)+"</td><td>"+esc(c.group_size||"")+"</td>"
+        +"<td><button class='btn sm' data-view='"+esc(c.case_id)+"'>查看</button> <button class='btn sm danger' data-del='"+esc(c.case_id)+"'>删除</button></td></tr>";
+    }).join("");
+    Array.prototype.slice.call(b.querySelectorAll("[data-del]")).forEach(function(btn){
+      btn.addEventListener("click", function(e){ e.stopPropagation(); deleteCase(btn.getAttribute("data-del")); });
+    });
+    Array.prototype.slice.call(b.querySelectorAll("[data-view]")).forEach(function(btn){
+      btn.addEventListener("click", function(e){ e.stopPropagation(); showCaseDetail(btn.getAttribute("data-view")); });
+    });
+    Array.prototype.slice.call(b.querySelectorAll("tr[data-id]")).forEach(function(tr){
+      tr.addEventListener("click", function(){ showCaseDetail(tr.getAttribute("data-id")); });
+    });
+    $("casesShown").textContent = list.length+" / "+ALL_CASES.length;
+  }
+  function showCaseDetail(id){
+    var c = ALL_CASES.filter(function(x){return x.case_id===id;})[0]; if(!c) return;
+    $("dCaseId").textContent = c.case_id;
+    var pits=(c.pitfall_types||[]).map(function(p){return p.level2? (p.level1+"("+p.level2+")") : p.level1;}).join("、")||"—";
+    var svc=(c.service_types||[]).join(" / ")||"—";
+    var ha=c.hard_assertions||{};
+    var haTxt=[ha.max_budget!=null?("预算上限 "+ha.max_budget):null, ha.max_daily_walking_km!=null?("步行上限 "+ha.max_daily_walking_km+"km"):null].filter(Boolean).join(" · ")||"—";
+    var rows=[
+      ["场景(目的地×时段)", esc(c.scene||"")],
+      ["出行时间", esc(c.travel_time||"—")],
+      ["人数", esc(c.group_size||"—")],
+      ["服务类型(原子项)", esc(svc)],
+      ["坑类型(一级+二级)", esc(pits)],
+      ["硬约束", esc(haTxt)],
+      ["来源 / 生成方式", esc((c.source||"—")+" / "+(c.gen_method||"—"))]
+    ];
+    var html=rows.map(function(r){return "<div class='k'>"+r[0]+"</div><div class='v'>"+r[1]+"</div>";}).join("");
+    html += "<div class='k'>客户原话(A区)</div><div class='v block'>"+esc(c.user_prompt||"—")+"</div>";
+    html += "<div class='k'>埋的坑</div><div class='v block'>"+esc(c.buried_pitfalls||"—")+"</div>";
+    html += "<div class='k'>正确应对</div><div class='v block'>"+esc(c.correct_response||"—")+"</div>";
+    $("dBody").innerHTML=html;
+    $("caseDetailModal").classList.add("show");
+  }
+  function deleteCase(id){
+    if(!confirm("确认删除案例 "+id+"？")) return;
+    api("/api/cases/"+encodeURIComponent(id), {method:"DELETE"}).then(function(d){ if(d.ok) loadCases(); else alert(d.error||"删除失败"); });
+  }
+
+  /* ---------------- 坑类型词表编辑器 ---------------- */
+  var VOCAB = {by_level1:{}, library_pairs:{}, library_counts:{}, cur:""};
+  function vocabCurrent(){ return VOCAB.by_level1[VOCAB.cur] || []; }
+  function vocabSearchTerm(){
+    return ($("vocabSearch").value||"").trim().toLowerCase();
+  }
+  function vocabMatches(l1, l2){
+    var q=vocabSearchTerm(); if(!q) return true;
+    if(String(l1).toLowerCase().indexOf(q)>=0) return true;
+    return String(l2||"").toLowerCase().indexOf(q)>=0;
+  }
+  function renderVocabL1(){
+    var box=$("vocabL1List"), q=vocabSearchTerm();
+    var keys=Object.keys(VOCAB.by_level1);
+    if(q){
+      keys=keys.filter(function(k){
+        if(String(k).toLowerCase().indexOf(q)>=0) return true;
+        return (VOCAB.by_level1[k]||[]).some(function(v){return vocabMatches(k,v);});
+      });
+    }
+    keys.sort(function(a,b){
+      var ca=VOCAB.library_counts[a]||0, cb=VOCAB.library_counts[b]||0;
+      if(ca!==cb) return cb-ca;
+      return a.localeCompare(b,"zh");
+    });
+    if(!keys.length){ box.innerHTML="<div class='vocab-empty'>无匹配的一级类型</div>"; $("vocabL1Count").textContent="0"; return; }
+    $("vocabL1Count").textContent=keys.length+" / "+Object.keys(VOCAB.by_level1).length;
+    box.innerHTML=keys.map(function(k){
+      var n=(VOCAB.by_level1[k]||[]).length;
+      var lib=VOCAB.library_counts[k]||0;
+      return "<div class='vocab-l1-item"+(k===VOCAB.cur?" active":"")+"' data-l1='"+esc(k)+"'>"
+        +"<span class='nm' title='"+esc(k)+"'>"+esc(k)+"</span>"
+        +(lib?"<span class='ct' title='案例库中出现 "+lib+" 次'>●"+lib+"</span>":"")
+        +"<span class='ct'>"+n+"</span></div>";
+    }).join("");
+    Array.prototype.forEach.call(box.querySelectorAll(".vocab-l1-item"), function(el){
+      el.addEventListener("click", function(){
+        VOCAB.cur = el.getAttribute("data-l1");
+        renderVocabL1(); renderVocabL2();
+      });
+    });
+  }
+  function renderVocabL2(){
+    var head=$("vocabCurL1"), list=$("vocabL2List"), cnt=$("vocabCurCount");
+    if(!VOCAB.cur){ head.textContent="请选择左侧一级"; cnt.textContent=""; list.innerHTML="<div class='vocab-empty'>← 先在左侧选一个一级坑类型</div>"; return; }
+    head.textContent=VOCAB.cur;
+    var items=VOCAB.by_level1[VOCAB.cur]||[];
+    cnt.textContent=items.length+" 个二级";
+    if(!items.length){ list.innerHTML="<div class='vocab-empty'>该一级下还没有二级项，在下方输入框添加</div>"; return; }
+    var libset=VOCAB.library_pairs[VOCAB.cur]||[];
+    list.innerHTML=items.map(function(v){
+      var inLib=libset.indexOf(v)>=0;
+      return "<span class='vocab-item"+(inLib?" in-lib":"")+'">'
+        +(inLib?'<span class="mk">●</span>':"")
+        +"<span>"+esc(v)+"</span>"
+        +'<span class="x" data-del="'+esc(v)+'" title="删除">&times;</span></span>';
+    }).join("");
+    Array.prototype.forEach.call(list.querySelectorAll(".x"), function(el){
+      el.addEventListener("click", function(){
+        var v=el.getAttribute("data-del");
+        VOCAB.by_level1[VOCAB.cur]=(VOCAB.by_level1[VOCAB.cur]||[]).filter(function(x){return x!==v;});
+        renderVocabL1(); renderVocabL2();
+      });
+    });
+  }
+  function renderVocabStats(){
+    var l1=Object.keys(VOCAB.by_level1).length;
+    var l2=0; Object.keys(VOCAB.by_level1).forEach(function(k){ l2+=(VOCAB.by_level1[k]||[]).length; });
+    $("vocabStats").innerHTML="一级 <b>"+l1+"</b> · 二级 <b>"+l2+"</b> · 配对 <b>"+l2+"</b>";
+  }
+  function loadVocab(){
+    return api("/api/vocab").then(function(d){
+      if(!d.ok){ alert("词表加载失败："+(d.error||"未知错误")); return; }
+      VOCAB.by_level1 = d.by_level1||{};
+      VOCAB.library_pairs = d.library_pairs||{};
+      VOCAB.library_counts = d.library_counts||{};
+      if(!VOCAB.cur || !Object.prototype.hasOwnProperty.call(VOCAB.by_level1, VOCAB.cur)){
+        var ks=Object.keys(VOCAB.by_level1);
+        VOCAB.cur = ks.sort(function(a,b){
+          var ca=VOCAB.library_counts[a]||0, cb=VOCAB.library_counts[b]||0;
+          return cb-ca;
+        })[0] || "";
+      }
+      renderVocabStats(); renderVocabL1(); renderVocabL2();
+    });
+  }
+  function vocabSave(){
+    var btn=$("vocabSaveBtn"); btn.disabled=true; btn.textContent="保存中…";
+    api("/api/vocab", {method:"POST", body:{mode:"replace", by_level1:VOCAB.by_level1}}).then(function(d){
+      btn.disabled=false; btn.textContent="保存";
+      if(!d.ok){ alert("保存失败："+(d.error||"未知错误")); return; }
+      VOCAB.by_level1=d.by_level1||{};
+      renderVocabStats(); renderVocabL1(); renderVocabL2();
+      toast("词表已保存，造题即刻生效");
+    }).catch(function(e){ btn.disabled=false; btn.textContent="保存"; alert("保存失败："+e.message); });
+  }
+  function vocabAddL1(){
+    var el=$("vocabNewL1"), v=(el.value||"").trim();
+    if(!v){ el.focus(); return; }
+    if(Object.prototype.hasOwnProperty.call(VOCAB.by_level1, v)){ alert("一级类型「"+v+"」已存在"); return; }
+    VOCAB.by_level1[v]=[];
+    VOCAB.cur=v; el.value="";
+    renderVocabStats(); renderVocabL1(); renderVocabL2();
+    $("vocabNewL2").focus();
+  }
+  function vocabAddL2(){
+    var el=$("vocabNewL2");
+    if(!VOCAB.cur){ alert("请先在左侧选择一个一级类型"); return; }
+    var raw=(el.value||"").trim(); if(!raw) return;
+    var bucket=VOCAB.by_level1[VOCAB.cur]=VOCAB.by_level1[VOCAB.cur]||[];
+    var parts=raw.split(/[\/、,，;；]+/).map(function(s){return s.trim();}).filter(Boolean);
+    var added=0;
+    parts.forEach(function(p){ if(bucket.indexOf(p)<0){ bucket.push(p); added++; } });
+    if(!added){ alert("该二级项已存在"); return; }
+    el.value="";
+    renderVocabStats(); renderVocabL1(); renderVocabL2();
+  }
+  $("vocabBtn").addEventListener("click", function(){
+    $("vocabModal").classList.add("show");
+    loadVocab();
+  });
+  $("vocabCancelBtn").addEventListener("click", function(){ $("vocabModal").classList.remove("show"); });
+  $("vocabSearch").addEventListener("input", function(){ renderVocabL1(); renderVocabL2(); });
+  $("vocabAddL1Btn").addEventListener("click", vocabAddL1);
+  $("vocabAddL2Btn").addEventListener("click", vocabAddL2);
+  $("vocabNewL1").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); vocabAddL1(); } });
+  $("vocabNewL2").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); vocabAddL2(); } });
+  $("vocabSaveBtn").addEventListener("click", vocabSave);
+  $("vocabMergeLibBtn").addEventListener("click", function(){
+    if(!confirm("把案例库中实际出现的坑类型配对合并进词表？（不会删除已有项）")) return;
+    var btn=$("vocabMergeLibBtn"); btn.disabled=true; btn.textContent="合并中…";
+    api("/api/vocab", {method:"POST", body:{mode:"merge_library"}}).then(function(d){
+      btn.disabled=false; btn.textContent="⬇ 从案例库合并";
+      if(!d.ok){ alert("合并失败："+(d.error||"未知错误")); return; }
+      VOCAB.by_level1=d.by_level1||{};
+      renderVocabStats(); renderVocabL1(); renderVocabL2();
+      toast("已合并，新增 "+d.added+" 条二级配对");
+    }).catch(function(e){ btn.disabled=false; btn.textContent="⬇ 从案例库合并"; alert("合并失败："+e.message); });
+  });
+  $("vocabResetBtn").addEventListener("click", function(){
+    if(!confirm("按案例库重建词表？这会覆盖当前所有手工编辑。")) return;
+    var btn=$("vocabResetBtn"); btn.disabled=true; btn.textContent="重建中…";
+    api("/api/vocab/reset", {method:"POST"}).then(function(d){
+      btn.disabled=false; btn.textContent="↺ 按案例库重建";
+      if(!d.ok){ alert("重建失败："+(d.error||"未知错误")); return; }
+      VOCAB.by_level1=d.by_level1||{};
+      renderVocabStats(); renderVocabL1(); renderVocabL2();
+      toast("词表已按案例库重建");
+    }).catch(function(e){ btn.disabled=false; btn.textContent="↺ 按案例库重建"; alert("重建失败："+e.message); });
+  });
+
+  $("addCaseBtn").addEventListener("click", function(){ $("caseModal").classList.add("show"); });
+  $("genCasesBtn").addEventListener("click", function(){
+    var btn=this; btn.disabled=true; btn.textContent="生成中…";
+    var n=parseInt($("genN").value,10)||5;
+    var filters={};
+    var s=$("genService").value.trim(); if(s) filters.service=s;
+    var p=$("genPitfall").value.trim(); if(p) filters.pitfall=p;
+    api("/api/generate/cases", {method:"POST", body:{n:n, filters:filters}}).then(function(d){
+      btn.disabled=false; btn.textContent="🎲 生成并入库";
+      if(!d.ok){ $("genStatus").innerHTML="<span style='color:#f0978f'>生成失败："+esc(d.error)+"</span>"; $("genPreview").innerHTML=""; return; }
+      $("genStatus").innerHTML="<span style='color:#7ee0b8'>✓ 已生成 "+d.count+" 条并入库（编号 GEN-…），下方为预览；案例清单已自动刷新。</span>";
+      $("genPreview").innerHTML = (d.cases||[]).map(function(c){
+        var pits=(c.pitfall_types||[]).map(function(x){return x.level1;}).join("、")||"—";
+        return "<div class='gen-card'><div class='gc-h'><b>"+esc(c.scene||c.category||"")+"</b><span class='tag solid'>"+esc(c.case_id)+"</span></div>"
+          + "<div class='gc-meta'>"+esc(c.destination||"")+" · "+esc((c.service_types||[]).join("/"))+" · 坑:"+esc(pits)+"</div>"
+          + "<div class='gc-up'>"+esc((c.user_prompt||"").slice(0,160))+"</div></div>";
+      }).join("");
+      loadCases();
+    }).catch(function(e){ btn.disabled=false; btn.textContent="🎲 生成并入库"; $("genStatus").innerHTML="<span style='color:#f0978f'>请求失败："+esc(e)+"</span>"; });
+  });
+  $("caseCancel").addEventListener("click", function(){ $("caseModal").classList.remove("show"); });
+  $("caseDetailClose").addEventListener("click", function(){ $("caseDetailModal").classList.remove("show"); });
+  $("caseDetailGenBtn").addEventListener("click", function(){
+    var cid=$("dCaseId").textContent.trim();
+    if(!cid) return;
+    api("/api/generate", {method:"POST", body:{case_id:cid}}).then(function(d){
+      if(!d.ok){ $("dGenTest").innerHTML="<div class='rule-box' style='color:#f0978f'>生成失败："+esc(d.error)+"</div>"; return; }
+      var T=d.test||{};
+      var h="<div class='rule-box'><span class='k'>测试类型</span>："+(T.test_type==="itinerary"?"行程规划类":"服务质检类")+"</div>";
+      h+="<div class='k' style='margin-top:8px'>发给 Bot 的测试输入</div><div class='v block' style='white-space:pre-wrap'>"+esc(T.generated_query||"—")+"</div>";
+      if(T.adversarial_probes&&T.adversarial_probes.length) h+="<div class='k' style='margin-top:8px'>对抗注入</div><ul class='bul'>"+T.adversarial_probes.map(function(p){return "<li>"+esc(p)+"</li>";}).join("")+"</ul>";
+      h+="<div class='grid g-2 mt10'><div><div class='k'>应规避·埋的坑</div><ul class='bul'>"+((T.avoid_list&&T.avoid_list.length)?T.avoid_list.map(function(x){return "<li>"+esc(x)+"</li>";}).join(""):"<li>—</li>")+"</ul></div><div><div class='k'>期望做到·正确应对</div><ul class='bul'>"+((T.expected_behaviors&&T.expected_behaviors.length)?T.expected_behaviors.map(function(x){return "<li>"+esc(x)+"</li>";}).join(""):"<li>—</li>")+"</ul></div></div>";
+      $("dGenTest").innerHTML=h;
+    });
+  });
+  $("caseSubmit").addEventListener("click", function(){
+    var ha={};
+    var b=$("cBudget").value.trim(); if(b) ha.max_budget=Number(b);
+    var raw=$("cPitfallsRaw").value;
+    var pitRaw = raw.split("\n").map(function(s){return s.trim();}).filter(Boolean).join("+");
+    var body={
+      case_id:$("cCaseId").value.trim(),
+      scene:$("cScene").value.trim(),
+      travel_time:$("cTravelTime").value.trim(),
+      group_size:$("cGroupSize").value.trim(),
+      service_types:$("cServiceTypes").value.trim(),
+      pitfall_types_raw:pitRaw,
+      user_prompt:$("cPrompt").value.trim(),
+      buried_pitfalls:$("cBuried").value.trim(),
+      correct_response:$("cCorrect").value.trim(),
+      hard_assertions:ha,
+      gen_method:"手动新增", source:"business", zone:"A+B"
+    };
+    if(!body.case_id){ alert("编号必填"); return; }
+    api("/api/cases", {method:"POST", body:body}).then(function(d){
+      if(d.ok){ $("caseModal").classList.remove("show");
+        ["cCaseId","cScene","cTravelTime","cGroupSize","cBudget","cServiceTypes","cPitfallsRaw","cPrompt","cBuried","cCorrect"].forEach(function(id){$(id).value="";});
+        loadCases();
+      } else alert(d.error||"保存失败");
+    });
+  });
+  $("clearFilterBtn").addEventListener("click", function(){
+    $("fDest").value="";$("fPeriod").value="";$("fService").value="";$("fPitfall").value="";$("fSearch").value=""; renderCases();
+  });
+  ["fDest","fPeriod","fService","fPitfall","fSearch"].forEach(function(id){
+    var el=$(id); if(el){ el.addEventListener("input", renderCases); el.addEventListener("change", renderCases); }
+  });
+  $("exportCaseBtn").addEventListener("click", function(){
+    var data=JSON.stringify(filteredCases(), null, 2);
+    var blob=new Blob([data], {type:"application/json"});
+    var a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download="cases_export_"+Date.now()+".json"; a.click();
+  });
+  $("uploadCaseBtn").addEventListener("click", function(){ $("caseFile").click(); });
+  $("caseFile").addEventListener("change", function(){
+    var f=this.files[0]; if(!f) return;
+    var fd=new FormData(); fd.append("file", f);
+    var btn=this; btn.disabled=true;
+    fetch(API+"/api/cases/upload", {method:"POST", body:fd}).then(function(r){return r.json();}).then(function(d){
+      if(d.ok){ alert("导入完成：新增 "+d.added.length+" 条，跳过 "+d.skipped.length+" 条"); loadCases(); }
+      else alert(d.error||"上传失败");
+    }).catch(function(e){ alert("上传失败："+e); }).finally(function(){ btn.disabled=false; btn.value=""; });
+  });
+
+  // ---------- 设置 ----------
+  function loadSettings(){
+    api("/api/settings").then(function(s){
+      $("setBotApi").value=s.bot_api||""; $("setJudgeModel").value=s.judge_model||"gpt-4o";
+      $("setJudgeBase").value=s.judge_base_url||"https://api.openai.com/v1";
+      $("setJudgeKey").value=""; $("setJudgeTemp").value=s.judge_temperature!=null?s.judge_temperature:"0";
+    });
+  }
+  $("saveSettingsBtn").addEventListener("click", function(){
+    var body={
+      bot_api:$("setBotApi").value.trim(), judge_model:$("setJudgeModel").value.trim()||"gpt-4o",
+      judge_base_url:$("setJudgeBase").value.trim()||"https://api.openai.com/v1",
+      judge_api_key:$("setJudgeKey").value.trim(), judge_temperature:Number($("setJudgeTemp").value||0)
+    };
+    api("/api/settings", {method:"POST", body:body}).then(function(d){
+      if(d.ok){ alert("设置已保存"+(body.judge_api_key?"（含裁判 Key）":"")); loadDashboard(); }
+      else alert(d.error||"保存失败");
+    });
+  });
+
+  $("testJudgeBtn").addEventListener("click", function(){
+    var btn=this, resEl=$("judgeTestResult");
+    resEl.className="test-result"; resEl.textContent="连接中…";
+    btn.disabled=true;
+    var body={
+      judge_model:$("setJudgeModel").value.trim(),
+      judge_base_url:$("setJudgeBase").value.trim(),
+      judge_api_key:$("setJudgeKey").value.trim()   // 空 → 后端回退已保存
+    };
+    api("/api/judge/test", {method:"POST", body:body}).then(function(d){
+      if(d.ok){ resEl.className="test-result ok"; resEl.textContent="✓ "+d.message; }
+      else { resEl.className="test-result err"; resEl.textContent="✗ "+d.error; }
+    }).catch(function(e){ resEl.className="test-result err"; resEl.textContent="✗ 请求失败："+e; })
+    .finally(function(){ btn.disabled=false; });
+  });
+
+  // ---------- 质检报告 ----------
+  function loadReportCases(){
+    api("/api/cases").then(function(d){
+      var sel=$("reportCase");
+      if(!d.ok||!d.cases.length){ sel.innerHTML="<option value=''>— 案例库为空 —</option>"; return; }
+      sel.innerHTML = d.cases.map(function(c){ return "<option value='"+esc(c.case_id)+"'>"+esc(c.case_id)+" · "+esc(c.destination||c.category||"")+(c.scene?" · "+esc(c.scene):"")+"</option>"; }).join("");
+    });
+  }
+  $("runReportBtn").addEventListener("click", function(){
+    var case_id=$("reportCase").value;
+    if(!case_id){ alert("请先选择案例"); return; }
+    var btn=$("runReportBtn"); btn.disabled=true; btn.innerHTML="<span class='spin'></span>评测中…";
+    var body={ case_id:case_id, engineA_source:$("engineASource").value, engineA_flaw:$("engineAFlaw").value, sample_size:20 };
+    api("/api/evaluate/report", {method:"POST", body:body}).then(function(d){
+      btn.disabled=false; btn.innerHTML="🚀 运行质检";
+      if(!d.ok){ $("reportResult").innerHTML="<div class='card mt14'><div class='empty'>评测失败："+esc(d.error)+"</div></div>"; return; }
+      renderReport(d.report, case_id);
+      loadDashboard(); loadRuns();
+    }).catch(function(e){ btn.disabled=false; btn.innerHTML="🚀 运行质检"; $("reportResult").innerHTML="<div class='card mt14'><div class='empty'>请求失败："+esc(e)+"</div></div>"; });
+  });
+
+  $("genPreviewBtn").addEventListener("click", function(){
+    var case_id=$("reportCase").value;
+    if(!case_id){ alert("请先选择案例"); return; }
+    var btn=$("genPreviewBtn"); btn.disabled=true;
+    api("/api/generate", {method:"POST", body:{case_id:case_id}}).then(function(d){
+      btn.disabled=false;
+      if(!d.ok){ $("genPreview").style.display="block"; $("genPreview").innerHTML="<div class='empty'>生成失败："+esc(d.error)+"</div>"; return; }
+      var T=d.test||{};
+      var h="<div class='card-h'><h3>生成器预览 · 测试输入</h3><div class='right'>"+(T.test_type==="itinerary"?"行程规划类":"服务质检类")+"</div></div>";
+      h+="<div class='k' style='margin-top:8px'>发给 Bot 的测试输入</div><div class='v block' style='white-space:pre-wrap'>"+esc(T.generated_query||"—")+"</div>";
+      if(T.adversarial_probes&&T.adversarial_probes.length) h+="<div class='k' style='margin-top:8px'>对抗注入（按埋点模拟客户）</div><ul class='bul'>"+T.adversarial_probes.map(function(p){return "<li>"+esc(p)+"</li>";}).join("")+"</ul>";
+      h+="<div class='grid g-2 mt10'><div><div class='k'>应规避·埋的坑（裁判底牌）</div><ul class='bul'>"+((T.avoid_list&&T.avoid_list.length)?T.avoid_list.map(function(x){return "<li>"+esc(x)+"</li>";}).join(""):"<li>—</li>")+"</ul></div><div><div class='k'>期望做到·正确应对（裁判底牌）</div><ul class='bul'>"+((T.expected_behaviors&&T.expected_behaviors.length)?T.expected_behaviors.map(function(x){return "<li>"+esc(x)+"</li>";}).join(""):"<li>—</li>")+"</ul></div></div>";
+      $("genPreview").style.display="block"; $("genPreview").innerHTML=h;
+    }).catch(function(e){ btn.disabled=false; $("genPreview").style.display="block"; $("genPreview").innerHTML="<div class='empty'>请求失败："+esc(e)+"</div>"; });
+  });
+
+  $("runPitfallBtn").addEventListener("click", function(){
+    var case_id=$("reportCase").value;
+    if(!case_id){ alert("请先在上方选择案例"); return; }
+    var btn=$("runPitfallBtn"); btn.disabled=true; btn.innerHTML="<span class='spin'></span>评测中…"; $("pitfallErr").textContent="";
+    api("/api/evaluate/pitfall", {method:"POST", body:{case_id:case_id, mode:$("pitfallMode").value}}).then(function(d){
+      btn.disabled=false; btn.innerHTML="🛡 运行避坑评测";
+      if(!d.ok){ $("pitfallErr").textContent="评测失败："+(d.error||"未知"); $("pitfallResult").innerHTML=""; return; }
+      renderPitfall(d);
+    }).catch(function(e){ btn.disabled=false; btn.innerHTML="🛡 运行避坑评测"; $("pitfallErr").textContent="请求失败："+esc(e); });
+  });
+
+  function renderPitfall(d){
+    var res=d.result||{}, agg=res.aggregate||{}, fams=d.families||[];
+    var overall=agg.overall, hit=agg.hit_rate, fatal=agg.fatal_missed||0;
+    var colOf=function(v){ return v==null?"var(--text-2)":(v>=0.8?"var(--green)":(v>=0.5?"var(--amber)":"var(--red)")); };
+    var kpi='<div class="grid g-kpi" style="margin-top:10px">'
+      +'<div class="kpi"><div class="k-label">避坑得分</div><div class="k-val" style="color:'+colOf(overall)+'">'+(overall!=null?Math.round(overall*100)+'%':'—')+'</div><div class="k-foot"><span class="flat">8维加权·致命项双倍权重</span></div></div>'
+      +'<div class="kpi"><div class="k-label">断言命中率</div><div class="k-val">'+(hit!=null?Math.round(hit*100)+'%':'—')+'</div><div class="k-foot"><span class="flat">命中/应判 '+(agg.assertions_judged||0)+'/'+(agg.assertions_total||0)+'</span></div></div>'
+      +'<div class="kpi"><div class="k-label">致命风险</div><div class="k-val" style="color:'+(fatal>0?'var(--red)':'var(--green)')+'">'+fatal+'</div><div class="k-foot"><span class="flat">红线零容忍</span></div></div>'
+      +'</div>';
+    var rates=agg.family_rates||{};
+    var heat='<div class="grid g-4" style="margin-top:12px">'+fams.map(function(f){
+      var v=rates[f]; var pct=(v==null)?'—':Math.round(v*100)+'%';
+      return '<div class="pit-cell"><div class="pc-f">'+esc(f)+'</div><div class="pc-v" style="color:'+colOf(v)+'">'+pct+'</div></div>';
+    }).join('')+'</div>';
+    var arr=res.assertions||[];
+    var list='<div class="mt14"><div class="k" style="margin-bottom:6px">逐条断言 · 命中/遗漏（'+arr.length+'）</div><ul class="assert-list">'+arr.map(function(a){
+      var ok=a.hit;
+      var badge=ok===true?'<span class="tag pass">命中</span>':(ok===false?'<span class="tag danger">遗漏</span>':'<span class="tag mute">未判</span>');
+      var fat=a.fatal?'<span class="tag warn">致命</span>':'';
+      return '<li><div class="al-top">'+badge+fat+'<span class="al-fam">'+esc(a.dimension_family||"")+'</span></div><div class="al-txt">'+esc(a.text||"")+'</div><div class="al-ev">证据：'+esc(a.evidence||"")+'</div></li>';
+    }).join('')+'</ul></div>';
+    var bot='<div class="mt14"><div class="k">Bot 回答（'+(res.mode||'')+'）</div><div class="v block" style="white-space:pre-wrap;max-height:220px;overflow:auto">'+esc(res.bot_text||"—")+'</div></div>';
+    $("pitfallResult").innerHTML=kpi+heat+list+bot;
+  }
+
+  function renderReport(rep, case_id){
+    var c=rep.case||{};
+    var A=rep.engineA, B=rep.engineB||{}, T=rep.generated_test||{};
+    var agg=A&&A.aggregate?A.aggregate:null;
+    var hardRate = (agg&&(agg.cat_satisfaction!=null))?Math.round(agg.cat_satisfaction*100):null;
+    var bScores = B.scores;
+    var overall = bScores?bScores.overall:"—";
+    var pitCount = (B.pitfalls&&B.pitfalls.length)?B.pitfalls.length:0;
+
+    var head = "<div class='case-head'><span class='cid'>"+esc(case_id)+"</span><span class='cname'>"+esc(c.scene||c.category||"")+"</span>"
+      + "<span class='tag info'>"+(c.gen_method||"案例")+"</span>"
+      + "<div class='meta'><span>预算上限 "+(c.hard_assertions&&c.hard_assertions.max_budget!=null?("¥"+c.hard_assertions.max_budget):"未设")+"</span>"
+      + "<span>测试类型 "+(T.test_type==="itinerary"?"行程规划类":"服务质检类")+"</span>"
+      + "<span>"+(B.enabled?"轻量裁判已运行":"轻量裁判未配置")+"</span></div></div>";
+
+    var scoreCards = "<div class='score-cards mt14'>"
+      + sc("硬逻辑得分率","teal",hardRate!=null?hardRate:"—","%","TREK 确定性基准(引擎A)")
+      + sc("软质量得分","accent",bScores?bScores.overall:"—","/ 10","轻量裁判:避坑×0.5+主动×0.5")
+      + sc("检测到坑点","red",pitCount,"项",(B.fatal?"含致命风险":"严重/轻微"))
+      + sc("埋点规避","violet",bScores?bScores.pitfall_avoidance:"—","/ 10","应规避清单命中")
+      + "</div>";
+
+    // ① 测试构造产出（把案例变成发给 Bot 的测试输入）
+    var genHtml = "<div class='card mt14'><div class='card-h'><h3>① 测试构造产出 · 发给 Bot 的输入</h3><div class='right'>用埋的坑造对抗输入</div></div>";
+    genHtml += "<div class='rule-box'><span class='k'>测试类型</span>："+(T.test_type==="itinerary"?"行程规划类（带排期/预算约束）":"服务质检类（对话/避坑/推荐）")
+      + (T.itinerary_constraints?(" · 出行时间 "+(T.itinerary_constraints.travel_time||"—")+" · 人数 "+(T.itinerary_constraints.group_size||"—")):"")+"</div>";
+    genHtml += "<div class='k' style='margin-top:10px'>发给 Bot 的测试输入（含生成器注入）</div><div class='v block' style='white-space:pre-wrap'>"+esc(T.generated_query||c.user_prompt||"—")+"</div>";
+    if(T.adversarial_probes&&T.adversarial_probes.length){
+      genHtml += "<div class='k' style='margin-top:10px'>对抗性注入（按埋点模拟客户）</div><ul class='bul'>"+T.adversarial_probes.map(function(p){return "<li>"+esc(p)+"</li>";}).join("")+"</ul>";
+    }
+    genHtml += "<div class='grid g-2 mt10'>";
+    genHtml += "<div><div class='k'>应规避 · 埋的坑（裁判底牌）</div><ul class='bul'>"+((T.avoid_list&&T.avoid_list.length)?T.avoid_list.map(function(x){return "<li>"+esc(x)+"</li>";}).join(""):"<li>—</li>")+"</ul></div>";
+    genHtml += "<div><div class='k'>期望做到 · 正确应对（裁判底牌）</div><ul class='bul'>"+((T.expected_behaviors&&T.expected_behaviors.length)?T.expected_behaviors.map(function(x){return "<li>"+esc(x)+"</li>";}).join(""):"<li>—</li>")+"</ul></div>";
+    genHtml += "</div></div>";
+
+    // ② 引擎 硬断言明细
+    var assertHtml = "<div class='card mt14'><div class='card-h'><h3>② 硬断言明细 · TREK（引擎）</h3><div class='right'>确定性校验</div></div>";
+    if(A&&A.tasks&&A.tasks.length){
+      var t=A.tasks[0];
+      assertHtml += "<table class='tbl assert'><thead><tr><th>断言</th><th>口径</th><th>实测</th><th class='t-right'>结论</th></tr></thead><tbody>"
+        + t.assertions.map(function(a){
+            var p=a.pass==null?"<span class='tag mute'>N/A</span>":(a.pass?"<span class='tag pass'>通过</span>":"<span class='tag fail'>未通过</span>");
+            return "<tr><td class='strong'>"+esc(a.name)+"</td><td class='sub' style='margin:0'>"+esc(a.caliber)+"</td><td>"+esc(a.measured)+(a.detail&&a.detail!=="N/A"?"<br><span style='color:#f0978f'>"+esc(a.detail)+"</span>":"")+"</td><td class='t-right'>"+p+"</td></tr>";
+          }).join("")
+        + "</tbody></table>";
+      if(A.sample_size>1) assertHtml += "<p class='note mt10'>以上为代表性任务（task #"+t.task_index+"）；本次共评测 "+A.sample_size+" 个结构化任务。</p>";
+    } else if(A&&A.error){
+      assertHtml += "<p class='note'>TREK 运行失败："+esc(A.error)+"</p>";
+    } else {
+      assertHtml += "<p class='note'>TREK 未产出结构化计划（服务质检类案例常属此类，硬逻辑由 TREK 覆盖不到时以轻量裁判为主）。</p>";
+    }
+    assertHtml += "<p class='note mt10'>硬断言只读案例 B 区 hard_assertions 与 TREK 知识库，不经过 LLM，结果可复现。</p></div>";
+
+    // ③ 轻量裁判 软质量
+    var bHtml = "<div class='card mt14'><div class='card-h'><h3>③ 软质量评分 · 轻量裁判（补 TREK 盲区）</h3><div class='right'>只评避坑+主动服务</div></div>";
+    if(bScores){
+      bHtml += dim("埋点规避 (pitfall_avoidance)", bScores.pitfall_avoidance)
+        + dim("主动服务 (proactive_service)", bScores.proactive_service)
+        + "<div class='rule-box mt10'>综合 = 避坑×0.5 + 主动×0.5 → "+overall+(B.fatal?"；<b style='color:#f89a92'>命中致命风险，综合置 0</b>":"")+"</div>";
+      if(B.summary) bHtml += "<p class='note mt10'>"+esc(B.summary)+"</p>";
+    } else {
+      bHtml += "<p class='note'>"+(B.error||"轻量裁判未运行：在「设置」配置裁判 Key 后，会调用 Bot 拿回答并盲审软质量。")+"</p>";
+    }
+    bHtml += "</div>";
+
+    // 坑点
+    var pitHtml = "<div class='card mt14'><div class='card-h'><h3>检测到的坑点</h3><div class='right'>按严重度排序</div></div>";
+    if(B.pitfalls&&B.pitfalls.length){
+      pitHtml += B.pitfalls.map(function(p){
+        var sev=p.severity==="严重"?"s2":"s1";
+        return "<div class='pit'><span class='pit-sev "+sev+"'></span><div class='pit-body'><div class='pit-top'><span class='pit-name'>"+esc(p.pitfall_category)+"</span>"
+          + "<span class='tag "+(p.severity==="严重"?"warn":"mute")+"'>"+esc(p.severity)+"</span>"
+          + (p.matched_avoid?"<span class='tag new'>命中应规避</span>":"<span class='tag mute'>通用</span>")+"</div>"
+          + (p.suggestion?("<div class='pit-fix'><b>建议</b>："+esc(p.suggestion)+"</div>"):"")
+          + "</div></div>";
+      }).join("");
+    } else {
+      pitHtml += "<p class='note'>"+(B.error?("轻量裁判："+esc(B.error)):"暂无坑点（或轻量裁判未配置）。")+"</p>";
+    }
+    pitHtml += "</div>";
+
+    // 未做到的期望
+    var missHtml = "";
+    if(B.missed_expected&&B.missed_expected.length){
+      missHtml = "<div class='card mt14'><div class='card-h'><h3>未做到的期望应对</h3><div class='right'>对照正确应对底牌</div></div><ul class='bul'>"
+        + B.missed_expected.map(function(m){return "<li>"+esc(m)+"</li>";}).join("")+"</ul></div>";
+    }
+
+    // 三方对账
+    var recon = "<div class='card mt14'><div class='card-h'><h3>三方对账 · 需求 / 回答 / 裁决</h3><div class='right'>生成器→TREK+轻量裁判</div></div><div class='three'>"
+      + pane("A 区 · 生成器产出测试输入（Bot 可见）", esc(T.generated_query||c.user_prompt||"—"))
+      + pane("Bot 原始回答", B.bot_text?esc(B.bot_text):"（未配置 Bot API）")
+      + pane("质检裁决", verdictJson(overall, hardRate, bScores, B))
+      + "</div></div>";
+
+    $("reportResult").innerHTML = head + scoreCards
+      + genHtml
+      + "<div class='grid g-report mt14'><div>"+assertHtml+"</div><div>"+bHtml+pitHtml+"</div></div>"
+      + missHtml
+      + recon;
+    $("reportTime").textContent = new Date().toISOString().slice(0,16).replace("T"," ");
+  }
+  function sc(label, cls, val, unit, note){ return "<div class='score-card "+cls+"'><div class='s-label'>"+label+"</div><div class='s-val'>"+val+"<span>"+unit+"</span></div><div class='s-note'>"+note+"</div></div>"; }
+  function dim(name, v){ var pct=Math.max(0,Math.min(100,(v||0)*10)); return "<div class='dim'><span class='nm'>"+name+"</span><span class='meter violet'><i style='width:"+pct+"%'></i></span><span class='v'>"+(v!=null?v:"—")+"</span></div>"; }
+  function pane(title, body){ return "<div class='pane'><h4>"+title+"</h4><p>"+body+"</p></div>"; }
+  function verdictJson(overall, hardRate, bs, B){
+    var o={ total_score:overall, trek_hard_logic_rate:hardRate, has_fatal_risk:!!(B&&B.fatal),
+      dimension_scores: bs||null, judge_configured:!!(B&&B.enabled&&!B.error) };
+    return "<pre class='json'>"+esc(JSON.stringify(o,null,2))+"</pre>";
+  }
+
+  // 启动
+  if(history.replaceState && (location.hash||"")==="") history.replaceState(null,"","#dashboard");
+
+  // 登录 / 退出 / 管理员密码
+  $("loginForm").addEventListener("submit", function(e){ e.preventDefault(); doLogin(); });
+  // ---------- 管理员二级菜单（点击左下角管理员区域展开，含「设置」与「退出登录」） ----------
+  (function(){
+    var trig = $("adminMenuTrigger"), menu = $("adminMenu");
+    if(!trig || !menu) return;
+    function isOpen(){ return menu.classList.contains("show"); }
+    function openMenu(){ menu.classList.add("show"); trig.classList.add("open"); trig.setAttribute("aria-expanded","true"); }
+    function closeMenu(){ menu.classList.remove("show"); trig.classList.remove("open"); trig.setAttribute("aria-expanded","false"); }
+    trig.addEventListener("click", function(e){ e.stopPropagation(); isOpen() ? closeMenu() : openMenu(); });
+    trig.addEventListener("keydown", function(e){ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); isOpen() ? closeMenu() : openMenu(); } });
+    $("adminMenuSettings").addEventListener("click", function(e){ e.stopPropagation(); closeMenu(); show("settings"); });
+    $("adminMenuLogout").addEventListener("click", function(e){ e.stopPropagation(); closeMenu(); doLogout(); });
+    document.addEventListener("click", function(e){ if(isOpen() && e.target!==trig && !trig.contains(e.target) && !menu.contains(e.target)){ closeMenu(); } });
+    document.addEventListener("keydown", function(e){ if(e.key==="Escape" && isOpen()){ closeMenu(); trig.focus(); } });
+  })();
+  $("adminSetPwBtn").addEventListener("click", function(){
+    var cur=$("adminCur").value, nw=$("adminNew").value, nw2=$("adminNew2").value;
+    var res=$("adminPwResult"); res.className="test-result"; res.textContent="";
+    if(nw.length<4){ res.className="test-result err"; res.textContent="✗ 新密码至少 4 位"; return; }
+    if(nw!==nw2){ res.className="test-result err"; res.textContent="✗ 两次输入不一致"; return; }
+    api("/api/admin/set-password", {method:"POST", body:{current_password:cur, new_password:nw}}).then(function(d){
+      if(d.ok){ res.className="test-result ok"; res.textContent="✓ 密码已保存"; $("adminNew").value=""; $("adminNew2").value=""; $("adminCur").value=""; passwordSet=true; $("adminPwStatus").textContent="已设置登录密码（进入平台需登录）"; syncLogoutBtn(); }
+      else { res.className="test-result err"; res.textContent="✗ "+(d.error||"失败"); }
+    }).catch(function(e){ res.className="test-result err"; res.textContent="✗ 请求失败："+e; });
+  });
+  $("adminDelPwBtn").addEventListener("click", function(){
+    if(!confirm("确认删除登录密码？删除后平台将恢复免登录。")) return;
+    var cur=$("adminCur").value;
+    var res=$("adminPwResult"); res.className="test-result"; res.textContent="";
+    api("/api/admin/remove-password", {method:"POST", body:{password:cur}}).then(function(d){
+      if(d.ok){ res.className="test-result ok"; res.textContent="✓ 已删除，恢复免登录"; $("adminCur").value=""; passwordSet=false; $("adminPwStatus").textContent="未设置登录密码（当前免登录）"; syncLogoutBtn(); }
+      else { res.className="test-result err"; res.textContent="✗ "+(d.error||"失败"); }
+    }).catch(function(e){ res.className="test-result err"; res.textContent="✗ 请求失败："+e; });
+  });
+
+  // ---------- 外观主题切换 ----------
+  (function(){
+    var seg=$("themeSeg"); if(!seg) return;
+    function apply(t){
+      if(t==="light") document.documentElement.setAttribute("data-theme","light");
+      else document.documentElement.removeAttribute("data-theme");
+      Array.prototype.forEach.call(seg.querySelectorAll(".theme-opt"), function(b){
+        b.classList.toggle("is-on", b.getAttribute("data-theme-val")===t);
+      });
+    }
+    var saved="dark"; try{ saved=localStorage.getItem("ui_theme")||"dark"; }catch(e){}
+    apply(saved);
+    seg.addEventListener("click", function(e){
+      var b=e.target.closest(".theme-opt"); if(!b) return;
+      var t=b.getAttribute("data-theme-val");
+      try{ localStorage.setItem("ui_theme", t); }catch(e){}
+      apply(t);
+    });
+  })();
+
+  checkAuth();
+})();
+</script>
+</body>
+</html>

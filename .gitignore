@@ -1,0 +1,27 @@
+# ===== 密钥与本地配置（切勿提交）=====
+# 含裁判/生成 API Key、Flask session secret、管理员密码哈希
+settings.json
+
+# ===== 运行时生成 =====
+runs.json
+flask.log
+streamlit.log
+pip_install.log
+*.log
+
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ===== 操作系统 / 编辑器 =====
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

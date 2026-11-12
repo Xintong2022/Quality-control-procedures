@@ -1,0 +1,10 @@
+# Core evaluator — score_trek.py and verify_gold.py need only these (offline, no keys).
+pandas>=1.3
+numpy>=1.21
+
+# Agent runner — run_trek.py talks to Amazon Bedrock and the sandbox API.
+boto3>=1.34
+requests>=2.25
+tqdm>=4.60
+
+# The tool sandbox (api/app.py) has heavier extras (faiss, torch); see api/requirements.txt.

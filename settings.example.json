@@ -1,0 +1,10 @@
+{
+  "bot_api": "",
+  "judge_model": "deepseek-ai/DeepSeek-V4-Flash",
+  "judge_base_url": "https://api.siliconflow.cn/v1",
+  "judge_api_key": "<在此填入你的裁判/生成模型 API Key>",
+  "judge_temperature": 0,
+  "sample_times": 3,
+  "generator_model": "",
+  "admin_password_hash": ""
+}

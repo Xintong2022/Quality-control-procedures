@@ -1,0 +1,392 @@
+id,type,airport_name,latitude_deg,longitude_deg,continent,city,iata_code,wikipedia_link,country
+1,large_airport,Honiara International Airport,-9.428,160.054993,OC,Honiara,HIR,https://en.wikipedia.org/wiki/Honiara_International_Airport,Solomon Islands
+2,large_airport,Keflavik International Airport,63.985001,-22.6056,EU,Reykjavík,KEF,https://en.wikipedia.org/wiki/Keflav%C3%ADk_International_Airport,Iceland
+3,large_airport,Edmonton International Airport,53.3097,-113.580002,NA,Edmonton,YEG,https://en.wikipedia.org/wiki/Edmonton_International_Airport,Canada
+4,large_airport,Halifax / Stanfield International Airport,44.88079834,-63.50859833,NA,Halifax,YHZ,https://en.wikipedia.org/wiki/Halifax_International_Airport,Canada
+5,large_airport,Ottawa Macdonald-Cartier International Airport,45.322498,-75.669197,NA,Ottawa,YOW,https://en.wikipedia.org/wiki/Ottawa_Macdonald%E2%80%93Cartier_International_Airport,Canada
+6,large_airport,Quebec Jean Lesage International Airport,46.7911,-71.393303,NA,Quebec,YQB,https://en.wikipedia.org/wiki/Qu%C3%A9bec/Jean_Lesage_International_Airport,Canada
+7,large_airport,Montreal / Pierre Elliott Trudeau International Airport,45.467837,-73.742294,NA,Montréal,YUL,https://en.wikipedia.org/wiki/Montr%C3%A9al-Pierre_Elliott_Trudeau_International_Airport,Canada
+8,large_airport,Vancouver International Airport,49.19390106,-123.1839981,NA,Vancouver,YVR,https://en.wikipedia.org/wiki/Vancouver_International_Airport,Canada
+9,large_airport,Winnipeg / James Armstrong Richardson International Airport,49.90999985,-97.23989868,NA,Winnipeg,YWG,https://en.wikipedia.org/wiki/Winnipeg_James_Armstrong_Richardson_International_Airport,Canada
+10,large_airport,Calgary International Airport,51.118822,-114.009933,NA,Calgary,YYC,https://en.wikipedia.org/wiki/Calgary_International_Airport,Canada
+11,large_airport,St. John's International Airport,47.618599,-52.7519,NA,St. John's,YYT,https://en.wikipedia.org/wiki/St._John's_International_Airport,Canada
+12,large_airport,Toronto Lester B. Pearson International Airport,43.6772,-79.6306,NA,Toronto,YYZ,https://en.wikipedia.org/wiki/Toronto_Pearson_International_Airport,Canada
+13,large_airport,Houari Boumediene Airport,36.693886,3.214531,AF,Algiers,ALG,https://en.wikipedia.org/wiki/Houari_Boumediene_Airport,Algeria
+14,large_airport,Kotoka International Airport,5.605189800262451,-0.166786,AF,Accra,ACC,https://en.wikipedia.org/wiki/Kotoka_International_Airport,Ghana
+15,large_airport,Murtala Muhammed International Airport,6.57737,3.32116,AF,Lagos,LOS,https://en.wikipedia.org/wiki/Murtala_Muhammed_International_Airport,Nigeria
+16,large_airport,Diori Hamani International Airport,13.4815,2.18361,AF,Niamey,NIM,https://en.wikipedia.org/wiki/Diori_Hamani_International_Airport,Niger
+17,large_airport,Tunis Carthage International Airport,36.851002,10.2272,AF,Tunis,TUN,https://en.wikipedia.org/wiki/Tunis-Carthage_International_Airport,Tunisia
+18,large_airport,Brussels Airport,50.901402,4.48444,EU,Zaventem,BRU,https://en.wikipedia.org/wiki/Brussels_Airport,Belgium
+19,large_airport,Frankfurt Airport,50.030241,8.561096,EU,Frankfurt am Main,FRA,https://en.wikipedia.org/wiki/Frankfurt_Airport,Germany
+20,large_airport,Hamburg Helmut Schmidt Airport,53.630402,9.98823,EU,Hamburg,HAM,https://en.wikipedia.org/wiki/Hamburg_Airport,Germany
+21,large_airport,Cologne Bonn Airport,50.865898,7.14274,EU,Köln,CGN,https://en.wikipedia.org/wiki/Cologne_Bonn_Airport,Germany
+22,large_airport,Düsseldorf Airport,51.289501,6.76678,EU,Düsseldorf,DUS,https://en.wikipedia.org/wiki/D%C3%BCsseldorf_Airport,Germany
+23,large_airport,Munich Airport,48.353802,11.7861,EU,Munich,MUC,https://en.wikipedia.org/wiki/Munich_Airport,Germany
+24,large_airport,Nuremberg Airport,49.498699,11.078056,EU,Nuremberg,NUE,https://en.wikipedia.org/wiki/Nuremberg_Airport,Germany
+25,large_airport,Leipzig/Halle Airport,51.420657,12.232705,EU,Schkeuditz,LEJ,https://en.wikipedia.org/wiki/Leipzig/Halle_Airport,Germany
+26,large_airport,Stuttgart Airport,48.689899,9.22196,EU,Stuttgart,STR,https://en.wikipedia.org/wiki/Stuttgart_Airport,Germany
+27,large_airport,Hannover Airport,52.461102,9.68508,EU,Hannover,HAJ,https://en.wikipedia.org/wiki/Hanover/Langenhagen_International_Airport,Germany
+28,large_airport,Lennart Meri Tallinn Airport,59.413246,24.83264,EU,Tallinn,TLL,https://en.wikipedia.org/wiki/Tallinn_Airport,Estonia
+29,large_airport,Helsinki Vantaa Airport,60.318363,24.963341,EU,Helsinki,HEL,https://en.wikipedia.org/wiki/Helsinki_Airport,Finland
+30,large_airport,Belfast International Airport,54.65750122,-6.215829849,EU,Belfast,BFS,https://en.wikipedia.org/wiki/Belfast_International_Airport,United Kingdom
+31,large_airport,Birmingham Airport,52.453899,-1.74803,EU,West Midlands,BHX,https://en.wikipedia.org/wiki/Birmingham_Airport,United Kingdom
+32,large_airport,Manchester Airport,53.349375,-2.279521,EU,Greater Manchester,MAN,https://en.wikipedia.org/wiki/Manchester_Airport,United Kingdom
+33,large_airport,London Luton Airport,51.874699,-0.368333,EU,Bedfordshire,LTN,https://en.wikipedia.org/wiki/Luton_Airport,United Kingdom
+34,large_airport,London Gatwick Airport,51.148771,-0.192089,EU,London,LGW,https://en.wikipedia.org/wiki/Gatwick_Airport,United Kingdom
+35,large_airport,London Heathrow Airport,51.4706,-0.461941,EU,London,LHR,https://en.wikipedia.org/wiki/Heathrow_Airport,United Kingdom
+36,large_airport,Edinburgh Airport,55.950145,-3.372288,EU,Edinburgh,EDI,https://en.wikipedia.org/wiki/Edinburgh_Airport,United Kingdom
+37,large_airport,London Stansted Airport,51.884998,0.235,EU,London,STN,https://en.wikipedia.org/wiki/London_Stansted_Airport,United Kingdom
+38,large_airport,Amsterdam Airport Schiphol,52.308601,4.76389,EU,Amsterdam,AMS,https://en.wikipedia.org/wiki/Amsterdam_Airport_Schiphol,Netherlands
+39,large_airport,Eindhoven Airport,51.45009995,5.374529839,EU,Eindhoven,EIN,https://en.wikipedia.org/wiki/Eindhoven_Airport,Netherlands
+40,large_airport,Dublin Airport,53.428713,-6.262121,EU,Dublin,DUB,https://en.wikipedia.org/wiki/Dublin_Airport,Ireland
+41,large_airport,Shannon Airport,52.702,-8.92482,EU,Shannon,SNN,https://en.wikipedia.org/wiki/Shannon_Airport,Ireland
+42,large_airport,Billund Airport,55.740335,9.157019,EU,Billund,BLL,https://en.wikipedia.org/wiki/Billund_Airport,Denmark
+43,large_airport,Luxembourg-Findel International Airport,49.6233333,6.2044444,EU,Luxembourg,LUX,https://en.wikipedia.org/wiki/Luxembourg-Findel_International_Airport,Luxembourg
+44,large_airport,"Bergen Airport, Flesland",60.2934,5.21814,EU,Bergen,BGO,https://en.wikipedia.org/wiki/Bergen_Airport%2C_Flesland,Norway
+45,large_airport,"Oslo Airport, Gardermoen",60.193901,11.1004,EU,Oslo,OSL,"https://en.wikipedia.org/wiki/Oslo_Airport,_Gardermoen",Norway
+46,large_airport,"Tromsø Airport, Langnes",69.683296,18.9189,EU,Tromsø,TOS,https://en.wikipedia.org/wiki/Troms%C3%B8_Airport,Norway
+47,large_airport,"Trondheim Airport, Værnes",63.457802,10.924,EU,Trondheim,TRD,https://en.wikipedia.org/wiki/Trondheim_Airport%2C_V%C3%A6rnes,Norway
+48,large_airport,"Stavanger Airport, Sola",58.876701,5.63778,EU,Stavanger,SVG,"https://en.wikipedia.org/wiki/Stavanger_Airport,_Sola",Norway
+49,large_airport,Gdańsk Lech Wałęsa Airport,54.377602,18.4662,EU,Gdańsk,GDN,https://en.wikipedia.org/wiki/Gda%C5%84sk_Lech_Wa%C5%82%C4%99sa_Airport,Poland
+50,large_airport,Kraków John Paul II International Airport,50.077702,19.7848,EU,Balice,KRK,https://en.wikipedia.org/wiki/Kraków_John_Paul_II_International_Airport,Poland
+51,large_airport,Warsaw Chopin Airport,52.165699,20.9671,EU,Warsaw,WAW,https://en.wikipedia.org/wiki/Warsaw_Frederic_Chopin_Airport,Poland
+52,large_airport,Göteborg Landvetter Airport,57.6628,12.2798,EU,Göteborg,GOT,https://en.wikipedia.org/wiki/G%C3%B6teborg_Landvetter_Airport,Sweden
+53,large_airport,Stockholm-Arlanda Airport,59.64849,17.928829,EU,Stockholm,ARN,https://en.wikipedia.org/wiki/Stockholm-Arlanda_Airport,Sweden
+54,large_airport,Riga International Airport,56.923599,23.9711,EU,Riga,RIX,https://en.wikipedia.org/wiki/Riga_International_Airport,Latvia
+55,large_airport,Vilnius International Airport,54.634102,25.285801,EU,Vilnius,VNO,https://en.wikipedia.org/wiki/Vilnius_International_Airport,Lithuania
+56,large_airport,Sir Seretse Khama International Airport,-24.555201,25.9182,AF,Gaborone,GBE,https://en.wikipedia.org/wiki/Sir_Seretse_Khama_International_Airport,Botswana
+57,large_airport,Sir Seewoosagur Ramgoolam International Airport,-20.430201,57.683601,AF,Plaine Magnien,MRU,https://en.wikipedia.org/wiki/Sir_Seewoosagur_Ramgoolam_International_Airport,Mauritius
+58,large_airport,Kenneth Kaunda International Airport,-15.330833,28.452722,AF,Lusaka,LUN,https://en.wikipedia.org/wiki/Kenneth_Kaunda_International_Airport,Zambia
+59,large_airport,Roland Garros Airport,-20.890087,55.518894,AF,Sainte-Marie,RUN,https://en.wikipedia.org/wiki/Roland_Garros_Airport,Réunion
+60,large_airport,Quatro de Fevereiro International Airport,-8.85837,13.2312,AF,Luanda,LAD,https://en.wikipedia.org/wiki/Quatro_de_Fevereiro_Airport,Angola
+61,large_airport,São Tomé International Airport,0.378175,6.71215,AF,São Tomé,TMS,https://en.wikipedia.org/wiki/S%C3%A3o_Tom%C3%A9_International_Airport,São Tomé and Principe
+62,large_airport,Maputo Airport,-25.920799,32.572601,AF,Maputo,MPM,https://en.wikipedia.org/wiki/Maputo_International_Airport,Mozambique
+63,large_airport,Seychelles International Airport,-4.67434,55.521801,AF,Mahe Island,SEZ,https://en.wikipedia.org/wiki/Seychelles_International_Airport,Seychelles
+64,large_airport,N'Djamena International Airport,12.1337,15.034,AF,N'Djamena,NDJ,https://en.wikipedia.org/wiki/N'Djamena_International_Airport,Chad
+65,large_airport,Robert Gabriel Mugabe International Airport,-17.931801,31.0928,AF,Harare,HRE,https://en.wikipedia.org/wiki/Harare_International_Airport,Zimbabwe
+66,large_airport,Ndjili International Airport,-4.38575,15.4446,AF,Kinshasa,FIH,https://en.wikipedia.org/wiki/N%27djili_Airport,Democratic Republic of the Congo
+67,large_airport,Modibo Keita International Airport,12.5335,-7.94994,AF,Bamako,BKO,https://en.wikipedia.org/wiki/Bamako%E2%80%93S%C3%A9nou_International_Airport,Mali
+68,large_airport,Gran Canaria Airport,27.9319,-15.3866,AF,Gran Canaria Island,LPA,https://en.wikipedia.org/wiki/Gran_Canaria_Airport,Spain
+69,large_airport,César Manrique-Lanzarote Airport,28.945499,-13.6052,AF,San Bartolomé,ACE,https://en.wikipedia.org/wiki/Lanzarote_Airport,Spain
+70,large_airport,Tenerife Sur Airport,28.0445,-16.5725,AF,Tenerife,TFS,https://en.wikipedia.org/wiki/Tenerife%E2%80%93South_Airport,Spain
+71,large_airport,Al Massira Airport,30.322478,-9.412003,AF,Agadir,AGA,https://en.wikipedia.org/wiki/Al_Massira_Airport,Morocco
+72,large_airport,Fes Saïss International Airport,33.927299,-4.97796,AF,Saïss,FEZ,https://en.wikipedia.org/wiki/Sa%C3%AFss_Airport,Morocco
+73,large_airport,Rabat-Salé Airport,34.051498,-6.75152,AF,Rabat,RBA,https://en.wikipedia.org/wiki/Sale_Airport,Morocco
+74,large_airport,Mohammed V International Airport,33.3675,-7.58997,AF,Casablanca,CMN,https://en.wikipedia.org/wiki/Mohammed_V_International_Airport,Morocco
+75,large_airport,Menara Airport,31.606899,-8.0363,AF,Marrakech,RAK,https://en.wikipedia.org/wiki/Menara_International_Airport,Morocco
+76,large_airport,Tangier Ibn Battuta Airport,35.731741,-5.921459,AF,Tangier,TNG,https://en.wikipedia.org/wiki/Tangier_Ibn_Battouta_Airport,Morocco
+77,large_airport,Nouakchott–Oumtounsy International Airport,18.31,-15.969722,AF,Nouakchott,NKC,https://en.wikipedia.org/wiki/Nouakchott%E2%80%93Oumtounsy_International_Airport,Mauritania
+78,large_airport,Nelson Mandela International Airport,14.941126,-23.484728,AF,Praia,RAI,https://en.wikipedia.org/wiki/Francisco_Mendes_International_Airport,Cape Verde
+79,large_airport,Addis Ababa Bole International Airport,8.97789,38.799301,AF,Addis Ababa,ADD,https://en.wikipedia.org/wiki/Bole_International_Airport,Ethiopia
+80,large_airport,Djibouti-Ambouli Airport,11.5473,43.1595,AF,Djibouti,JIB,https://en.wikipedia.org/wiki/Djibouti-Ambouli_International_Airport,Djibouti
+81,large_airport,Cairo International Airport,30.111534,31.396694,AF,Cairo,CAI,https://en.wikipedia.org/wiki/Cairo_International_Airport,Egypt
+82,large_airport,Suhaj Mubarak International Airport,26.342515,31.743017,AF,Suhaj,HMB,https://en.wikipedia.org/wiki/Sohag_International_Airport,Egypt
+83,large_airport,Juba International Airport,4.87201,31.601101,AF,Juba,JUB,https://en.wikipedia.org/wiki/Juba_Airport,South Sudan
+84,large_airport,Jomo Kenyatta International Airport,-1.319239974,36.92779922,AF,Nairobi,NBO,https://en.wikipedia.org/wiki/Jomo_Kenyatta_International_Airport,Kenya
+85,large_airport,Moi International Airport,-4.03483,39.5942,AF,Mombasa,MBA,https://en.wikipedia.org/wiki/Moi_International_Airport,Kenya
+86,large_airport,Kigali International Airport,-1.96863,30.1395,AF,Kigali,KGL,https://en.wikipedia.org/wiki/Kigali_International_Airport,Rwanda
+87,large_airport,Julius Nyerere International Airport,-6.87811,39.202599,AF,Dar es Salaam,DAR,https://en.wikipedia.org/wiki/Julius_Nyerere_International_Airport,Tanzania
+88,large_airport,Abeid Amani Karume International Airport,-6.22202,39.224899,AF,Zanzibar,ZNZ,https://en.wikipedia.org/wiki/Zanzibar_International_Airport,Tanzania
+89,large_airport,Entebbe International Airport,0.042386,32.443501,AF,Kampala,EBB,https://en.wikipedia.org/wiki/Entebbe_International_Airport,Uganda
+90,large_airport,Albuquerque International Sunport,35.039976,-106.608925,NA,Albuquerque,ABQ,https://en.wikipedia.org/wiki/Albuquerque_International_Sunport,United States
+91,large_airport,Hartsfield Jackson Atlanta International Airport,33.6367,-84.428101,NA,Atlanta,ATL,https://en.wikipedia.org/wiki/Hartsfield–Jackson_Atlanta_International_Airport,United States
+92,large_airport,Austin Bergstrom International Airport,30.197535,-97.662015,NA,Austin,AUS,https://en.wikipedia.org/wiki/Austin-Bergstrom_International_Airport,United States
+93,large_airport,Bradley International Airport,41.93851,-72.688066,NA,Hartford,BDL,https://en.wikipedia.org/wiki/Bradley_International_Airport,United States
+94,large_airport,Nashville International Airport,36.1245,-86.6782,NA,Nashville,BNA,https://en.wikipedia.org/wiki/Nashville_International_Airport,United States
+95,large_airport,Logan International Airport,42.36197,-71.0079,NA,Boston,BOS,https://en.wikipedia.org/wiki/Logan_International_Airport,United States
+96,large_airport,Buffalo Niagara International Airport,42.940498,-78.732201,NA,Buffalo,BUF,https://en.wikipedia.org/wiki/Buffalo_Niagara_International_Airport,United States
+97,large_airport,Baltimore/Washington International Thurgood Marshall Airport,39.1754,-76.668297,NA,Baltimore,BWI,https://en.wikipedia.org/wiki/Baltimore/Washington_International_Airport,United States
+98,large_airport,Cleveland Hopkins International Airport,41.411701,-81.8498,NA,Cleveland,CLE,https://en.wikipedia.org/wiki/Cleveland_Hopkins_International_Airport,United States
+99,large_airport,Charlotte Douglas International Airport,35.2140007,-80.94309998,NA,Charlotte,CLT,https://en.wikipedia.org/wiki/Charlotte/Douglas_International_Airport,United States
+100,large_airport,John Glenn Columbus International Airport,39.998001,-82.891899,NA,Columbus,CMH,https://en.wikipedia.org/wiki/John_Glenn_Columbus_International_Airport,United States
+101,large_airport,Cincinnati Northern Kentucky International Airport,39.048801,-84.667801,NA,Cincinnati,CVG,https://en.wikipedia.org/wiki/Cincinnati/Northern_Kentucky_International_Airport,United States
+102,large_airport,Ronald Reagan Washington National Airport,38.8521,-77.037697,NA,Washington,DCA,https://en.wikipedia.org/wiki/Ronald_Reagan_Washington_National_Airport,United States
+103,large_airport,Denver International Airport,39.86169815,-104.6729965,NA,Denver,DEN,https://en.wikipedia.org/wiki/Denver_International_Airport,United States
+104,large_airport,Dallas Fort Worth International Airport,32.896801,-97.038002,NA,Dallas-Fort Worth,DFW,https://en.wikipedia.org/wiki/Dallas/Fort_Worth_International_Airport,United States
+105,large_airport,Detroit Metropolitan Wayne County Airport,42.21377,-83.353786,NA,Detroit,DTW,https://en.wikipedia.org/wiki/Detroit_Metropolitan_Airport,United States
+106,large_airport,Newark Liberty International Airport,40.692501,-74.168701,NA,Newark,EWR,https://en.wikipedia.org/wiki/Newark_Liberty_International_Airport,United States
+107,large_airport,Fort Lauderdale Hollywood International Airport,26.072599,-80.152702,NA,Fort Lauderdale,FLL,https://en.wikipedia.org/wiki/Fort_Lauderdale–Hollywood_International_Airport,United States
+108,large_airport,George Bush Intercontinental Houston Airport,29.984399795532227,-95.34140015,NA,Houston,IAH,https://en.wikipedia.org/wiki/George_Bush_Intercontinental_Airport,United States
+109,large_airport,Indianapolis International Airport,39.7173,-86.294403,NA,Indianapolis,IND,https://en.wikipedia.org/wiki/Indianapolis_International_Airport,United States
+110,large_airport,Jacksonville International Airport,30.492469,-81.687813,NA,Jacksonville,JAX,https://en.wikipedia.org/wiki/Jacksonville_International_Airport,United States
+111,large_airport,John F Kennedy International Airport,40.639447,-73.779317,NA,New York,JFK,https://en.wikipedia.org/wiki/John_F._Kennedy_International_Airport,United States
+112,large_airport,Harry Reid International Airport,36.083361,-115.151817,NA,Las Vegas,LAS,https://en.wikipedia.org/wiki/Harry_Reid_International_Airport,United States
+113,large_airport,Los Angeles International Airport,33.942501,-118.407997,NA,Los Angeles,LAX,https://en.wikipedia.org/wiki/Los_Angeles_International_Airport,United States
+114,large_airport,LaGuardia Airport,40.777199,-73.872597,NA,New York,LGA,https://en.wikipedia.org/wiki/LaGuardia_Airport,United States
+115,large_airport,Kansas City International Airport,39.2976,-94.713898,NA,Kansas,MCI,https://en.wikipedia.org/wiki/Kansas_City_International_Airport,United States
+116,large_airport,Orlando International Airport,28.429399490356445,-81.30899811,NA,Orlando,MCO,https://en.wikipedia.org/wiki/Orlando_International_Airport,United States
+117,large_airport,Chicago Midway International Airport,41.785999,-87.752403,NA,Chicago,MDW,https://en.wikipedia.org/wiki/Midway_International_Airport,United States
+118,large_airport,Memphis International Airport,35.0424,-89.9767,NA,Memphis,MEM,https://en.wikipedia.org/wiki/Memphis_International_Airport,United States
+119,large_airport,Miami International Airport,25.79319953918457,-80.29060364,NA,Miami,MIA,https://en.wikipedia.org/wiki/Miami_International_Airport,United States
+120,large_airport,General Mitchell International Airport,42.947201,-87.896599,NA,Milwaukee,MKE,https://en.wikipedia.org/wiki/General_Mitchell_International_Airport,United States
+121,large_airport,Minneapolis–Saint Paul International Airport / Wold–Chamberlain Field,44.880081,-93.221741,NA,Minneapolis,MSP,https://en.wikipedia.org/wiki/Minneapolis–Saint_Paul_International_Airport,United States
+122,large_airport,Louis Armstrong New Orleans International Airport,29.993401,-90.258003,NA,New Orleans,MSY,https://en.wikipedia.org/wiki/Louis_Armstrong_New_Orleans_International_Airport,United States
+123,large_airport,San Francisco Bay Oakland International Airport,37.720085,-122.221184,NA,Oakland,OAK,https://en.wikipedia.org/wiki/Oakland_International_Airport,United States
+124,large_airport,Will Rogers World Airport,35.393388,-97.598248,NA,Oklahoma,OKC,https://en.wikipedia.org/wiki/Will_Rogers_World_Airport,United States
+125,large_airport,Eppley Airfield,41.3032,-95.894096,NA,Omaha,OMA,https://en.wikipedia.org/wiki/Eppley_Airfield,United States
+126,large_airport,Ontario International Airport,34.056,-117.600998,NA,Ontario,ONT,https://en.wikipedia.org/wiki/LA/Ontario_International_Airport,United States
+127,large_airport,Chicago O'Hare International Airport,41.9786,-87.9048,NA,Chicago,ORD,https://en.wikipedia.org/wiki/O'Hare_International_Airport,United States
+128,large_airport,Norfolk International Airport,36.895341,-76.201,NA,Norfolk,ORF,https://en.wikipedia.org/wiki/Norfolk_International_Airport,United States
+129,large_airport,Palm Beach International Airport,26.683201,-80.095596,NA,West Palm Beach,PBI,https://en.wikipedia.org/wiki/Palm_Beach_International_Airport,United States
+130,large_airport,Portland International Airport,45.588699,-122.598,NA,Portland,PDX,https://en.wikipedia.org/wiki/Portland_International_Airport,United States
+131,large_airport,Philadelphia International Airport,39.871899,-75.241096,NA,Philadelphia,PHL,https://en.wikipedia.org/wiki/Philadelphia_International_Airport,United States
+132,large_airport,Phoenix Sky Harbor International Airport,33.435302,-112.005905,NA,Phoenix,PHX,https://en.wikipedia.org/wiki/Phoenix_Sky_Harbor_International_Airport,United States
+133,large_airport,Pittsburgh International Airport,40.491501,-80.232903,NA,Pittsburgh,PIT,https://en.wikipedia.org/wiki/Pittsburgh_International_Airport,United States
+134,large_airport,Theodore Francis Green State Airport,41.725038,-71.425668,NA,Warwick,PVD,https://en.wikipedia.org/wiki/T._F._Green_Airport,United States
+135,large_airport,Portland International Jetport,43.646198,-70.309303,NA,Portland,PWM,https://en.wikipedia.org/wiki/Portland_International_Jetport,United States
+136,large_airport,Raleigh Durham International Airport,35.877602,-78.787498,NA,Raleigh,RDU,https://en.wikipedia.org/wiki/Raleigh-Durham_International_Airport,United States
+137,large_airport,Richmond International Airport,37.505199,-77.319702,NA,Richmond,RIC,https://en.wikipedia.org/wiki/Richmond_International_Airport,United States
+138,large_airport,Reno Tahoe International Airport,39.4991,-119.767998,NA,Reno,RNO,https://en.wikipedia.org/wiki/Reno-Tahoe_International_Airport,United States
+139,large_airport,Southwest Florida International Airport,26.53619956970215,-81.75520325,NA,Fort Myers,RSW,https://en.wikipedia.org/wiki/Southwest_Florida_International_Airport,United States
+140,large_airport,San Diego International Airport,32.73360062,-117.1900024,NA,San Diego,SAN,https://en.wikipedia.org/wiki/San_Diego_International_Airport,United States
+141,large_airport,San Antonio International Airport,29.533701,-98.469803,NA,San Antonio,SAT,https://en.wikipedia.org/wiki/San_Antonio_International_Airport,United States
+142,large_airport,Savannah Hilton Head International Airport,32.127602,-81.202103,NA,Savannah,SAV,https://en.wikipedia.org/wiki/Savannah/Hilton_Head_International_Airport,United States
+143,large_airport,Louisville Muhammad Ali International Airport,38.1744,-85.736,NA,Louisville,SDF,https://en.wikipedia.org/wiki/Louisville_International_Airport,United States
+144,large_airport,Seattle–Tacoma International Airport,47.447943,-122.310276,NA,Seattle,SEA,https://en.wikipedia.org/wiki/Seattle%E2%80%93Tacoma_International_Airport,United States
+145,large_airport,Orlando Sanford International Airport,28.77759933,-81.23750305,NA,Orlando,SFB,https://en.wikipedia.org/wiki/Orlando_Sanford_International_Airport,United States
+146,large_airport,San Francisco International Airport,37.619806,-122.374821,NA,San Francisco,SFO,https://en.wikipedia.org/wiki/San_Francisco_International_Airport,United States
+147,large_airport,Norman Y. Mineta San Jose International Airport,37.362452,-121.929188,NA,San Jose,SJC,https://en.wikipedia.org/wiki/San_Jose_International_Airport,United States
+148,large_airport,Salt Lake City International Airport,40.78886,-111.979866,NA,Salt Lake,SLC,https://en.wikipedia.org/wiki/Salt_Lake_City_International_Airport,United States
+149,large_airport,Sacramento International Airport,38.6954,-121.591003,NA,Sacramento,SMF,https://en.wikipedia.org/wiki/Sacramento_International_Airport,United States
+150,large_airport,John Wayne Orange County International Airport,33.675701,-117.867996,NA,Santa Ana,SNA,https://en.wikipedia.org/wiki/John_Wayne_Airport,United States
+151,large_airport,Sarasota Bradenton International Airport,27.394631,-82.554359,NA,Sarasota,SRQ,https://en.wikipedia.org/wiki/Sarasota-Bradenton_International_Airport,United States
+152,large_airport,St. Louis Lambert International Airport,38.748697,-90.370003,NA,St Louis,STL,https://en.wikipedia.org/wiki/St._Louis_Lambert_International_Airport,United States
+153,large_airport,Syracuse Hancock International Airport,43.11119842529297,-76.10630035,NA,Syracuse,SYR,https://en.wikipedia.org/wiki/Syracuse_Hancock_International_Airport,United States
+154,large_airport,Tampa International Airport,27.9755,-82.533203,NA,Tampa,TPA,https://en.wikipedia.org/wiki/Tampa_International_Airport,United States
+155,large_airport,Tulsa International Airport,36.19839859008789,-95.88809967,NA,Tulsa,TUL,https://en.wikipedia.org/wiki/Tulsa_International_Airport,United States
+156,large_airport,Burgas Airport,42.569917,27.515173,EU,Burgas,BOJ,https://en.wikipedia.org/wiki/Burgas_Airport,Bulgaria
+157,large_airport,Sofia Airport,42.696357,23.417671,EU,Sofia,SOF,https://en.wikipedia.org/wiki/Sofia_Airport,Bulgaria
+158,large_airport,Varna Airport,43.232101,27.8251,EU,Varna,VAR,https://en.wikipedia.org/wiki/Varna_Airport,Bulgaria
+159,large_airport,Larnaca International Airport,34.875099,33.624901,AS,Larnaca,LCA,https://en.wikipedia.org/wiki/Larnaca_International_Airport,Cyprus
+160,large_airport,Zagreb Franjo Tuđman International Airport,45.742901,16.0688,EU,Velika Gorica,ZAG,https://en.wikipedia.org/wiki/Zagreb_Airport,Croatia
+161,large_airport,Alicante-Elche Miguel Hernández Airport,38.2822,-0.558156,EU,Alicante,ALC,https://en.wikipedia.org/wiki/Alicante–Elche_Miguel_Hernández_Airport,Spain
+163,large_airport,Ibiza Airport,38.872898,1.37312,EU,Ibiza,IBZ,https://en.wikipedia.org/wiki/Ibiza_Airport,Spain
+164,large_airport,Adolfo Suárez Madrid–Barajas Airport,40.471926,-3.56264,EU,Madrid,MAD,https://en.wikipedia.org/wiki/Adolfo_Su%C3%A1rez_Madrid%E2%80%93Barajas_Airport,Spain
+165,large_airport,Málaga-Costa del Sol Airport,36.6749,-4.49911,EU,Málaga,AGP,https://en.wikipedia.org/wiki/M%C3%A1laga_Airport,Spain
+166,large_airport,Palma de Mallorca Airport,39.551701,2.73881,EU,Palma de Mallorca,PMI,https://en.wikipedia.org/wiki/Son_Sant_Joan_Airport,Spain
+167,large_airport,Santiago-Rosalía de Castro Airport,42.896301,-8.41514,EU,Santiago de Compostela,SCQ,https://en.wikipedia.org/wiki/Santiago_de_Compostela_Airport,Spain
+168,large_airport,Bordeaux-Mérignac Airport,44.8283,-0.715556,EU,Bordeaux,BOD,https://en.wikipedia.org/wiki/Bordeaux%E2%80%93M%C3%A9rignac_Airport,France
+169,large_airport,Toulouse-Blagnac Airport,43.629101,1.36382,EU,Toulouse,TLS,https://en.wikipedia.org/wiki/Toulouse_Blagnac_International_Airport,France
+170,large_airport,Lyon Saint-Exupéry Airport,45.725996,5.090139,EU,Rhône,LYS,https://en.wikipedia.org/wiki/Lyon%E2%80%93Saint-Exup%C3%A9ry_Airport,France
+171,large_airport,Marseille Provence Airport,43.438088,5.2125,EU,Bouches-du-Rhône,MRS,https://en.wikipedia.org/wiki/Marseille_Provence_Airport,France
+172,large_airport,Nice-Côte d'Azur Airport,43.658401,7.21587,EU,Alpes-Maritimes,NCE,https://en.wikipedia.org/wiki/C%C3%B4te_d'Azur_International_Airport,France
+173,large_airport,Charles de Gaulle International Airport,49.012798,2.55,EU,Paris,CDG,https://en.wikipedia.org/wiki/Charles_de_Gaulle_Airport,France
+174,large_airport,Paris-Orly Airport,48.72333,2.37944,EU,Paris,ORY,https://en.wikipedia.org/wiki/Orly_Airport,France
+175,large_airport,EuroAirport Basel-Mulhouse-Freiburg,47.60068,7.521117,EU,Saint-Louis,BSL,https://en.wikipedia.org/wiki/EuroAirport_Basel-Mulhouse-Freiburg,France
+176,large_airport,Athens Eleftherios Venizelos International Airport,37.936401,23.9445,EU,Spata-Artemida,ATH,https://en.wikipedia.org/wiki/Athens_International_Airport,Greece
+177,large_airport,Thessaloniki Macedonia International Airport,40.51928,22.970009,EU,Thessaloniki,SKG,https://en.wikipedia.org/wiki/Thessaloniki_Airport,Greece
+178,large_airport,Budapest Liszt Ferenc International Airport,47.43018,19.262393,EU,Budapest,BUD,https://en.wikipedia.org/wiki/Budapest_Ferenc_Liszt_International_Airport,Hungary
+179,large_airport,Bari Karol Wojtyła International Airport,41.138901,16.760599,EU,Bari,BRI,https://en.wikipedia.org/wiki/Bari_Karol_Wojty%C5%82a_Airport,Italy
+180,large_airport,Brindisi Airport,40.6576,17.947001,EU,Brindisi,BDS,https://en.wikipedia.org/wiki/Brindisi_Airport,Italy
+181,large_airport,Catania-Fontanarossa Airport,37.466801,15.0664,EU,Catania,CTA,https://en.wikipedia.org/wiki/Catania-Fontanarossa_Airport,Italy
+182,large_airport,Falcone–Borsellino Airport,38.175999,13.091,EU,Palermo,PMO,https://en.wikipedia.org/wiki/Falcone%E2%80%93Borsellino_Airport,Italy
+183,large_airport,Cagliari Elmas Airport,39.251499,9.05428,EU,Cagliari,CAG,https://en.wikipedia.org/wiki/Cagliari_Elmas_Airport,Italy
+184,large_airport,Milan Malpensa International Airport,45.6306,8.72811,EU,Ferno,MXP,https://en.wikipedia.org/wiki/Malpensa_Airport,Italy
+185,large_airport,Milan Bergamo Airport / Antonio Locatelli Air Base,45.670725,9.709223,EU,Orio al Serio,BGY,https://en.wikipedia.org/wiki/Orio_al_Serio_International_Airport,Italy
+186,large_airport,Turin Airport,45.200802,7.64963,EU,Caselle Torinese,TRN,https://en.wikipedia.org/wiki/Turin_International_Airport,Italy
+187,large_airport,Genoa Cristoforo Colombo Airport,44.412039,8.840732,EU,Genova,GOA,https://en.wikipedia.org/wiki/Genoa_Cristoforo_Colombo_Airport,Italy
+188,large_airport,Bologna Guglielmo Marconi Airport,44.5354,11.2887,EU,Bologna,BLQ,https://en.wikipedia.org/wiki/Bologna_Airport,Italy
+189,large_airport,Verona Villafranca Valerio Catullo Airport,45.394955,10.887303,EU,Caselle,VRN,https://en.wikipedia.org/wiki/Verona_Airport,Italy
+190,large_airport,Venice Marco Polo Airport,45.505299,12.3519,EU,Venezia,VCE,https://en.wikipedia.org/wiki/Venice_Marco_Polo_Airport,Italy
+191,large_airport,Rome–Fiumicino Leonardo da Vinci International Airport,41.804532,12.251998,EU,Rome,FCO,https://en.wikipedia.org/wiki/Rome_Fiumicino_Airport,Italy
+192,large_airport,Naples International Airport,40.886002,14.2908,EU,Napoli,NAP,https://en.wikipedia.org/wiki/Naples_International_Airport,Italy
+193,large_airport,Pisa International Airport,43.683899,10.3927,EU,Pisa,PSA,https://en.wikipedia.org/wiki/Pisa_International_Airport,Italy
+194,large_airport,"Florence Airport, Peretola",43.808558,11.202822,EU,Firenze,FLR,https://en.wikipedia.org/wiki/Florence_Airport,Italy
+195,large_airport,Václav Havel Airport Prague,50.100874,14.259911,EU,Prague,PRG,https://en.wikipedia.org/wiki/Václav_Havel_Airport_Prague,Czech Republic
+196,large_airport,Ben Gurion International Airport,32.011398,34.8867,AS,Tel Aviv,TLV,https://en.wikipedia.org/wiki/Ben_Gurion_International_Airport,Israel
+197,large_airport,Malta International Airport,35.857498,14.4775,EU,Valletta,MLA,https://en.wikipedia.org/wiki/Malta_International_Airport,Malta
+198,large_airport,Vienna International Airport,48.110298,16.5697,EU,Vienna,VIE,https://en.wikipedia.org/wiki/Vienna_International_Airport,Austria
+199,large_airport,Faro Airport,37.01440048,-7.965909958,EU,Faro,FAO,https://en.wikipedia.org/wiki/Faro_Airport_(Portugal),Portugal
+200,large_airport,Madeira International Airport Cristiano Ronaldo,32.697899,-16.7745,EU,Funchal,FNC,https://en.wikipedia.org/wiki/Madeira_Airport,Portugal
+201,large_airport,João Paulo II Airport,37.74119949,-25.69790077,EU,Ponta Delgada,PDL,https://en.wikipedia.org/wiki/Jo%C3%A3o_Paulo_II_Airport,Portugal
+202,large_airport,Francisco de Sá Carneiro Airport,41.24810028,-8.681389809,EU,Porto,OPO,https://en.wikipedia.org/wiki/Francisco_S%C3%A1_Carneiro_Airport,Portugal
+203,large_airport,Lisbon Humberto Delgado Airport,38.7813,-9.13592,EU,Lisbon,LIS,https://en.wikipedia.org/wiki/Lisbon_Airport,Portugal
+204,large_airport,Sarajevo International Airport,43.8246,18.331499,EU,Sarajevo,SJJ,https://en.wikipedia.org/wiki/Sarajevo_International_Airport,Bosnia and Herzegovina
+205,large_airport,Bucharest Henri Coandă International Airport,44.572127,26.103396,EU,Otopeni,OTP,https://en.wikipedia.org/wiki/Henri_Coand%C4%83_International_Airport,Romania
+206,large_airport,Geneva Cointrin International Airport,46.238098,6.10895,EU,Geneva,GVA,https://en.wikipedia.org/wiki/Geneva_Cointrin_International_Airport,Switzerland
+207,large_airport,Zürich Airport,47.458056,8.548056,EU,Zurich,ZRH,https://en.wikipedia.org/wiki/Zurich_Airport,Switzerland
+208,large_airport,Esenboğa International Airport,40.128101,32.995098,AS,Ankara,ESB,https://en.wikipedia.org/wiki/Esenbo%C4%9Fa_International_Airport,Turkey
+209,large_airport,Antalya International Airport,36.898701,30.800501,AS,Antalya,AYT,https://en.wikipedia.org/wiki/Antalya_Airport,Turkey
+210,large_airport,Adnan Menderes International Airport,38.2924,27.157,AS,Gaziemir,ADB,https://en.wikipedia.org/wiki/Adnan_Menderes_Airport,Turkey
+211,large_airport,Dalaman International Airport,36.71310043,28.79249954,AS,Dalaman,DLM,https://en.wikipedia.org/wiki/Dalaman_Airport,Turkey
+212,large_airport,Milas Bodrum International Airport,37.250599,27.664301,AS,Bodrum,BJV,https://en.wikipedia.org/wiki/Milas-Bodrum_Airport,Turkey
+213,large_airport,Istanbul Sabiha Gökçen International Airport,40.898602,29.3092,AS,Istanbul,SAW,https://en.wikipedia.org/wiki/Istanbul_Sabiha_G%C3%B6k%C3%A7en_International_Airport,Turkey
+214,large_airport,İstanbul Airport,41.261297,28.741951,EU,Istanbul,IST,https://en.wikipedia.org/wiki/Istanbul_Airport,Turkey
+215,large_airport,Skopje International Airport,41.958087,21.622581,EU,Ilinden,SKP,https://en.wikipedia.org/wiki/Skopje_Airport,North Macedonia
+216,large_airport,Gibraltar Airport,36.151199,-5.34966,EU,Gibraltar,GIB,https://en.wikipedia.org/wiki/Gibraltar_Airport,Gibraltar
+217,large_airport,Belgrade Nikola Tesla Airport,44.818401,20.309099,EU,Belgrade,BEG,https://en.wikipedia.org/wiki/Belgrade_Nikola_Tesla_Airport,Serbia
+218,large_airport,Podgorica Airport / Podgorica Golubovci Airbase,42.359402,19.2519,EU,Podgorica,TGD,https://en.wikipedia.org/wiki/Podgorica_Airport,Montenegro
+219,large_airport,M. R. Štefánik Airport,48.1702,17.2127,EU,Bratislava,BTS,https://en.wikipedia.org/wiki/M._R._%C5%A0tef%C3%A1nik_Airport,Slovakia
+220,large_airport,Providenciales International Airport,21.773697,-72.268321,NA,Providenciales,PLS,https://en.wikipedia.org/wiki/Providenciales_International_Airport,Turks and Caicos Islands
+221,large_airport,Casa De Campo International Airport,18.452222,-68.911111,NA,La Romana,LRM,https://en.wikipedia.org/wiki/La_Romana_International_Airport,Dominican Republic
+222,large_airport,Las Américas International Airport,18.42970085,-69.66889954,NA,Santo Domingo,SDQ,https://en.wikipedia.org/wiki/Las_Am%C3%A9ricas_International_Airport,Dominican Republic
+223,large_airport,La Aurora Airport,14.5833,-90.527496,NA,Guatemala,GUA,https://en.wikipedia.org/wiki/La_Aurora_International_Airport,Guatemala
+224,large_airport,Norman Manley International Airport,17.935699462890625,-76.78749847,NA,Kingston,KIN,https://en.wikipedia.org/wiki/Norman_Manley_International_Airport,Jamaica
+225,large_airport,Cozumel International Airport,20.514922,-86.928538,NA,Cozumel,CZM,https://en.wikipedia.org/wiki/Cozumel_International_Airport,Mexico
+226,large_airport,General Guadalupe Victoria International Airport,24.125468,-104.527938,NA,Durango,DGO,https://en.wikipedia.org/wiki/General_Guadalupe_Victoria_International_Airport,Mexico
+227,large_airport,Guadalajara International Airport,20.523342,-103.310108,NA,Guadalajara,GDL,https://en.wikipedia.org/wiki/Don_Miguel_Hidalgo_y_Costilla_International_Airport,Mexico
+228,large_airport,Manuel Crescencio Rejón International Airport,20.930485,-89.645462,NA,Mérida,MID,https://en.wikipedia.org/wiki/Manuel_Crescencio_Rej%C3%B3n_International_Airport,Mexico
+229,large_airport,Benito Juárez International Airport,19.435137,-99.071328,NA,Ciudad de México,MEX,https://en.wikipedia.org/wiki/Mexico_City_International_Airport,Mexico
+230,large_airport,Monterrey International Airport,25.778521,-100.106989,NA,Monterrey,MTY,https://en.wikipedia.org/wiki/General_Mariano_Escobedo_International_Airport,Mexico
+231,large_airport,General Rafael Buelna International Airport,23.161474,-106.264572,NA,Mazatlàn,MZT,https://en.wikipedia.org/wiki/Mazatl%C3%A1n_International_Airport,Mexico
+232,large_airport,Puerto Vallarta International Airport,20.679913,-105.254391,NA,Puerto Vallarta,PVR,https://en.wikipedia.org/wiki/Lic._Gustavo_D%C3%ADaz_Ordaz_International_Airport,Mexico
+233,large_airport,Cancún International Airport,21.039444,-86.874304,NA,Cancún,CUN,https://www.prioritypass.com/lounges/mexico/cancun-international,Mexico
+234,large_airport,Tocumen International Airport,9.07136,-79.383499,NA,Tocumen,PTY,https://en.wikipedia.org/wiki/Tocumen_International_Airport,Panama
+235,large_airport,Guanacaste Airport,10.5933,-85.544403,NA,Liberia,LIR,https://en.wikipedia.org/wiki/Daniel_Oduber_Quir%C3%B3s_International_Airport,Costa Rica
+236,large_airport,Juan Santamaría International Airport,9.99386,-84.208801,NA,San José,SJO,https://en.wikipedia.org/wiki/Juan_Santamar%C3%ADa_International_Airport,Costa Rica
+237,large_airport,Monseñor Óscar Arnulfo Romero International Airport,13.4409,-89.055702,NA,San Salvador,SAL,https://en.wikipedia.org/wiki/Monse%C3%B1or_%C3%93scar_Arnulfo_Romero_International_Airport,El Salvador
+238,large_airport,Owen Roberts International Airport,19.292801,-81.357697,NA,George Town,GCM,https://en.wikipedia.org/wiki/Owen_Roberts_International_Airport,Cayman Islands
+239,large_airport,Philip S. W. Goldson International Airport,17.539951,-88.303556,NA,Belize,BZE,https://en.wikipedia.org/wiki/Philip_S._W._Goldson_International_Airport,Belize
+240,large_airport,Faa'a International Airport,-17.553699,-149.606995,OC,Papeete,PPT,https://en.wikipedia.org/wiki/Faa'a_International_Airport,French Polynesia
+241,large_airport,Auckland International Airport,-37.01199,174.786331,OC,Auckland,AKL,https://en.wikipedia.org/wiki/Auckland_International_Airport,New Zealand
+242,large_airport,Christchurch International Airport,-43.489029,172.532065,OC,Christchurch,CHC,https://en.wikipedia.org/wiki/Christchurch_International_Airport,New Zealand
+243,large_airport,Wellington International Airport,-41.327202,174.804993,OC,Wellington,WLG,https://en.wikipedia.org/wiki/Wellington_Airport,New Zealand
+244,large_airport,Abha International Airport,18.2404,42.656601,AS,Abha,AHB,https://en.wikipedia.org/wiki/Abha_International_Airport,Saudi Arabia
+245,large_airport,Prince Mohammad Bin Abdulaziz Airport,24.5534,39.705101,AS,Medina,MED,https://en.wikipedia.org/wiki/Prince_Mohammad_Bin_Abdulaziz_Airport,Saudi Arabia
+246,large_airport,King Khaled International Airport,24.9576,46.698799,AS,Riyadh,RUH,https://en.wikipedia.org/wiki/King_Khalid_International_Airport,Saudi Arabia
+247,large_airport,Queen Alia International Airport,31.72260094,35.99319839,AS,Amman,AMM,https://en.wikipedia.org/wiki/Queen_Alia_International_Airport,Jordan
+248,large_airport,Kuwait International Airport,29.226601,47.968899,AS,Kuwait,KWI,https://en.wikipedia.org/wiki/Kuwait_International_Airport,Kuwait
+249,large_airport,Beirut Rafic Hariri International Airport,33.820899963378906,35.488399505615234,AS,Beirut,BEY,https://en.wikipedia.org/wiki/Beirut_Rafic_Hariri_International_Airport,Lebanon
+250,large_airport,Zayed International Airport,24.443764,54.651718,AS,Abu Dhabi,AUH,https://en.wikipedia.org/wiki/Abu_Dhabi_International_Airport,United Arab Emirates
+251,large_airport,Dubai International Airport,25.25279999,55.36439896,AS,Dubai,DXB,https://en.wikipedia.org/wiki/Dubai_International_Airport,United Arab Emirates
+252,large_airport,Al Maktoum International Airport,24.896356,55.161389,AS,Jebel Ali,DWC,https://en.wikipedia.org/wiki/Al_Maktoum_International_Airport,United Arab Emirates
+253,large_airport,Sharjah International Airport,25.3286,55.5172,AS,Sharjah,SHJ,https://en.wikipedia.org/wiki/Sharjah_International_Airport,United Arab Emirates
+254,large_airport,Muscat International Airport,23.5933,58.284401,AS,Muscat,MCT,https://en.wikipedia.org/wiki/Seeb_International_Airport,Oman
+255,large_airport,Islamabad International Airport,33.549,72.82566,AS,Attock,ISB,https://en.wikipedia.org/wiki/Islamabad_International_Airport,Pakistan
+256,large_airport,Jinnah International Airport,24.9065,67.160797,AS,Karachi,KHI,https://en.wikipedia.org/wiki/Jinnah_International_Airport,Pakistan
+257,large_airport,Baghdad International Airport / New Al Muthana Air Base,33.262501,44.2346,AS,Baghdad,BGW,https://en.wikipedia.org/wiki/Baghdad_International_Airport,Iraq
+258,large_airport,Hamad International Airport,25.273056,51.608056,AS,Doha,DOH,https://en.wikipedia.org/wiki/Hamad_International_Airport,Qatar
+259,large_airport,Ted Stevens Anchorage International Airport,61.179004,-149.992561,NA,Anchorage,ANC,https://en.wikipedia.org/wiki/Ted_Stevens_Anchorage_International_Airport,United States
+260,large_airport,Antonio B. Won Pat International Airport,13.485,144.797282,OC,Hagåtña,GUM,https://en.wikipedia.org/wiki/Antonio_B._Won_Pat_International_Airport,Guam
+261,large_airport,Daniel K Inouye International Airport,21.32062,-157.924228,NA,Oahu,HNL,https://en.wikipedia.org/wiki/Daniel_K._Inouye_International_Airport,United States
+262,large_airport,Kahului International Airport,20.896263,-156.431837,NA,Kahului,OGG,https://en.wikipedia.org/wiki/Kahului_Airport,United States
+263,large_airport,Kaohsiung International Airport,22.577101,120.349998,AS,Kaohsiung,KHH,https://en.wikipedia.org/wiki/Kaohsiung_International_Airport,Taiwan
+264,large_airport,Taiwan Taoyuan International Airport,25.0777,121.233002,AS,Taoyuan,TPE,https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E6%A1%83%E5%9C%92%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4,Taiwan
+265,large_airport,Narita International Airport,35.764702,140.386002,AS,Narita,NRT,https://en.wikipedia.org/wiki/Narita_International_Airport,Japan
+266,large_airport,Kansai International Airport,34.427299,135.244003,AS,Osaka,KIX,https://en.wikipedia.org/wiki/Kansai_International_Airport,Japan
+267,large_airport,New Chitose Airport,42.7752,141.692001,AS,Sapporo,CTS,https://en.wikipedia.org/wiki/New_Chitose_Airport,Japan
+268,large_airport,Fukuoka Airport,33.585899353027344,130.4510040283203,AS,Fukuoka,FUK,https://en.wikipedia.org/wiki/Fukuoka_Airport,Japan
+269,large_airport,Kagoshima Airport,31.8034,130.718994,AS,Kagoshima,KOJ,https://en.wikipedia.org/wiki/Kagoshima_Airport,Japan
+270,large_airport,Chubu Centrair International Airport,34.858398,136.804993,AS,Nagoya,NGO,https://en.wikipedia.org/wiki/Ch%C5%ABbu_Centrair_International_Airport,Japan
+271,large_airport,Osaka International Airport,34.7855,135.438004,AS,Osaka,ITM,https://en.wikipedia.org/wiki/Osaka_International_Airport,Japan
+272,large_airport,Sendai Airport,38.139702,140.917007,AS,Natori,SDJ,https://en.wikipedia.org/wiki/Sendai_Airport,Japan
+273,large_airport,Tokyo Haneda International Airport,35.552299,139.779999,AS,Tokyo,HND,https://en.wikipedia.org/wiki/Tokyo_International_Airport,Japan
+274,large_airport,Jeju International Airport,33.512058,126.492548,AS,Jeju,CJU,https://en.wikipedia.org/wiki/Jeju_International_Airport,South Korea
+275,large_airport,Gimhae International Airport,35.179501,128.938004,AS,Busan,PUS,https://en.wikipedia.org/wiki/Gimhae_International_Airport,South Korea
+276,large_airport,Incheon International Airport,37.469101,126.450996,AS,Seoul,ICN,https://en.wikipedia.org/wiki/Incheon_International_Airport,South Korea
+277,large_airport,Gimpo International Airport,37.5583,126.791,AS,Seoul,GMP,https://en.wikipedia.org/wiki/Gimpo_International_Airport,South Korea
+278,large_airport,Naha Airport,26.195801,127.646004,AS,Okinawa,OKA,https://en.wikipedia.org/wiki/Naha_Airport,Japan
+279,large_airport,Ninoy Aquino International Airport,14.5086,121.019997,AS,Manila,MNL,https://en.wikipedia.org/wiki/Ninoy_Aquino_International_Airport,Philippines
+280,large_airport,Francisco Bangoy International Airport,7.12552,125.646004,AS,Davao,DVO,https://en.wikipedia.org/wiki/Francisco_Bangoy_International_Airport,Philippines
+281,large_airport,Mactan Cebu International Airport,10.309261,123.97974,AS,Lapu-Lapu,CEB,https://en.wikipedia.org/wiki/Mactan-Cebu_International_Airport,Philippines
+282,large_airport,Jorge Newbery Airpark,-34.5592,-58.4156,SA,Buenos Aires,AEP,https://en.wikipedia.org/wiki/Aeroparque_Jorge_Newbery,Argentina
+283,large_airport,Minister Pistarini International Airport,-34.8222,-58.5358,SA,Buenos Aires,EZE,https://en.wikipedia.org/wiki/Ministro_Pistarini_International_Airport,Argentina
+284,large_airport,Val de Cans/Júlio Cezar Ribeiro International Airport,-1.379279,-48.476207,SA,Belém,BEL,https://en.wikipedia.org/wiki/Val_de_Cans_International_Airport,Brazil
+285,large_airport,Presidente Juscelino Kubitschek International Airport,-15.869167,-47.920834,SA,Brasília,BSB,https://en.wikipedia.org/wiki/Bras%C3%ADlia_International_Airport,Brazil
+286,large_airport,Tancredo Neves International Airport,-19.63571,-43.966928,SA,Belo Horizonte,CNF,https://en.wikipedia.org/wiki/Belo_Horizonte_International_Airport,Brazil
+287,large_airport,Eduardo Gomes International Airport,-3.03861,-60.049702,SA,Manaus,MAO,https://en.wikipedia.org/wiki/Eduardo_Gomes_International_Airport,Brazil
+288,large_airport,Hercílio Luz International Airport,-27.670279,-48.552502,SA,Florianópolis,FLN,https://en.wikipedia.org/wiki/Herc%C3%ADlio_Luz_International_Airport,Brazil
+289,large_airport,Pinto Martins International Airport,-3.775833,-38.532222,SA,Fortaleza,FOR,https://en.wikipedia.org/wiki/Pinto_Martins_International_Airport,Brazil
+290,large_airport,Rio Galeão – Tom Jobim International Airport,-22.809999,-43.250557,SA,Rio De Janeiro,GIG,https://en.wikipedia.org/wiki/Rio_de_Janeiro-Gale%C3%A3o_International_Airport,Brazil
+291,large_airport,Guarulhos - Governador André Franco Montoro International Airport,-23.431944,-46.467778,SA,São Paulo,GRU,https://en.wikipedia.org/wiki/S%C3%A3o_Paulo-Guarulhos_International_Airport,Brazil
+292,large_airport,Porto Seguro Airport,-16.438426,-39.080584,SA,Porto Seguro,BPS,https://en.wikipedia.org/wiki/Porto_Seguro_Airport,Brazil
+293,large_airport,Deputado Luiz Eduardo Magalhães International Airport,-12.908611,-38.322498,SA,Salvador,SSA,https://en.wikipedia.org/wiki/Deputado_Lu%C3%ADs_Eduardo_Magalh%C3%A3es_International_Airport,Brazil
+294,large_airport,Eurico de Aguiar Salles Airport,-20.258,-40.285,SA,Vitória,VIX,https://en.wikipedia.org/wiki/Eurico_de_Aguiar_Salles_Airport,Brazil
+295,large_airport,Comodoro Arturo Merino Benítez International Airport,-33.39300156,-70.78579712,SA,Santiago,SCL,https://en.wikipedia.org/wiki/Comodoro_Arturo_Merino_Ben%C3%ADtez_International_Airport,Chile
+296,large_airport,José Joaquín de Olmedo International Airport,-2.15742,-79.883598,SA,Guayaquil,GYE,https://en.wikipedia.org/wiki/José_Joaquín_de_Olmedo_International_Airport,Ecuador
+297,large_airport,Mariscal Sucre International Airport,-0.125399,-78.354306,SA,Quito,UIO,https://en.wikipedia.org/wiki/Mariscal_Sucre_International_Airport,Ecuador
+298,large_airport,Aeropuerto Internacional Silvio Pettirossi,-25.240156,-57.519227,SA,Asunción,ASU,https://en.wikipedia.org/wiki/Silvio_Pettirossi_International_Airport,Paraguay
+299,large_airport,El Dorado International Airport,4.70159,-74.1469,SA,Bogota,BOG,https://en.wikipedia.org/wiki/El_Dorado_International_Airport,Colombia
+300,large_airport,Viru Viru International Airport,-17.6448,-63.135399,SA,Santa Cruz,VVI,https://en.wikipedia.org/wiki/Viru_Viru_International_Airport,Bolivia
+301,large_airport,Cayenne – Félix Eboué Airport,4.819964,-52.361326,SA,Matoury,CAY,https://en.wikipedia.org/wiki/Cayenne_%E2%80%93_F%C3%A9lix_Ebou%C3%A9_Airport,French Guiana
+302,large_airport,Jorge Chávez International Airport,-12.0219,-77.114305,SA,Lima,LIM,https://en.wikipedia.org/wiki/Jorge_Ch%C3%A1vez_International_Airport,Peru
+303,large_airport,Alejandro Velasco Astete International Airport,-13.53569984,-71.938797,SA,Cusco,CUZ,https://en.wikipedia.org/wiki/Alejandro_Velasco_Astete_International_Airport,Peru
+304,large_airport,Carrasco General Cesáreo L. Berisso International Airport,-34.835647,-56.026497,SA,Ciudad de la Costa,MVD,https://en.wikipedia.org/wiki/Carrasco_International_Airport,Uruguay
+306,large_airport,Maiquetía Simón Bolívar International Airport,10.601194,-66.991222,SA,Maiquetía,CCS,https://en.wikipedia.org/wiki/Sim%C3%B3n_Bol%C3%ADvar_International_Airport,Venezuela
+307,large_airport,Martinique Aimé Césaire International Airport,14.591,-61.003201,NA,Fort-de-France,FDF,https://en.wikipedia.org/wiki/Martinique_Aim%C3%A9_C%C3%A9saire_International_Airport,Martinique
+308,large_airport,Guadeloupe - Maryse Condé International Airport,16.265301,-61.531799,NA,Pointe-à-Pitre,PTP,https://en.wikipedia.org/wiki/Pointe-%C3%A0-Pitre_International_Airport,Guadeloupe
+309,large_airport,Luis Munoz Marin International Airport,18.4394,-66.001801,NA,San Juan,SJU,https://en.wikipedia.org/wiki/Luis_Mu%C3%B1oz_Mar%C3%ADn_International_Airport,Puerto Rico
+310,large_airport,Hewanorra International Airport,13.7332,-60.952599,NA,Vieux Fort,UVF,https://en.wikipedia.org/wiki/Hewanorra_International_Airport,Saint Lucia
+311,large_airport,Queen Beatrix International Airport,12.5014,-70.015198,NA,Oranjestad,AUA,https://en.wikipedia.org/wiki/Queen_Beatrix_International_Airport,Aruba
+312,large_airport,Hato International Airport,12.1889,-68.959801,NA,Willemstad,CUR,https://en.wikipedia.org/wiki/Hato_International_Airport,Curaçao
+313,large_airport,Almaty International Airport,43.354267,77.042828,AS,Almaty,ALA,https://en.wikipedia.org/wiki/Almaty_International_Airport,Kazakhstan
+314,large_airport,Manas International Airport,43.06129837,74.4776001,AS,Bishkek,FRU,https://en.wikipedia.org/wiki/Manas_International_Airport,Kyrgyzstan
+315,large_airport,Heydar Aliyev International Airport,40.46749877929688,50.04669952392578,AS,Baku,GYD,https://en.wikipedia.org/wiki/Heydar_Aliyev_International_Airport,Azerbaijan
+316,large_airport,Zvartnots International Airport,40.14730072,44.39590073,AS,Yerevan,EVN,https://en.wikipedia.org/wiki/Zvartnots_International_Airport,Armenia
+317,large_airport,Tbilisi International Airport,41.669201,44.9547,AS,Tbilisi,TBS,https://en.wikipedia.org/wiki/Tbilisi_International_Airport,Georgia
+318,large_airport,Ashgabat International Airport,37.986801,58.361,AS,Ashgabat,ASB,https://en.wikipedia.org/wiki/Ashgabat_International_Airport,Turkmenistan
+319,large_airport,Tashkent International Airport,41.25790024,69.28119659,AS,Tashkent,TAS,https://en.wikipedia.org/wiki/Tashkent_International_Airport,Uzbekistan
+320,large_airport,Zhukovsky International Airport,55.553299,38.150002,EU,Moscow,ZIA,https://en.wikipedia.org/wiki/Zhukovsky_International_Airport,Russia
+321,large_airport,Chhatrapati Shivaji International Airport,19.08869934,72.86789703,AS,Mumbai,BOM,https://en.wikipedia.org/wiki/Chhatrapati_Shivaji_International_Airport,India
+322,large_airport,Bandaranaike International Colombo Airport,7.180759906768799,79.88410186767578,AS,Colombo,CMB,https://en.wikipedia.org/wiki/Bandaranaike_International_Airport,Sri Lanka
+323,large_airport,Phnom Penh International Airport,11.5466,104.844002,AS,Phnom Penh,PNH,https://en.wikipedia.org/wiki/Phnom_Penh_International_Airport,Cambodia
+324,large_airport,Netaji Subhash Chandra Bose International Airport,22.654699,88.446701,AS,Kolkata,CCU,https://en.wikipedia.org/wiki/Netaji_Subhash_Chandra_Bose_International_Airport,India
+325,large_airport,Hazrat Shahjalal International Airport,23.843347,90.397783,AS,Dhaka,DAC,https://www.linkedin.com/in/md-shamim-islam-109925358/,Bangladesh
+326,large_airport,Hong Kong International Airport,22.308901,113.915001,AS,Hong Kong,HKG,https://en.wikipedia.org/wiki/Hong_Kong_International_Airport,Hong Kong
+327,large_airport,Indira Gandhi International Airport,28.55563,77.09519,AS,New Delhi,DEL,https://en.wikipedia.org/wiki/Indira_Gandhi_International_Airport,India
+328,large_airport,Macau International Airport,22.149599,113.592003,AS,Macau,MFM,https://en.wikipedia.org/wiki/Macau_International_Airport,Macau
+329,large_airport,Tribhuvan International Airport,27.6966,85.3591,AS,Kathmandu,KTM,https://en.wikipedia.org/wiki/Tribhuvan_International_Airport,Nepal
+330,large_airport,Kempegowda International Airport,13.1979,77.706299,AS,Bangalore,BLR,https://en.wikipedia.org/wiki/Kempegowda_International_Airport,India
+331,large_airport,Cochin International Airport,10.151047,76.400838,AS,Kochi,COK,https://en.wikipedia.org/wiki/Cochin_International_Airport,India
+332,large_airport,Rajiv Gandhi International Airport,17.231318,78.429855,AS,Hyderabad,HYD,https://en.wikipedia.org/wiki/Rajiv_Gandhi_International_Airport,India
+333,large_airport,Chennai International Airport,12.990005,80.169296,AS,Chennai,MAA,https://en.wikipedia.org/wiki/Chennai_International_Airport,India
+334,large_airport,Thiruvananthapuram International Airport,8.48212,76.920097,AS,Thiruvananthapuram,TRV,https://en.wikipedia.org/wiki/Trivandrum_International_Airport,India
+335,large_airport,Don Mueang International Airport,13.9126,100.607002,AS,Bangkok,DMK,https://en.wikipedia.org/wiki/Don_Mueang_International_Airport,Thailand
+336,large_airport,Suvarnabhumi Airport,13.681099891662598,100.74700164794922,AS,Bangkok,BKK,https://en.wikipedia.org/wiki/Suvarnabhumi_Airport,Thailand
+337,large_airport,Chiang Mai International Airport,18.76679993,98.96260071,AS,Chiang Mai,CNX,https://en.wikipedia.org/wiki/Chiang_Mai_International_Airport,Thailand
+338,large_airport,Phuket International Airport,8.1132,98.316902,AS,Phuket,HKT,https://en.wikipedia.org/wiki/Phuket_International_Airport,Thailand
+339,large_airport,Noi Bai International Airport,21.221201,105.806999,AS,Hanoi,HAN,https://en.wikipedia.org/wiki/Noi_Bai_International_Airport,Vietnam
+340,large_airport,Tan Son Nhat International Airport,10.8188,106.652,AS,Ho Chi Minh,SGN,https://en.wikipedia.org/wiki/Tan_Son_Nhat_International_Airport,Vietnam
+341,large_airport,Mandalay International Airport,21.70219993591309,95.97789764404295,AS,Mandalay,MDL,https://en.wikipedia.org/wiki/Mandalay_International_Airport,Myanmar
+342,large_airport,Yangon International Airport,16.907300949099998,96.1332016,AS,Yangon,RGN,https://en.wikipedia.org/wiki/Yangon_International_Airport,Myanmar
+343,large_airport,Hasanuddin International Airport,-5.06163,119.554001,AS,Ujung Pandang,UPG,https://en.wikipedia.org/wiki/Hasanuddin_International_Airport,Indonesia
+344,large_airport,Denpasar I Gusti Ngurah Rai International Airport,-8.748409,115.167123,AS,Badung,DPS,https://en.wikipedia.org/wiki/Ngurah_Rai_International_Airport,Indonesia
+345,large_airport,Sultan Aji Muhammad Sulaiman Sepinggan International Airport,-1.268342,116.89452,AS,Balikpapan,BPN,https://en.wikipedia.org/wiki/Sultan_Aji_Muhamad_Sulaiman_Airport,Indonesia
+346,large_airport,Juanda International Airport,-7.37983,112.787003,AS,Surabaya,SUB,https://en.wikipedia.org/wiki/Juanda_International_Airport,Indonesia
+347,large_airport,Brunei International Airport,4.9442,114.928001,AS,Bandar Seri Begawan,BWN,https://en.wikipedia.org/wiki/Brunei_International_Airport,Brunei
+348,large_airport,Soekarno-Hatta International Airport,-6.12556982,106.6559982,AS,Jakarta,CGK,https://en.wikipedia.org/wiki/Soekarno-Hatta_International_Airport,Indonesia
+349,large_airport,Kuala Lumpur International Airport,2.74558,101.709999,AS,Sepang,KUL,https://en.wikipedia.org/wiki/Kuala_Lumpur_International_Airport,Malaysia
+350,large_airport,Singapore Changi Airport,1.35019,103.994003,AS,Singapore,SIN,https://en.wikipedia.org/wiki/Singapore_Changi_Airport,Singapore
+351,large_airport,Brisbane International Airport,-27.38419914,153.11700439453125,OC,Brisbane,BNE,https://en.wikipedia.org/wiki/Brisbane_Airport,Australia
+352,large_airport,Melbourne Airport,-37.661548,144.836432,OC,Melbourne,MEL,https://en.wikipedia.org/wiki/Melbourne_Airport,Australia
+353,large_airport,Adelaide International Airport,-34.947512,138.533393,OC,Adelaide,ADL,https://en.wikipedia.org/wiki/Adelaide_International_Airport,Australia
+354,large_airport,Perth International Airport,-31.94029999,115.96700286865234,OC,Perth,PER,https://en.wikipedia.org/wiki/Perth_Airport,Australia
+355,large_airport,Sydney Kingsford Smith International Airport,-33.946098,151.177002,OC,Sydney,SYD,https://en.wikipedia.org/wiki/Sydney_Airport,Australia
+356,large_airport,Beijing Capital International Airport,40.08010101,116.58499908447266,AS,Beijing,PEK,https://en.wikipedia.org/wiki/Beijing_Capital_International_Airport,China
+357,large_airport,Beijing Daxing International Airport,39.509945,116.41092,AS,Beijing,PKX,https://en.wikipedia.org/wiki/Beijing_Daxing_International_Airport,China
+358,large_airport,Hohhot Baita International Airport,40.849658,111.824598,AS,Hohhot,HET,https://en.wikipedia.org/wiki/Hohhot_Baita_International_Airport,China
+359,large_airport,Tianjin Binhai International Airport,39.12440109,117.3460007,AS,Tianjin,TSN,https://en.wikipedia.org/wiki/Tianjin_Binhai_International_Airport,China
+360,large_airport,Taiyuan Wusu International Airport,37.746899,112.627998,AS,Taiyuan,TYN,https://en.wikipedia.org/wiki/Taiyuan_Wusu_International_Airport,China
+361,large_airport,Guangzhou Baiyun International Airport,23.392401,113.299004,AS,Guangzhou,CAN,https://en.wikipedia.org/wiki/Guangzhou_Baiyun_International_Airport,China
+362,large_airport,Changsha Huanghua International Airport,28.189199,113.220001,AS,Changsha,CSX,https://en.wikipedia.org/wiki/Changsha_Huanghua_International_Airport,China
+363,large_airport,Guilin Liangjiang International Airport,25.219828,110.039553,AS,Guilin,KWL,https://en.wikipedia.org/wiki/Guilin_Liangjiang_International_Airport,China
+364,large_airport,Nanning Wuxu Airport,22.608544,108.175335,AS,Nanning,NNG,https://en.wikipedia.org/wiki/Nanning_Wuxu_International_Airport,China
+365,large_airport,Shenzhen Bao'an International Airport,22.639299,113.810997,AS,Shenzhen,SZX,https://en.wikipedia.org/wiki/Shenzhen_Bao'an_International_Airport,China
+366,large_airport,Zhengzhou Xinzheng International Airport,34.526497,113.849165,AS,Zhengzhou,CGO,https://en.wikipedia.org/wiki/Zhengzhou_Xinzheng_International_Airport,China
+367,large_airport,Wuhan Tianhe International Airport,30.774798,114.213723,AS,Wuhan,WUH,https://en.wikipedia.org/wiki/Wuhan_Tianhe_International_Airport,China
+368,large_airport,Haikou Meilan International Airport,19.9349,110.459,AS,Haikou,HAK,https://en.wikipedia.org/wiki/Haikou_Meilan_International_Airport,China
+369,large_airport,Sanya Phoenix International Airport,18.3029,109.412003,AS,Sanya,SYX,https://en.wikipedia.org/wiki/Sanya_Phoenix_International_Airport,China
+370,large_airport,Lanzhou Zhongchuan International Airport,36.515202,103.620003,AS,Lanzhou,LHW,https://en.wikipedia.org/wiki/Lanzhou_Airport,China
+371,large_airport,Xi'an Xianyang International Airport,34.447102,108.751999,AS,Xi'an,XIY,https://en.wikipedia.org/wiki/Xi'an_Xianyang_International_Airport,China
+372,large_airport,Kunming Changshui International Airport,25.110313,102.936743,AS,Kunming,KMG,https://en.wikipedia.org/wiki/Kunming_Changshui_International_Airport,China
+373,large_airport,Xiamen Gaoqi International Airport,24.54400062561035,118.12799835205078,AS,Xiamen,XMN,https://en.wikipedia.org/wiki/Xiamen_Gaoqi_International_Airport,China
+374,large_airport,Nanchang Changbei International Airport,28.864815,115.90271,AS,Nanchang,KHN,https://en.wikipedia.org/wiki/Nanchang_Changbei_International_Airport,China
+375,large_airport,Fuzhou Changle International Airport,25.934669,119.66318,AS,Fuzhou,FOC,https://en.wikipedia.org/wiki/Fuzhou_Changle_International_Airport,China
+376,large_airport,Hangzhou Xiaoshan International Airport,30.23609,120.428865,AS,Hangzhou,HGH,https://en.wikipedia.org/wiki/Hangzhou_Xiaoshan_International_Airport,China
+377,large_airport,Jinan Yaoqiang International Airport,36.857201,117.216003,AS,Jinan,TNA,https://en.wikipedia.org/wiki/Jinan_Yaoqiang_International_Airport,China
+378,large_airport,Ningbo Lishe International Airport,29.82670021057129,121.46199798583984,AS,Ningbo,NGB,https://en.wikipedia.org/wiki/Ningbo_Lishe_International_Airport,China
+379,large_airport,Nanjing Lukou International Airport,31.735032,118.865949,AS,Nanjing,NKG,https://en.wikipedia.org/wiki/Nanjing_Lukou_International_Airport,China
+380,large_airport,Shanghai Pudong International Airport,31.1434,121.805,AS,Shanghai,PVG,https://en.wikipedia.org/wiki/Shanghai_Pudong_International_Airport,China
+381,large_airport,Qingdao Jiaodong International Airport,36.361953,120.088171,AS,Qingdao,TAO,https://en.wikipedia.org/wiki/Qingdao_Jiaodong_International_Airport,China
+382,large_airport,Shanghai Hongqiao International Airport,31.198104,121.33426,AS,Shanghai,SHA,https://en.wikipedia.org/wiki/Shanghai_Hongqiao_International_Airport,China
+383,large_airport,Wenzhou Longwan International Airport,27.910572,120.853465,AS,Wenzhou,WNZ,https://en.wikipedia.org/wiki/Wenzhou_Longwan_International_Airport,China
+384,large_airport,Yantai Penglai International Airport,37.659724,120.978124,AS,Yantai,YNT,https://en.wikipedia.org/wiki/Yantai_Penglai_International_Airport,China
+385,large_airport,Chongqing Jiangbei International Airport,29.712254,106.651895,AS,Chongqing,CKG,https://en.wikipedia.org/wiki/Chongqing_Jiangbei_International_Airport,China
+386,large_airport,Guiyang Longdongbao International Airport,26.541466,106.803331,AS,Guiyang,KWE,https://en.wikipedia.org/wiki/Guiyang_Longdongbao_Airport,China
+387,large_airport,Chengdu Shuangliu International Airport,30.558257,103.945966,AS,Chengdu,CTU,https://en.wikipedia.org/wiki/Chengdu_Shuangliu_International_Airport,China
+388,large_airport,Ürümqi Tianshan International Airport,43.907101,87.474197,AS,Ürümqi,URC,https://en.wikipedia.org/wiki/%C3%9Cr%C3%BCmqi_Tianshan_International_Airport,China
+389,large_airport,Changchun Longjia International Airport,43.996201,125.684998,AS,Changchun,CGQ,https://en.wikipedia.org/wiki/Changchun_Longjia_International_Airport,China
+390,large_airport,Harbin Taiping International Airport,45.623402,126.25,AS,Harbin,HRB,https://en.wikipedia.org/wiki/Harbin_Taiping_International_Airport,China
+391,large_airport,Dalian Zhoushuizi International Airport,38.965719,121.538477,AS,Dalian,DLC,https://en.wikipedia.org/wiki/Dalian_Zhoushuizi_International_Airport,China
+392,large_airport,Shenyang Taoxian International Airport,41.639801,123.483002,AS,Shenyang,SHE,https://en.wikipedia.org/wiki/Shenyang_Taoxian_International_Airport,China
+393,large_airport,Chengdu Tianfu International Airport,30.29,104.44333,AS,Chengdu,TFU,https://en.wikipedia.org/wiki/Chengdu_Tianfu_International_Airport,China

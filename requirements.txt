@@ -1,0 +1,11 @@
+# 旅游 AI 质检平台 — 运行时依赖（最小集）
+# 安装：pip install -r requirements.txt
+flask>=3.0
+openai>=1.0
+requests>=2.25
+pandas>=1.3
+numpy>=1.21
+
+# ---- 可选（非 server.py 运行必需）----
+# openpyxl   : 仅 build_assertions.py / import_bank.py 解析 xlsx 题库时需要
+# streamlit  : 仅 app.py（旧版 Streamlit 入口，已弃用）需要
