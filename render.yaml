@@ -5,7 +5,18 @@ services:
     name: aloka-qa-platform
     runtime: python
     plan: free
-    buildCommand: pip install -r requirements.txt && python -m playwright install --with-deps chromium
+    # 锁定 Python 3.11：Render 默认 3.13，部分包（greenlet/pandas 旧版本约束）兼容性更稳
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: PLAYWRIGHT_BROWSERS_PATH
+        value: /opt/render/project/src/.cache/ms-playwright
+    # 构建三步，全部容错：
+    # 1) 升级 pip 避免老解析器装新包失败
+    # 2) 装 Python 依赖
+    # 3) 装 Chromium（--with-deps 失败时退化为不带系统依赖再试；再失败也不阻断部署，
+    #    仅 Bot 自动化不可用，Web 质检功能正常）
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt && (python -m playwright install --with-deps chromium || python -m playwright install chromium || echo 'WARN: chromium not installed - Bot automation disabled')
     startCommand: python server.py
     healthCheckPath: /api/health
     # 免费层注意事项：
