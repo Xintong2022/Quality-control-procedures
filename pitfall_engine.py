@@ -103,6 +103,10 @@ def _judge_client(cfg):
     return OpenAI(api_key=key, base_url=base), key
 
 
+# 裁判置信度门槛：hit=true 但 confidence 低于此值 → 视为未命中（需人工复核）
+CONF_MIN = 0.6
+
+
 def judge_assertions(case, assertions, bot_text, cfg):
     """对每条断言，让裁判 LLM 判 命中/遗漏 + 证据 + 置信度。
 
@@ -157,13 +161,18 @@ def judge_assertions(case, assertions, bot_text, cfg):
         out = []
         for i, a in enumerate(assertions):
             j = judged.get(i, {})
+            raw_hit = bool(j.get("hit", False))
+            conf = float(j.get("confidence", 0.0) or 0.0)
+            # 低置信度命中 → 不计命中，标记待复核
+            low_conf = raw_hit and conf < CONF_MIN
             out.append({
                 "text": a["text"],
                 "dimension_family": a["dimension_family"],
                 "fatal": a["fatal"],
-                "hit": bool(j.get("hit", False)),
+                "hit": False if low_conf else raw_hit,
                 "evidence": str(j.get("evidence", "")),
-                "confidence": float(j.get("confidence", 0.0) or 0.0),
+                "confidence": conf,
+                "needs_review": low_conf,
             })
         return out
     except Exception as e:
@@ -180,6 +189,7 @@ def aggregate(judged):
     hits = 0
     fatal_miss = 0
     judged_n = 0
+    low_conf_n = 0
     for a in judged:
         if a["hit"] is None:
             continue
@@ -192,37 +202,38 @@ def aggregate(judged):
         if a["hit"]:
             fam_stats[fam]["hit"] += 1
             hits += 1
+        if a.get("needs_review"):
+            low_conf_n += 1
         if a["fatal"]:
             fam_stats[fam]["fatal_total"] += 1
             if not a["hit"]:
                 fam_stats[fam]["fatal_miss"] += 1
                 fatal_miss += 1
 
-    # 逐维命中率
+    # 逐维命中率（只对有断言的维度计算）
     family_rates = {}
     for f, s in fam_stats.items():
         if s["total"]:
             family_rates[f] = round(s["hit"] / s["total"], 3)
-    # 加权总分（致命项权重翻倍；命中率口径）
-    total_w = 0.0
-    hit_w = 0.0
-    for f, s in fam_stats.items():
-        if not s["total"]:
-            continue
-        w = s["total"] + s["fatal_total"]  # 致命项额外加权
-        total_w += w
-        hit_w += w * (s["hit"] / s["total"])
-    overall = round(hit_w / total_w, 3) if total_w else None
+    # 8 维等权平均：各有效维度命中率的算术平均，维度间权重相同
+    rates = list(family_rates.values())
+    overall = round(sum(rates) / len(rates), 3) if rates else None
+    # 红线零容忍：任一致命断言遗漏 → 一票否决，直接判 0
+    red_line = fatal_miss > 0
+    if red_line and overall is not None:
+        overall = 0.0
 
     return {
-        "overall": overall,                 # 0~1 避坑得分
+        "overall": overall,                 # 0~1 避坑得分（红线触发则 0）
         "hit_rate": round(hits / judged_n, 3) if judged_n else None,
         "assertions_total": n,
         "assertions_judged": judged_n,
         "fatal_missed": fatal_miss,
-        "fatal_zero_tolerance": fatal_miss > 0,  # 红线触发
+        "fatal_zero_tolerance": red_line,   # 红线触发
+        "low_confidence_n": low_conf_n,     # 低置信度被降级为未命中的条数
         "family_rates": family_rates,
         "family_stats": fam_stats,
+        "scoring": "8维等权平均 · 红线零容忍 · 置信度≥%s" % CONF_MIN,
     }
 
 

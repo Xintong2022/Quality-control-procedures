@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>旅游 AI 质检平台 · 生成器+TREK+轻量裁判</title>
+<title>Aloka质量检测平台</title>
 </head>
 <style>
 :root{
@@ -38,6 +38,7 @@ a{color:inherit;text-decoration:none}
   border-right:1px solid var(--line);
 }
 .brand{display:flex;align-items:center;gap:10px;padding:4px 6px 14px}
+.brand-logo{width:32px;height:32px;border-radius:9px;flex:0 0 32px;object-fit:cover;box-shadow:0 2px 10px rgba(80,90,255,.18)}
 .brand-mark{
   width:30px;height:30px;border-radius:9px;flex:0 0 30px;display:grid;place-items:center;
   background:linear-gradient(150deg,#3f5df3,#7b4bff);box-shadow:0 2px 10px rgba(80,90,255,.28);
@@ -155,6 +156,7 @@ a{color:inherit;text-decoration:none}
 .tbl td{padding:10px;border-bottom:1px solid var(--line-soft);vertical-align:top;color:#cdd2da}
 .tbl tr:last-child td{border-bottom:0}
 .tbl tbody tr:hover td{background:#17191e}
+.tbl tbody tr.row-click{cursor:pointer}
 .tbl .id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:#aab3c4;white-space:nowrap}
 .tbl .sub{display:block;font-size:11px;color:var(--text-3);margin-top:2px}
 .tbl .strong{color:#eef1f6}
@@ -171,6 +173,10 @@ a{color:inherit;text-decoration:none}
 .filter-bar input,.filter-bar select{background:#0f1115;border:1px solid #2a2f38;color:var(--text);border-radius:7px;padding:6px 8px;font-size:12.5px}
 .filter-bar input:focus,.filter-bar select:focus{border-color:var(--accent,#6b96ff);outline:none}
 .t-right{text-align:right}
+.t-center{text-align:center}
+/* .tbl th 的 text-align:left 特异性更高会盖掉 .t-right/.t-center，这里显式覆盖保证表头对齐生效 */
+.tbl th.t-right{text-align:right}
+.tbl th.t-center{text-align:center}
 .t-nowrap{white-space:nowrap}
 
 .meter{height:5px;border-radius:3px;background:#22262e;overflow:hidden;min-width:44px}
@@ -188,6 +194,25 @@ a{color:inherit;text-decoration:none}
 .note b{color:#b9c0cc;font-weight:500}
 .rule-box{background:#111318;border:1px solid var(--line-soft);border-radius:9px;padding:10px 12px;font-size:11.5px;color:var(--text-2);line-height:1.75}
 .rule-box .k{color:#cfd6e2}
+/* ---------- 评分标准说明 ---------- */
+.score-steps{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.score-step{display:flex;gap:10px;background:#111318;border:1px solid var(--line-soft);border-radius:9px;padding:10px 12px}
+.score-step .n{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:rgba(107,150,255,.15);
+  color:#a5bcf5;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.score-step .st-b{font-size:12px;color:#dfe3ea;font-weight:600}
+.score-step .st-p{margin:4px 0 0;font-size:11px;color:var(--text-3);line-height:1.65}
+.score-step .st-p b{color:#b9c0cc;font-weight:500}
+.score-formula{margin-top:11px;border:1px solid var(--line-soft);border-radius:9px;overflow:hidden}
+.score-formula .sf-row{display:flex;gap:12px;padding:8px 12px;font-size:11.5px;line-height:1.7;border-bottom:1px solid var(--line-soft)}
+.score-formula .sf-row:last-child{border-bottom:0}
+.score-formula .sf-k{flex:0 0 92px;color:#cfd6e2;font-weight:600}
+.score-formula .sf-v{color:var(--text-2);font-variant-numeric:tabular-nums}
+.score-formula .sf-v em{font-style:normal;color:#a5bcf5}
+.score-formula .sf-row.red .sf-k{color:#f89a92}
+.score-fams{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.score-fams .tag{height:22px}
+.score-demo{margin-top:11px}
+@media(max-width:900px){.score-steps{grid-template-columns:1fr}.score-formula .sf-k{flex-basis:76px}}
 
 /* ---------- 报告页 ---------- */
 .case-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 16px;background:#14161a;border:1px solid var(--line);border-radius:var(--r)}
@@ -295,11 +320,16 @@ ul.bul li{font-size:12.5px;line-height:1.7;color:var(--text-2)}
 .foot{margin-top:22px;padding-top:14px;border-top:1px solid var(--line-soft);
   font-size:11px;color:#5d636e;display:flex;gap:12px;flex-wrap:wrap}
 
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:none;align-items:center;justify-content:center}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:none;align-items:center;justify-content:center;padding:24px}
 .modal-bg.show{display:flex}
-.modal{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.modal{width:520px;max-width:92vw;max-height:calc(100vh - 48px);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;overflow-y:auto}
 .modal h3{font-size:15px;margin-bottom:14px}
 .modal-lg{width:720px;max-width:94vw}
+/* 详情类弹窗：标题与底部操作栏固定，中间内容独立滚动 */
+.modal.dlg-flex{display:flex;flex-direction:column;overflow:hidden}
+.modal.dlg-flex h3,.modal.dlg-flex .form-actions{flex:0 0 auto}
+.modal-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;padding-right:4px}
+.modal .form-actions{position:sticky;bottom:-20px;background:var(--panel);padding-bottom:20px;margin-bottom:-20px;z-index:2}
 .detail-grid{display:grid;grid-template-columns:140px 1fr;gap:8px 14px;font-size:12.5px;margin:6px 0 14px}
 .detail-grid .k{color:var(--text-3)}
 .detail-grid .v{color:#d6dbe3;line-height:1.7;word-break:break-word}
@@ -518,8 +548,8 @@ body.locked{overflow:hidden}
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <img class="badge-img" src="/static/logo.png" alt="TXin AI">
-      <div class="t">旅游 AI 质检平台</div>
+      <img class="badge-img" src="/static/logo-aloka.png" alt="Aloka">
+      <div class="t">Aloka质量检测平台</div>
     </div>
     <h2>登录</h2>
     <form id="loginForm" autocomplete="off">
@@ -534,19 +564,11 @@ body.locked{overflow:hidden}
 
 <nav class="nav" aria-label="主导航">
   <div class="brand">
-    <div class="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
-    </div>
+    <img class="brand-logo" src="/static/logo-aloka.png" alt="Aloka">
     <div class="brand-txt">
-      <div class="brand-title">旅游 AI 质检平台</div>
-      <div class="brand-sub">TREK × 轻量裁判</div>
+      <div class="brand-title">Aloka质量检测平台</div>
     </div>
   </div>
-
-  <button class="run-btn" id="runBtn" type="button">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg>
-    运行批量评测
-  </button>
 
   <div class="nav-scroll">
     <div class="nav-label">概览</div>
@@ -556,20 +578,19 @@ body.locked{overflow:hidden}
     </button>
 
     <div class="nav-label">质检流程</div>
-    <button class="nav-item" type="button" data-nav="runs">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg>
-      执行任务
-      <span class="cnt" id="navRunsCnt">0</span>
-    </button>
-    <button class="nav-item" type="button" data-nav="report">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
-      质检报告
-      <span class="cnt" id="navReportCnt">0</span>
-    </button>
     <button class="nav-item" type="button" data-nav="cases">
       <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/><path d="M4 11.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
       案例库
       <span class="cnt" id="navCasesCnt">0</span>
+    </button>
+    <button class="nav-item" type="button" data-nav="report">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+      质检系统
+    </button>
+    <button class="nav-item" type="button" data-nav="runs">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg>
+      质检报告
+      <span class="cnt" id="navRunsCnt">0</span>
     </button>
 
   </div>
@@ -612,189 +633,126 @@ body.locked{overflow:hidden}
   <div class="views">
 
     <!-- ================= 看板 ================= -->
+    <!-- ================= 质检看板（基于真实评分结果） ================= -->
     <section class="view is-active" data-view="dashboard" aria-label="质检看板">
       <div class="view-head">
         <div>
           <h2>质检看板</h2>
-          <p>硬逻辑用代码算、软体验交给裁判盲审：两项分开计分，不互相稀释。带 <span class="live">●</span> 为实时数据，<span class="sample">●</span> 为示例。</p>
+          <p>所有指标均来自「质检系统」真实评测结果（runs.json），不做示例填充。暂无记录时各项显示「—」。</p>
         </div>
         <div class="head-actions">
-          <span class="tag solid">v2.0 · 真实后端</span>
-          <span class="tag mute">实时</span>
+          <button class="btn sm" id="dashRefreshBtn" type="button">🔄 刷新</button>
         </div>
       </div>
 
-      <div class="grid g-kpi">
+      <!-- KPI 区 -->
+      <div class="grid g-kpi mt8">
         <div class="kpi">
-          <div class="k-label">综合平均得分</div>
-          <div class="k-val" id="kpiOverall">—<small>/ 10</small></div>
-          <div class="k-foot"><span class="flat">轻量裁判软质量加权</span></div>
+          <div class="k-label">综合平均避坑得分</div>
+          <div class="k-val" id="dashOverall">—<small>/ 100</small></div>
+          <div class="k-foot"><span class="flat">所有记录 overall 平均</span></div>
         </div>
         <div class="kpi">
-          <div class="k-label"><span class="live">●</span> TREK 硬逻辑得分率</div>
-          <div class="k-val" id="kpiHard" style="color:#7fe0c4">—<small>%</small></div>
-          <div class="k-foot"><span class="flat">引擎确定性基准</span></div>
+          <div class="k-label">8维最低命中率</div>
+          <div class="k-val" id="dashMinFam">—</div>
+          <div class="k-foot"><span class="flat" id="dashMinFamName"></span></div>
         </div>
         <div class="kpi">
-          <div class="k-label"><span class="live">●</span> 轻量裁判软质量均分</div>
-          <div class="k-val" id="kpiSoft" style="color:#bda9ff">—<small>/ 10</small></div>
-          <div class="k-foot"><span class="flat">轻量裁判加权</span></div>
+          <div class="k-label">致命遗漏总数</div>
+          <div class="k-val" id="dashFatal" style="color:#f89a92">—<small>条</small></div>
+          <div class="k-foot"><span class="flat">红线一票否决项</span></div>
         </div>
         <div class="kpi">
-          <div class="k-label">触发致命风险</div>
-          <div class="k-val" id="kpiFatal" style="color:#f89a92">—<small>例</small></div>
-          <div class="k-foot"><span class="flat">待评测</span></div>
+          <div class="k-label">有效样本</div>
+          <div class="k-val" id="dashRunCount">—</div>
+          <div class="k-foot"><span class="flat">已完成评测条数</span></div>
         </div>
-        <div class="kpi">
-          <div class="k-label"><span class="live">●</span> 有效样本（案例）</div>
-          <div class="k-val" id="kpiCases">—</div>
-          <div class="k-foot"><span class="flat">案例库规模</span></div>
+        <div class="kpi row-click" id="dashLatestCard" style="cursor:pointer">
+          <div class="k-label">最新评测</div>
+          <div class="k-val" id="dashLatest">—</div>
+          <div class="k-foot"><span class="flat" id="dashLatestTime"></span></div>
         </div>
       </div>
 
+      <!-- 图表区 -->
       <div class="grid g-chart mt14">
         <div class="card">
-          <div class="card-h">
-            <h3>质检版本演进</h3>
-            <div class="right legend">
-              <span><i style="background:#37c9a5"></i>硬逻辑得分率</span>
-              <span><i style="background:#9f8cff"></i>软质量得分 ×10</span>
-            </div>
+          <div class="card-h"><h3>评分趋势</h3><div class="right" id="dashTrendCount">— 条记录</div></div>
+          <div class="chart-wrap" style="height:240px;position:relative">
+            <svg id="dashTrendSvg" viewBox="0 0 720 200" role="img" aria-label="评分趋势柱状图"></svg>
           </div>
-          <svg class="chart" viewBox="0 0 660 240" role="img" aria-label="示例趋势图">
-            <g stroke="#1f232a" stroke-width="1">
-              <line x1="56" y1="200" x2="636" y2="200"/><line x1="56" y1="156" x2="636" y2="156"/>
-              <line x1="56" y1="112" x2="636" y2="112"/><line x1="56" y1="68" x2="636" y2="68"/>
-              <line x1="56" y1="24" x2="636" y2="24" stroke="#23262c"/>
-            </g>
-            <g fill="#6b717c" font-size="10" text-anchor="end">
-              <text x="46" y="204">60</text><text x="46" y="160">70</text><text x="46" y="116">80</text><text x="46" y="72">90</text><text x="46" y="28">100</text>
-            </g>
-            <path d="M56,150.7 L201,140.6 L346,130.5 L491,124.8 L636,119 L636,200 L56,200 Z" fill="url(#fillTeal)"/>
-            <path d="M56,150.7 L201,140.6 L346,130.5 L491,124.8 L636,119" fill="none" stroke="#37c9a5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-            <path d="M56,138.4 L201,140.2 L346,128.3 L491,120.8 L636,116.4" fill="none" stroke="#9f8cff" stroke-width="1.8" stroke-dasharray="5 4" stroke-linejoin="round" stroke-linecap="round"/>
-            <g fill="#37c9a5"><circle cx="56" cy="150.7" r="3"/><circle cx="201" cy="140.6" r="3"/><circle cx="346" cy="130.5" r="3"/><circle cx="491" cy="124.8" r="3"/><circle cx="636" cy="119" r="3.4"/></g>
-            <g fill="#0c0d10" stroke="#9f8cff" stroke-width="1.6"><circle cx="56" cy="138.4" r="2.8"/><circle cx="201" cy="140.2" r="2.8"/><circle cx="346" cy="128.3" r="2.8"/><circle cx="491" cy="120.8" r="2.8"/><circle cx="636" cy="116.4" r="3.2"/></g>
-            <g font-size="10.5" text-anchor="end"><text x="632" y="104" fill="#7fe0c4" id="chartHard">—</text><text x="632" y="135" fill="#bda9ff" id="chartSoft">—</text></g>
-            <g fill="#6b717c" font-size="10.5" text-anchor="middle"><text x="56" y="222">v1.0</text><text x="201" y="222">v1.1</text><text x="346" y="222">v1.2</text><text x="491" y="222">v1.3</text><text x="636" y="222">v1.4</text></g>
-          </svg>
-          <p class="note">纵向为示例轨迹；接入真实评测流水后，最新点会替换为实时硬逻辑 / 软质量得分。当前硬逻辑得分率已接入引擎 真实基准。</p>
+          <p class="note" id="dashTrendNote">暂无评测记录，运行「质检系统」后趋势将自动生成。</p>
         </div>
 
         <div class="card">
-          <div class="card-h"><h3>坑点严重度分布</h3><div class="right"><span class="sample">示例</span> · 近 30 天</div></div>
-          <div class="sev-bar" role="img" aria-label="示例分布">
-            <i style="width:11.7%;background:#f0746a"></i><i style="width:31.7%;background:#e2ab4e"></i><i style="width:56.6%;background:#4a5568"></i>
-          </div>
-          <div class="bar-row"><span class="nm" style="width:52px;flex:0 0 52px;color:#f89a92">致命</span><span class="meter red" style="background:#1e222a"><i style="width:11.7%"></i></span><span class="v">7</span></div>
-          <div class="bar-row"><span class="nm" style="width:52px;flex:0 0 52px;color:#eec381">严重</span><span class="meter" style="background:#1e222a"><i style="width:31.7%;background:#e2ab4e"></i></span><span class="v">19</span></div>
-          <div class="bar-row"><span class="nm" style="width:52px;flex:0 0 52px;color:#9aa3b2">轻微</span><span class="meter" style="background:#1e222a"><i style="width:56.6%;background:#4a5568"></i></span><span class="v">34</span></div>
-          <div class="rule-box mt10"><span class="k">真实坑点</span>：在「质检报告」运行轻量裁判后，检测到的坑点会进入候选池，此处将按严重度实时聚合。</div>
+          <div class="card-h"><h3>八维命中率</h3><div class="right"><span class="tag mute">按 family_rates 聚合</span></div></div>
+          <div id="dashFamChart" style="min-height:200px"></div>
         </div>
       </div>
 
-      <div class="grid g-2 mt14">
-        <div class="card">
-          <div class="card-h"><h3>红榜 · 高频踩坑</h3><div class="right"><span class="sample">示例</span></div></div>
-          <ul class="rank">
-            <li><span class="no">01</span><span class="nm">陕西历史博物馆周一闭馆 / 预约名额不足</span><span class="right"><span class="tag warn">严重</span><span class="num">21</span></span></li>
-            <li><span class="no">02</span><span class="nm">中老年单日步行强度超限</span><span class="right"><span class="tag warn">严重</span><span class="num">18</span></span></li>
-            <li><span class="no">03</span><span class="nm">极端天气无室内备选方案</span><span class="right"><span class="tag warn">新发现</span><span class="num">12</span></span></li>
-            <li><span class="no">04</span><span class="nm">景区预约时段与行程时间冲突</span><span class="right"><span class="tag warn">新发现</span><span class="num">9</span></span></li>
-            <li><span class="no">05</span><span class="nm">酒店与次日集合点通勤未留缓冲</span><span class="right"><span class="tag new">新发现</span><span class="num">8</span></span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="card-h"><h3>黑榜 · 已收敛坑点</h3><div class="right">近三版命中下降</div></div>
-          <ul class="rank">
-            <li><span class="no">01</span><span class="nm">大交通时间未标注</span><span class="right"><span class="tag pass">收敛</span><span class="num">34 → 4</span><span class="up">-88%</span></span></li>
-            <li><span class="no">02</span><span class="nm">预算未计入门票</span><span class="right"><span class="tag pass">收敛</span><span class="num">26 → 3</span><span class="up">-88%</span></span></li>
-            <li><span class="no">03</span><span class="nm">行程未给每日餐饮建议</span><span class="right"><span class="tag pass">收敛</span><span class="num">41 → 9</span><span class="up">-78%</span></span></li>
-            <li><span class="no">04</span><span class="nm">返程日仍安排高强度景点</span><span class="right"><span class="tag pass">收敛</span><span class="num">15 → 6</span><span class="up">-60%</span></span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="grid g-2 mt14">
-        <div class="card">
-          <div class="card-h"><h3>版本对比</h3><div class="right"><span class="sample">示例</span></div></div>
-          <table class="tbl">
-            <thead><tr><th>版本</th><th class="t-right">硬逻辑得分率</th><th class="t-right">软体验均分</th><th class="t-right">致命风险</th><th class="t-right">有效样本</th></tr></thead>
-            <tbody>
-              <tr><td class="id">v2.0</td><td class="t-right num" id="vcHard">—</td><td class="t-right num" id="vcSoft">—</td><td class="t-right num">—</td><td class="t-right num" id="vcCases">—</td></tr>
-              <tr><td class="id">v1.4</td><td class="t-right num" style="color:#7fe0c4">78.4%</td><td class="t-right num" style="color:#bda9ff">7.9</td><td class="t-right num">3</td><td class="t-right num">126</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="card">
-          <div class="card-h"><h3>三方对账 · 待处理</h3><div class="right" id="reconRight">实时</div></div>
-          <ul class="mini-list" id="reconList">
-            <li><span class="id">—</span><span>暂无异常</span><span class="right tag pass">正常</span></li>
-          </ul>
-          <div class="rule-box mt10">点开任意案例，到「质检报告」可查看<b>生成器产出的测试输入</b>、<b>Bot 原始回答</b>与<b>生成器+TREK+轻量裁判 裁决明细</b>。</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= 执行任务 ================= -->
-    <section class="view" data-view="runs" aria-label="执行任务">
-      <div class="view-head">
-        <div>
-          <h2>执行任务</h2>
-          <p>手动选取案例并触发执行；失败样本单独计数，不进入均值。</p>
-        </div>
-        <div class="head-actions"><span class="tag solid">手动触发</span><span class="tag mute">并发 4</span></div>
-      </div>
-
-      <div class="card">
-        <div class="card-h"><h3>流水线 · Bot Execution Pipeline</h3><div class="right">单条超时 30s · 重试 1 次</div></div>
-        <div class="pipe">
-          <div class="pipe-step"><div class="n">01</div><div class="t">案例生成器</div><div class="d">用埋的坑造对抗输入，用正确应对造期望</div></div>
-          <div class="pipe-arrow">›</div>
-          <div class="pipe-step"><div class="n">02</div><div class="t">请求 Bot API</div><div class="d">并发 4，失败标 status=failed</div></div>
-          <div class="pipe-arrow">›</div>
-          <div class="pipe-step"><div class="n">03</div><div class="t">结构化行程</div><div class="d">输出 bot_output_solution</div></div>
-          <div class="pipe-arrow">›</div>
-          <div class="pipe-step"><div class="n">04</div><div class="t">质检评分</div><div class="d">TREK 硬逻辑 + 轻量裁判软盲区</div></div>
-          <div class="pipe-arrow">›</div>
-          <div class="pipe-step"><div class="n">05</div><div class="t">沉淀与落库</div><div class="d">新坑进候选池，结果写库</div></div>
-        </div>
-      </div>
-
+      <!-- 底部：最近评测记录（通栏全宽） -->
       <div class="card mt14">
-        <div class="card-h"><h3>执行记录</h3><div class="right" id="runsRight">实时</div></div>
-        <table class="tbl">
-          <thead><tr><th>Run ID</th><th>触发方式</th><th class="t-right">案例</th><th>引擎 源</th><th>轻量裁判</th><th>时间</th></tr></thead>
-          <tbody id="runsBody"><tr><td colspan="6" class="empty">暂无执行记录，去「质检报告」运行一次评测即可生成。</td></tr></tbody>
+        <div class="card-h"><h3>最近评测记录</h3><div class="right"><span id="dashRecentCnt" class="tag mute"></span><a id="dashAllRunsLink" style="color:var(--accent);text-decoration:underline">查看全部 →</a></div></div>
+        <table class="tbl" style="font-size:12px">
+          <thead><tr><th class="t-nowrap">时间</th><th>Run ID</th><th>案例场景</th><th class="t-nowrap">触发方式</th><th class="t-center">避坑得分</th><th class="t-center">断言命中</th><th class="t-center">致命</th><th class="t-center">操作</th></tr></thead>
+          <tbody id="dashRecentBody"></tbody>
         </table>
       </div>
-
-      <div class="grid g-2 mt14">
-        <div class="card">
-          <div class="card-h"><h3>失败样本处理</h3><div class="right">口径</div></div>
-          <div class="rule-box">
-            <span class="k">Bot 接口失败</span>：标记 status=failed，不送入裁判、不计入均值。<br>
-            <span class="k">裁判失败</span>：记 judge_error，分数留空，不写默认分。<br>
-            <span class="k">JSON 解析失败</span>：按裁判失败处理并保留原始返回。<br>
-            <span class="k">模拟数据</span>：仅用于演示开关开启时，标注「模拟」并排除出正式报表。
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-h"><h3>调度配置</h3><div class="right">只读</div></div>
-          <div class="field"><span class="lb">触发器</span><span class="vl">手动触发（由「质检报告」运行评测）</span></div>
-          <div class="field"><span class="lb">并发与限流</span><span class="vl">4 路并发 · 单条 30s 超时 · 重试 1 次</span></div>
-          <div class="field"><span class="lb">案例来源</span><span class="vl">A 区（盲测）· 不含 backend_reference</span></div>
-          <div class="field"><span class="lb">结果落库</span><span class="vl">runs.json · 按 run_id 归档</span></div>
-        </div>
-      </div>
     </section>
 
-    <!-- ================= 质检报告 ================= -->
-    <section class="view" data-view="report" aria-label="质检报告">
+    <!-- ================= 质检报告（历史记录） ================= -->
+    <section class="view" data-view="runs" aria-label="质检报告">
       <div class="view-head">
         <div>
           <h2>质检报告</h2>
-          <p>流程：测试构造器把案例变成测试 → TREK 评硬逻辑 → 轻量裁判补软盲区。硬 / 软分列展示，失败不被平均分掩盖。（案例本身可在「案例库 → AI 造题」由模型生成。）</p>
+          <p>历次质检的完整记录。点开任意一条，查看该次评测的案例、得分与裁判详情。</p>
+        </div>
+        <div class="head-actions">
+          <span class="tag solid">历史记录</span>
+          <button class="btn sm" id="runsExportBtn" type="button">⬇ 导出</button>
+          <button class="btn sm" id="runsClearBtn" type="button">🗑 清空</button>
+        </div>
+      </div>
+
+      <!-- 评分标准说明 -->
+      <div class="card mt14">
+        <div class="card-h"><h3>📐 评分标准（避坑评测 · 融合三层）</h3><div class="right"><span class="tag info">红线零容忍</span><span class="tag mute">8 维等权</span><span class="tag mute">置信度 ≥ 0.6</span></div></div>
+        <p class="note" style="margin:0 0 11px">评测不比行程"写得漂不漂亮"，只看 Bot 回答<b>有没有真正避开题库里埋的坑</b>。评测对照每条案例的「正确应对断言」，由 LLM 语义裁判逐条判定，再按下面四步汇总成分数。</p>
+        <div class="score-steps">
+          <div class="score-step"><span class="n">1</span><div><div class="st-b">逐条语义判定</div><div class="st-p">每条「正确应对断言」由裁判判 <b>命中 / 遗漏</b>：只有 Bot 明确做到（含等价表述、主动提示、替代方案）才算命中；泛泛承诺、没提、做反了都算<b>遗漏</b>。每条附证据原句与置信度。</div></div></div>
+          <div class="score-step"><span class="n">2</span><div><div class="st-b">低置信不计命中</div><div class="st-p">裁判判命中但置信度 <b>&lt; 0.6</b> 的，一律降级为"遗漏"并标<b>待复核</b>，避免模棱两可的答案白拿分。</div></div></div>
+          <div class="score-step"><span class="n">3</span><div><div class="st-b">8 维等权平均</div><div class="st-p">断言按坑类型归入 8 大维度；先算每条维度的命中率，再把各维度命中率<b>等权</b>求算术平均 = 避坑得分。维度权重相同，不分高低。</div></div></div>
+          <div class="score-step"><span class="n">4</span><div><div class="st-b">红线一票否决</div><div class="st-p">标注为<b>致命</b>的断言只要遗漏任一条，整条案例<b>直接判 0 分</b>——避坑得分为 0，与其余维度表现无关。</div></div></div>
+        </div>
+        <div class="score-formula">
+          <div class="sf-row"><div class="sf-k">避坑得分</div><div class="sf-v">8 大维度命中率的<em>等权算术平均</em>（0% ~ 100%），即报告列表里的核心分数</div></div>
+          <div class="sf-row"><div class="sf-k">维度命中率</div><div class="sf-v">该维度命中条数 ÷ 该维度已判定条数（未判的不计入）</div></div>
+          <div class="sf-row"><div class="sf-k">断言命中率</div><div class="sf-v">全部命中条数 ÷ 全部已判定条数（辅助参考，不参与最终定分）</div></div>
+          <div class="sf-row red"><div class="sf-k">致命遗漏</div><div class="sf-v">遗漏的致命断言条数；<em>&gt; 0 即触发红线，避坑得分强制归 0</em></div></div>
+        </div>
+        <div class="score-fams">
+          <span class="tag mute">证件合规</span><span class="tag mute">时间窗口</span><span class="tag mute">预订限流</span><span class="tag mute">交规地方法规</span>
+          <span class="tag mute">安全健康</span><span class="tag mute">地理动线</span><span class="tag mute">费用陷阱</span><span class="tag mute">人群适配</span>
+        </div>
+        <div class="rule-box score-demo"><span class="k">举例：</span>某案例断言覆盖 3 个维度 —— 时间窗口 2 条命中 1 条（50%）、预订限流 2 条全中（100%）、费用陷阱 1 条遗漏（0%）。避坑得分 =（50% + 100% + 0%) ÷ 3 = <span class="k">50%</span>。若这 3 维里有 1 条是致命项且被遗漏，则无论其余命中多少，<span class="k">避坑得分直接归 0</span>。</div>
+      </div>
+
+      <div class="card mt14">
+        <div class="card-h"><h3>质检历史记录</h3><div class="right" id="runsRight">实时</div></div>
+        <table class="tbl">
+          <thead><tr><th>Run ID</th><th>触发方式 / 案例</th><th class="t-center">避坑得分</th><th class="t-center">致命遗漏</th><th class="t-center">时间</th><th class="t-center">操作</th></tr></thead>
+          <tbody id="runsBody"><tr><td colspan="6" class="empty">暂无记录，去「质检系统」运行一次评测即可生成。</td></tr></tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- ================= 质检系统 ================= -->
+    <section class="view" data-view="report" aria-label="质检系统">
+      <div class="view-head">
+        <div>
+          <h2>质检系统</h2>
+          <p>在此驱动 Bot、发题、抓回答并自动评分：输出避坑得分、8 维命中热力图与命中/遗漏清单，致命项遗漏直接判 0 分。历史记录请到左侧「质检报告」查看。（案例本身可在「案例库 → AI 造题」由模型生成。）</p>
         </div>
         <div class="head-actions">
           <span class="tag solid">judge-v3</span>
@@ -802,56 +760,95 @@ body.locked{overflow:hidden}
         </div>
       </div>
 
+      <!-- 模式切换 -->
+      <div class="mode-tabs" style="display:flex;gap:8px;margin:2px 0 14px">
+        <button class="btn sm mode-tab active" id="modeManualBtn" type="button" data-mode="manual">✋ 手动模式</button>
+        <button class="btn sm mode-tab" id="modeAutoBtn" type="button" data-mode="auto">🤖 自动模式</button>
+        <span class="tag mute" id="modeHint" style="align-self:center">手动：自己注册、选题、发题评分</span>
+      </div>
+
+      <div id="paneManual">
       <div class="card">
-        <div class="card-h"><h3>评测控制台</h3><div class="right">选案例 → 测试构造 → TREK+轻量裁判</div></div>
-        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end">
-          <div class="form-row" style="margin:0;min-width:240px;flex:1">
-            <label>选择案例</label>
-            <select id="reportCase"><option value="">— 加载中 —</option></select>
-          </div>
-          <div class="form-row" style="margin:0;min-width:200px">
-            <label>引擎数据源</label>
-            <select id="engineASource">
-              <option value="gold">TREK Gold 基准（离线·确定性）</option>
-              <option value="mock">内置 Mock Bot（可注入缺陷）</option>
-              <option value="bot">你的 Bot（结构化计划）</option>
-            </select>
-          </div>
-          <div class="form-row" style="margin:0;min-width:200px">
-            <label>Mock 缺陷注入</label>
-            <select id="engineAFlaw">
-              <option value="none">无</option>
-              <option value="虚构景点（D0-src↓）">虚构景点（D0-src↓ 防幻觉）</option>
-              <option value="预算超支（D3↓）">预算超支（D3↓）</option>
-              <option value="拒答失败（D4↓）">拒答失败（D4↓）</option>
-            </select>
-          </div>
-          <button class="btn primary" id="runReportBtn" type="button">🚀 运行质检</button>
-          <button class="btn sm" id="genPreviewBtn" type="button">🔍 预览测试构造</button>
+        <div class="card-h"><h3>Bot 会话 · 自动注册</h3><div class="right">Playwright 有头浏览器 · 每次全新账号</div></div>
+        <p class="note">点「▶ 全新注册并启动」会打开一个<b>全新的、无登录态</b>浏览器窗口，自动生成不重复手机号 → 获取验证码（统一填 261018）→ 随机昵称/性别/生日 → 点「开始使用」进入聊天页。随后即可选案例发题、抓回答、自动评分。</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+          <button class="btn primary" id="botLaunchBtn" type="button">▶ 全新注册并启动</button>
+          <button class="btn sm" id="botProbeBtn" type="button">🔎 探测页面元素</button>
+          <button class="btn sm" id="botCloseBtn" type="button">⏹ 关闭浏览器</button>
+          <span id="botStatus" class="tag mute">未启动</span>
         </div>
-        <p class="note mt10">流程：<b>案例生成器</b>用「埋的坑」造对抗输入、用「正确应对」造期望清单 → 发给你的 Bot → <b>TREK</b> 评硬逻辑（结构化行程）→ <b>轻量裁判</b>只补软质量（避坑+主动服务）。轻量裁判需在「设置」配置 Key。</p>
+        <div id="botRegInfo" class="note mt10" style="display:none"></div>
+        <div id="botProbeInfo" class="mt10" style="display:none"></div>
+        <div id="botCfgRow" class="mt10" style="display:none">
+          <div class="form-row" style="margin:0 0 8px"><label>输入框选择器（探测后确认，留空用默认策略）</label><input type="text" id="botInputSel" placeholder="如 textarea 或 [contenteditable=true]"></div>
+          <div class="form-row" style="margin:0 0 8px"><label>发送按钮选择器（留空则按 Enter 发送）</label><input type="text" id="botSendSel" placeholder="如 button[type=submit]"></div>
+          <div class="form-row" style="margin:0 0 8px"><label>回答容器选择器（用于判定回答是否结束）</label><input type="text" id="botAnswerSel" placeholder="如 .message:last-child"></div>
+          <button class="btn sm" id="botSaveSelBtn" type="button">保存选择器</button>
+          <span id="botCfgMsg" class="test-result"></span>
+        </div>
       </div>
 
       <div class="card mt14">
-        <div class="card-h"><h3>避坑评测 · 融合三层</h3><div class="right">红线零容忍 + 8维命中 + LLM语义裁判</div></div>
-        <p class="note">对照题库「正确应对」底牌，评 Bot 行程<b>是否真的避坑</b>（而非仅校验行程机械合法性）。沿用上方「选择案例」。gold=完美基线自检、mock=注入缺陷演示、bot=评你的真实 Bot（需配置 Bot API 与裁判 Key）。</p>
-        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end">
-          <div class="form-row" style="margin:0;min-width:220px">
-            <label>避坑评测模式</label>
-            <select id="pitfallMode">
-              <option value="gold">gold · 完美基线（管线自检）</option>
-              <option value="mock">mock · 注入缺陷（演示抓漏）</option>
-              <option value="bot">bot · 真实 Bot 回答</option>
-            </select>
-          </div>
-          <button class="btn primary" id="runPitfallBtn" type="button">🛡 运行避坑评测</button>
+        <div class="card-h"><h3>测 Bot · 出结果</h3><div class="right">红线零容忍 + 8维命中 + LLM语义裁判</div></div>
+        <p class="note">对照题库「正确应对」底牌，逐条判定 Bot 行程<b>是否真的避坑</b>。选案例 → 自动发给 Bot 抓回答（或手动粘贴兜底）→ 出避坑得分、命中/遗漏清单。裁判 Key 需在「设置」配置。</p>
+        <div class="form-row" style="margin:0 0 11px">
+          <label>选择案例</label>
+          <select id="reportCase"><option value="">— 加载中 —</option></select>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:11px">
+          <button class="btn primary" id="runAutoBtn" type="button">🚀 发给 Bot 并评分</button>
+          <button class="btn sm" id="genPreviewBtn" type="button">🔍 预览测试构造</button>
           <span id="pitfallErr" class="test-result"></span>
         </div>
+        <details style="margin-top:6px">
+          <summary style="cursor:pointer;font-size:12px;color:var(--text-3)">手动兜底：直接粘贴 Bot 回答评分（不用浏览器自动化）</summary>
+          <div style="margin-top:8px">
+            <textarea id="botAnswerInput" rows="5" placeholder="在此粘贴 Bot 的完整回答文本…" style="width:100%"></textarea>
+            <button class="btn sm mt10" id="runPitfallBtn" type="button">🛡 用粘贴内容评分</button>
+          </div>
+        </details>
         <div id="pitfallResult" class="mt14"></div>
       </div>
 
+      <div class="card mt14" style="border-color:#3a4d6b">
+        <div class="card-h"><h3>⚡ 自动批量测试</h3><div class="right">逐条串行 · 实时进度 · 自动入库</div></div>
+        <p class="note">不用逐条选案例：设定条数后，系统自动从案例库按编号取前 N 条，逐条发题给 Bot、等回答、抓回评分。中途可停止；每条结果自动写入「质检报告」历史。<b>Bot 浏览器需先启动并登录</b>（单窗口，多条只能串行，每条约需等待 Bot 回答+裁判评分）。</p>
+        <div class="gen-row">
+          <label>测试条数<input id="autoN" type="number" min="1" max="100" value="5"></label>
+          <button class="btn primary" id="autoRunBtn" type="button">⚡ 开始自动测试</button>
+          <button class="btn sm" id="autoStopBtn" type="button" disabled>⏹ 停止</button>
+          <span id="autoProgress" class="tag mute">就绪</span>
+        </div>
+        <div id="autoResult" class="mt10"></div>
+      </div>
+      </div><!-- /paneManual -->
+
+      <!-- ===== 自动模式：从注册到评分全链路无人值守 ===== -->
+      <div id="paneAuto" style="display:none">
+        <div class="card" style="border-color:#2f6f4f">
+          <div class="card-h"><h3>🤖 全自动质检</h3><div class="right">注册 → 发题 → 评分，全程无人值守</div></div>
+          <p class="note">一键启动后，每个窗口自动完成：<b>全新账号注册 → 按顺序领题 → 发给 Bot（含反问自动补全、授权自动放行）→ 避坑评分 → 写入质检报告</b>。多窗口并发，题库按编号顺序分配、不重复。裁判 Key 需在「设置」配置。</p>
+          <div class="gen-row">
+            <label>并发窗口数<input id="autoWorkers" type="number" min="1" max="10" value="10"></label>
+            <label>测试条数<span style="font-size:11px;color:var(--text-3)">（0=全部）</span><input id="autoLimit" type="number" min="0" value="10"></label>
+            <label>起始序号<input id="autoStart" type="number" min="0" value="0"></label>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:11px">
+            <button class="btn primary" id="autoFullStartBtn" type="button">🚀 启动全自动质检</button>
+            <button class="btn sm" id="autoFullStopBtn" type="button" disabled>⏹ 停止</button>
+            <span id="autoFullStatus" class="tag mute">就绪</span>
+          </div>
+          <div class="mt10" id="autoFullProgress" style="display:none">
+            <div class="kpi-grid" id="autoFullKpi"></div>
+            <div class="progress-track" style="height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin:10px 0">
+              <div id="autoFullBar" style="height:100%;width:0%;background:linear-gradient(90deg,#2f6f4f,#4fc38a);transition:width .3s"></div>
+            </div>
+            <div id="autoFullLog" class="rule-box" style="max-height:260px;overflow:auto;font-size:12px"></div>
+          </div>
+        </div>
+      </div>
+
       <div id="genPreview" class="card mt14" style="display:none"></div>
-      <div id="reportResult"><div class="card mt14"><div class="empty">尚未运行评测。选择案例后点击「运行质检」。</div></div></div>
     </section>
 
     <!-- ================= 案例库 ================= -->
@@ -906,18 +903,6 @@ body.locked{overflow:hidden}
         </div>
       </div>
 
-      <div class="grid g-2 mt14">
-        <div class="card">
-          <div class="card-h"><h3>A 区 · 盲测区</h3><div class="right">Bot 可见</div></div>
-          <p class="note" style="font-size:12px;color:#b7bec9">只下发 user_prompt（客户原话），保持口语化与生活化，禁止出现任何提示性词汇，避免开卷考试。</p>
-          <div class="rule-box mt10"><span class="k">字段</span>：case_id · user_prompt</div>
-        </div>
-        <div class="card">
-          <div class="card-h"><h3>B 区 · 后台底牌区</h3><div class="right">仅质检程序可见</div></div>
-          <p class="note" style="font-size:12px;color:#b7bec9">存硬约束断言、坑类型、埋的坑与正确应对。其中<b>埋的坑既被案例生成器用来造对抗输入，又作轻量裁判的「应规避」底牌；正确应对作「期望做到」底牌</b>；TREK 只算硬逻辑。</p>
-          <div class="rule-box mt10"><span class="k">字段</span>：hard_assertions · pitfall_types · buried_pitfalls · correct_response<br><span class="k">断言</span>：max_budget · max_daily_walking_limit_km · must_verify_poi_existence · expect_infeasibility_refusal</div>
-        </div>
-      </div>
     </section>
 
     <!-- ================= 设置 ================= -->
@@ -1028,13 +1013,26 @@ body.locked{overflow:hidden}
 
 <!-- 案例详情弹窗 -->
 <div class="modal-bg" id="caseDetailModal">
-  <div class="modal modal-lg">
+  <div class="modal modal-lg dlg-flex">
     <h3>案例详情 <span id="dCaseId" class="sub"></span></h3>
-    <div class="detail-grid" id="dBody"></div>
-    <div id="dGenTest" class="mt10"></div>
+    <div class="modal-scroll">
+      <div class="detail-grid" id="dBody"></div>
+      <div id="dGenTest" class="mt10"></div>
+    </div>
     <div class="form-actions">
       <button class="btn sm" id="caseDetailGenBtn" type="button">🔍 测试构造预览</button>
       <button class="btn primary" id="caseDetailClose" type="button">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 质检报告详情弹窗 -->
+<div class="modal-bg" id="reportDetailModal">
+  <div class="modal modal-lg dlg-flex">
+    <h3>质检报告详情 <span id="rdRunId" class="sub" style="font-size:11.5px;color:#6b717c;font-weight:400"></span></h3>
+    <div id="rdBody" class="mt10 modal-scroll"></div>
+    <div class="form-actions">
+      <button class="btn primary" id="reportDetailClose" type="button">关闭</button>
     </div>
   </div>
 </div>
@@ -1150,7 +1148,7 @@ body.locked{overflow:hidden}
     }).catch(function(){});
   }
 
-  var titles = { dashboard:"质检看板", runs:"执行任务", report:"质检报告", cases:"案例库", settings:"设置" };
+  var titles = { dashboard:"质检看板", runs:"质检报告", report:"质检系统", cases:"案例库", settings:"设置" };
   var views = Array.prototype.slice.call(document.querySelectorAll(".view"));
   var navs  = Array.prototype.slice.call(document.querySelectorAll("[data-nav]"));
   function show(name){
@@ -1168,7 +1166,6 @@ body.locked{overflow:hidden}
     window.scrollTo(0,0);
   }
   navs.forEach(function(n){ n.addEventListener("click", function(){ show(n.getAttribute("data-nav")); }); });
-  $("runBtn").addEventListener("click", function(){ show("report"); });
   var initial=(location.hash||"").replace("#",""); if(initial&&titles[initial]) show(initial,false);
 
   // 时钟
@@ -1177,33 +1174,143 @@ body.locked{overflow:hidden}
 
   // ---------- 看板 ----------
   function loadDashboard(){
-    api("/api/dashboard").then(function(d){
+    api("/api/runs").then(function(d){
       if(!d.ok) return;
-      var hard=d.hard_logic_rate, soft=d.soft_avg;
-      $("kpiHard").innerHTML = (hard!=null?hard:"—")+"<small>%</small>";
-      $("kpiSoft").innerHTML = (soft!=null?soft:"—")+"<small>/ 10</small>";
-      $("kpiOverall").innerHTML = (soft!=null?soft:"—")+"<small>/ 10</small>";
-      $("kpiCases").textContent = d.case_count;
-      $("kpiFatal").innerHTML = "—<small>例</small>";
-      if(hard!=null){ $("chartHard").textContent = hard+"%"; }
-      if(soft!=null){ $("chartSoft").textContent = soft; }
-      $("vcHard").textContent = hard!=null?hard+"%":"—";
-      $("vcSoft").textContent = soft!=null?soft:"—";
-      $("vcCases").textContent = d.case_count;
-      // 状态点
-      setDot("botDot", d.bot_configured); $("botStatus").textContent = d.bot_configured?"Bot API 已配置":"Bot API 未配置";
-      setDot("judgeDot", d.judge_configured); $("judgeStatus").textContent = d.judge_configured?"裁判已配置":"裁判未配置";
-      setDot("envDot", d.trek_available); $("envText").textContent = d.trek_available?"Runner 已连接 · TREK 就绪":"Runner 已连接";
-      $("navCasesCnt").textContent = d.case_count;
-      // 对账
-      var rl=$("reconList");
-      if(d.runs && d.runs.length){
-        rl.innerHTML = d.runs.slice(0,4).map(function(r){
-          return "<li><span class='id'>"+esc(r.run_id)+"</span><span>"+esc(r.case_id)+" · "+(r.engineB_enabled?"轻量裁判已跑":"仅TREK")+"</span><span class='right tag "+(r.engineB_enabled?"info":"mute")+"'>"+(r.engineA_source||"gold")+"</span></li>";
-        }).join("");
-        $("reconRight").textContent = d.runs.length+" 条记录";
+      var runs = d.runs || [];
+      // 只取有评测分的记录
+      var scored = runs.filter(function(r){ return r.pitfall_overall != null; });
+      // 综合平均避坑得分（0~100）
+      var avg = 0;
+      if(scored.length){ avg = Math.round(scored.reduce(function(s,r){ return s + (r.pitfall_overall||0); },0) / scored.length * 100); }
+      $("dashOverall").innerHTML = (scored.length ? avg : "—") + "<small>/ 100</small>";
+      // 致命遗漏总数
+      var fatalTotal = runs.reduce(function(s,r){ return s + ((r.pitfall_fatal_missed||0)); }, 0);
+      $("dashFatal").innerHTML = fatalTotal + "<small>条</small>";
+      // 有效样本
+      $("dashRunCount").textContent = runs.length;
+      // 8维命中率聚合（按 family_rates 取各维度非空平均）
+      var FAMS = ["证件合规","时间窗口","预订限流","交规地方法规","安全健康","地理动线","费用陷阱","人群适配"];
+      var famSum = {}, famN = {};
+      FAMS.forEach(function(f){ famSum[f]=0; famN[f]=0; });
+      scored.forEach(function(r){
+        var fr = (r.detail && r.detail.aggregate && r.detail.aggregate.family_rates) || {};
+        FAMS.forEach(function(f){ if(fr[f] != null){ famSum[f] += fr[f]; famN[f] += 1; } });
+      });
+      var famRate = {};
+      var minFam = null, minVal = 1.01;
+      FAMS.forEach(function(f){
+        famRate[f] = famN[f] ? Math.round(famSum[f]/famN[f]*100) : null;
+        if(famRate[f] != null && famRate[f] < minVal){ minVal = famRate[f]; minFam = f; }
+      });
+      $("dashMinFam").innerHTML = (minFam ? minVal : "—") + "<small>%</small>";
+      $("dashMinFamName").textContent = minFam ? ("· " + minFam) : "";
+      // 最新一条评测（按时间倒序，可点开详情）
+      var latest = scored.length ? scored.slice().sort(function(a,b){ return (b.time||"").localeCompare(a.time||""); })[0] : null;
+      if(latest){
+        $("dashLatest").textContent = Math.round(latest.pitfall_overall*100) + "%";
+        $("dashLatestTime").textContent = latest.time || "";
+        $("dashLatestCard").onclick = function(){ openRunDetail(latest.run_id); };
+      } else {
+        $("dashLatest").textContent = "—"; $("dashLatestTime").textContent = "";
       }
+      $("dashTrendCount").textContent = scored.length + " 条记录";
+      // 图表
+      renderTrendSvg(scored);
+      renderFamChart(FAMS, famRate);
+      // 最近记录表格（通栏全宽，最多10条，时间倒序），行点击打开详情
+      var recent = scored.slice().sort(function(a,b){ return (b.time||"").localeCompare(a.time||""); }).slice(0,10);
+      $("dashRecentCnt").textContent = "共 " + scored.length + " 条 · 显示最近 " + recent.length + " 条";
+      var tb = $("dashRecentBody");
+      if(!recent.length){ tb.innerHTML = "<tr><td colspan='8' class='empty'>暂无评测记录。</td></tr>"; }
+      else {
+        tb.innerHTML = recent.map(function(r){
+          var sc = Math.round(r.pitfall_overall*100) + "%";
+          var fm = r.pitfall_fatal_missed||0;
+          var det = r.detail || {}, agg = det.aggregate || {};
+          var hr = agg.hit_rate != null ? Math.round(agg.hit_rate*100)+"%" : "—";
+          var trig = (r.trigger||"—").replace(/^手动 · |^自动 · /,"");
+          var cb = r.case_brief || {};
+          var scene = cb.scene || cb.destination || "—";
+          return "<tr class='row-click' data-run='"+esc(r.run_id)+"'>"
+            +"<td class='t-nowrap'>"+esc(r.time||"")+"</td>"
+            +"<td class='id'>"+esc(r.run_id)+"</td>"
+            +"<td>"+esc(scene)+(cb.user_prompt?" <span class='sub'>"+esc(cb.user_prompt.slice(0,26))+"</span>":"")+"</td>"
+            +"<td class='t-nowrap mute-tag'><span class='tag mute'>"+esc(trig.slice(0,14))+"</span></td>"
+            +"<td class='t-center num' style='color:"+(r.pitfall_overall>=0.8?"#79dcbc":(r.pitfall_overall>=0.5?"#eec381":"#f89a92"))+"'>"+sc+"</td>"
+            +"<td class='t-center num'>"+hr+"</td>"
+            +"<td class='t-center num'>"+fm+"</td>"
+            +"<td class='t-center'><button class='btn sm' type='button' data-run-btn='"+esc(r.run_id)+"'>查看</button></td></tr>";
+        }).join("");
+        Array.prototype.forEach.call(tb.querySelectorAll("tr[data-run]"), function(tr){
+          tr.addEventListener("click", function(){ openRunDetail(tr.getAttribute("data-run")); });
+        });
+      }
+      $("dashAllRunsLink").onclick = function(e){ e.preventDefault(); show("runs"); };
     }).catch(function(e){ console.error(e); });
+  }
+
+  // 评分趋势柱状图（最近最多12条，按时间正序；每条评测一根柱，按分数红黄绿着色）
+  function renderTrendSvg(scored){
+    var svg = $("dashTrendSvg");
+    var note = $("dashTrendNote");
+    var W = 720, H = 200, pad = {l:40, r:8, t:26, b:34};
+    var data = scored.slice().sort(function(a,b){ return (a.time||"").localeCompare(b.time||""); }).slice(-12);
+    if(!data.length){
+      svg.innerHTML = "";
+      note.textContent = "暂无评测记录，运行「质检系统」后趋势将自动生成。";
+      return;
+    }
+    note.textContent = "每根柱为一次评测的避坑得分（0~100）：绿 ≥80、黄 ≥50、红 <50；致命遗漏>0 的柱带 ▲ 标记。";
+    var maxV = 100;
+    var n = data.length;
+    var chartW = W - pad.l - pad.r, chartH = H - pad.t - pad.b;
+    // 柱宽随条数自适应：占槽位 62%，最少 14px，槽间距均匀
+    var slot = chartW / n;
+    var bw = Math.max(14, Math.min(46, slot * 0.62));
+    // 轴线与刻度
+    var s = "<g stroke='#333a48' stroke-width='1'>";
+    s += "<line x1='"+pad.l+"' y1='"+(H-pad.b)+"' x2='"+(W-pad.r)+"' y2='"+(H-pad.b)+"'/>";
+    [0,25,50,75,100].forEach(function(v){
+      var yy = H - pad.b - v*chartH/maxV;
+      s += "<line x1='"+(pad.l-5)+"' x2='"+pad.l+"' y1='"+yy+"' y2='"+yy+"'/>";
+      s += "<text x='"+(pad.l-8)+"' y='"+(yy+3)+"' font-size='10' fill='#8a93a0' text-anchor='end'>"+v+"</text>";
+    });
+    s += "</g>";
+    // 柱体 + 数值标签 + x 轴时间标签
+    data.forEach(function(r,i){
+      var v = Math.round(r.pitfall_overall*100);
+      var h = Math.max(2, v*chartH/maxV);            // 0 分也留 2px 基线短柱，可见但不突兀
+      var x = pad.l + slot*i + (slot-bw)/2;
+      var y = H - pad.b - h;
+      var col = v>=80 ? "#37c9a5" : (v>=50 ? "#eec381" : "#f89a92");
+      // 柱体（顶部圆角）
+      s += "<path d='M"+x+","+(y+4)+" a4,4 0 0 1 4,-4 h"+(bw-8)+" a4,4 0 0 1 4,4 v"+(h-4)+" h-"+bw+" Z' fill='"+col+"' opacity='0.88'/>";
+      // 分数标签（柱顶上方）
+      s += "<text x='"+(x+bw/2)+"' y='"+(y-5)+"' font-size='10.5' font-weight='600' fill='"+col+"' text-anchor='middle'>"+v+"</text>";
+      // x 轴时间（MM-DD HH:MM）
+      var lab = (r.time||"").slice(5,16);
+      s += "<text x='"+(x+bw/2)+"' y='"+(H-pad.b+14)+"' font-size='9' fill='#8a93a0' text-anchor='middle'>"+lab+"</text>";
+      // 致命遗漏 ▲ 标记
+      if((r.pitfall_fatal_missed||0) > 0){
+        var cx = x + bw/2, ty = H - pad.b + 22;
+        s += "<path d='M"+cx+","+ty+" l4,7 h-8 Z' fill='#f89a92'/>";
+      }
+    });
+    svg.innerHTML = s;
+  }
+
+  // 八维命中率横向条形图
+  function renderFamChart(FAMS, famRate){
+    var box = $("dashFamChart");
+    var html = "";
+    FAMS.forEach(function(f){
+      var v = famRate[f];
+      var show = v != null ? v : 0;
+      var col = v >= 80 ? "#37c9a5" : (v >= 50 ? "#eec381" : "#f89a92");
+      var txt = v != null ? v + "%" : "无数据";
+      html += "<div class='bar-row' style='font-size:12px'><span class='nm' style='width:86px;color:var(--text-2)'>"+esc(f)+"</span><span class='meter' style='background:#1e222a'><i style='width:"+show+"%;background:"+col+";'></i></span><span class='v' style='color:#dfe3ea'>"+txt+"</span></div>";
+    });
+    box.innerHTML = html;
   }
   function setDot(id, ok){ var el=$(id); el.className = "dot"+(ok?" ok":" warn"); }
 
@@ -1214,12 +1321,86 @@ body.locked{overflow:hidden}
       var b=$("runsBody");
       if(!d.runs.length){ b.innerHTML="<tr><td colspan='6' class='empty'>暂无执行记录。</td></tr>"; $("runsRight").textContent="实时"; return; }
       b.innerHTML = d.runs.map(function(r){
-        return "<tr><td class='id'>"+esc(r.run_id)+"</td><td>"+esc(r.trigger)+(r.case_id?"<span class='sub'>"+esc(r.case_id)+"</span>":"")+"</td><td class='t-right num'>1</td><td>"+esc(r.engineA_source||"gold")+"</td><td>"+(r.engineB_enabled?"<span class='tag pass'>轻量裁判已运行</span>":"<span class='tag mute'>未配置</span>")+"</td><td class='t-nowrap num'>"+esc(r.time)+"</td></tr>";
+        var sc = r.pitfall_overall!=null ? Math.round(r.pitfall_overall*100)+"%" : "—";
+        var fm = r.pitfall_fatal_missed!=null ? r.pitfall_fatal_missed : "—";
+        return "<tr class='row-click' data-run='"+esc(r.run_id)+"'><td class='id'>"+esc(r.run_id)+"</td><td>"+esc(r.trigger)+(r.case_id?"<span class='sub'>"+esc(r.case_id)+"</span>":"")+"</td><td class='t-center num'>"+sc+"</td><td class='t-center num'>"+fm+"</td><td class='t-center t-nowrap num'>"+esc(r.time)+"</td><td class='t-center'><button class='btn sm' type='button' data-run-btn='"+esc(r.run_id)+"'>查看</button></td></tr>";
       }).join("");
       $("runsRight").textContent = d.runs.length+" 条";
       $("navRunsCnt").textContent = d.runs.length;
+      // 行点击 / 查看按钮 → 打开详情
+      Array.prototype.forEach.call(b.querySelectorAll("tr[data-run]"), function(tr){
+        tr.addEventListener("click", function(){ openRunDetail(tr.getAttribute("data-run")); });
+      });
     }).catch(function(e){ console.error(e); });
   }
+
+  // 导出质检报告（JSON 文件，含完整详情）
+  $("runsExportBtn").addEventListener("click", function(){
+    api("/api/runs").then(function(d){
+      if(!d.ok){ alert("导出失败："+(d.error||"未知")); return; }
+      if(!d.runs.length){ alert("暂无记录可导出"); return; }
+      var blob=new Blob([JSON.stringify(d.runs,null,2)],{type:"application/json;charset=utf-8"});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement("a"); a.href=url;
+      var ts=new Date();
+      var stamp=ts.getFullYear()+("0"+(ts.getMonth()+1)).slice(-2)+("0"+ts.getDate()).slice(-2)+"-"+("0"+ts.getHours()).slice(-2)+("0"+ts.getMinutes()).slice(-2);
+      a.download="质检报告_"+stamp+".json";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast("已导出 "+d.runs.length+" 条记录");
+    }).catch(function(e){ alert("导出失败："+e); });
+  });
+  // 清空质检报告（需确认，不可恢复）
+  $("runsClearBtn").addEventListener("click", function(){
+    if(!confirm("确定清空全部质检报告记录吗？此操作不可恢复，建议先导出备份。")) return;
+    api("/api/runs/clear", {method:"POST", body:{}}).then(function(d){
+      if(!d.ok){ alert("清空失败："+(d.error||"未知")); return; }
+      toast("已清空 "+d.cleared+" 条记录");
+      loadRuns(); loadDashboard();
+    }).catch(function(e){ alert("清空失败："+e); });
+  });
+
+  // 打开单条质检报告详情
+  function openRunDetail(runId){
+    var box=$("rdBody");
+    $("rdRunId").textContent=runId;
+    box.innerHTML="<div class='empty'>加载中…</div>";
+    $("reportDetailModal").classList.add("show");
+    api("/api/runs/detail?run_id="+encodeURIComponent(runId)).then(function(d){
+      if(!d.ok){ box.innerHTML="<div class='empty'>加载失败："+esc(d.error||"未知")+"</div>"; return; }
+      var r=d.run||{}, det=r.detail||{}, agg=det.aggregate||{}, cb=r.case_brief||{};
+      var colOf=function(v){ return v==null?"var(--text-2)":(v>=0.8?"var(--green)":(v>=0.5?"var(--amber)":"var(--red)")); };
+      var pct=function(v){ return v!=null?Math.round(v*100)+"%":"—"; };
+      var h="<div class='grid g-kpi'>"
+        +"<div class='kpi'><div class='k-label'>避坑得分</div><div class='k-val' style='color:"+colOf(agg.overall)+"'>"+pct(agg.overall)+"</div></div>"
+        +"<div class='kpi'><div class='k-label'>断言命中率</div><div class='k-val'>"+pct(agg.hit_rate)+"</div></div>"
+        +"<div class='kpi'><div class='k-label'>致命遗漏</div><div class='k-val' style='color:"+((agg.fatal_missed||0)>0?"var(--red)":"var(--green)")+"'>"+(agg.fatal_missed!=null?agg.fatal_missed:"—")+"</div></div>"
+        +"</div>";
+      h+="<div class='rule-box mt10'><span class='k'>时间：</span>"+esc(r.time||"")+"　<span class='k'>触发：</span>"+esc(r.trigger||"")+"　<span class='k'>案例：</span>"+esc(r.case_id||"")+"</div>";
+      if(cb.scene||cb.user_prompt){
+        h+="<div class='mt10'><div class='k'>案例快照</div><div class='v block'>"+esc(cb.scene||cb.destination||"")
+          +(cb.travel_time?" · "+esc(cb.travel_time):"")+(cb.group_size?" · "+esc(cb.group_size):"")
+          +(cb.user_prompt?"\n客户原话："+esc(cb.user_prompt):"")+"</div></div>";
+      }
+      var arr=det.assertions||[];
+      if(arr.length){
+        h+="<div class='mt14'><div class='k' style='margin-bottom:6px'>逐条断言（"+arr.length+"）</div><ul class='assert-list'>"+arr.map(function(a){
+          var badge=a.hit===true?'<span class="tag pass">命中</span>':(a.hit===false?'<span class="tag danger">遗漏</span>':'<span class="tag mute">未判</span>');
+          var fat=a.fatal?'<span class="tag warn">致命</span>':'';
+          return "<li><div class='al-top'>"+badge+fat+"<span class='al-fam'>"+esc(a.dimension_family||"")+"</span></div><div class='al-txt'>"+esc(a.text||"")+"</div><div class='al-ev'>证据："+esc(a.evidence||"")+"</div></li>";
+        }).join("")+"</ul></div>";
+      }
+      if(det.bot_text){
+        h+="<div class='mt14'><div class='k'>Bot 回答</div><div class='v block' style='white-space:pre-wrap;max-height:260px;overflow:auto'>"+esc(det.bot_text)+"</div></div>";
+      }
+      if(!det.assertions && !det.bot_text){
+        h+="<div class='note mt10'>该记录为早期版本，仅保存了汇总字段，未含逐条断言与 Bot 回答。重新评测后可查看完整详情。</div>";
+      }
+      box.innerHTML=h;
+    }).catch(function(e){ box.innerHTML="<div class='empty'>请求失败："+esc(e)+"</div>"; });
+  }
+  $("reportDetailClose").addEventListener("click", function(){ $("reportDetailModal").classList.remove("show"); });
+  $("reportDetailModal").addEventListener("click", function(e){ if(e.target===this) this.classList.remove("show"); });
 
   // ---------- 案例库 ----------
   var ALL_CASES = [];
@@ -1572,7 +1753,68 @@ body.locked{overflow:hidden}
     .finally(function(){ btn.disabled=false; });
   });
 
-  // ---------- 质检报告 ----------
+  // ---------- 质检系统：手动/自动模式切换 ----------
+  var AUTO_TIMER=null;
+  function setMode(mode){
+    var manual=mode==="manual";
+    $("paneManual").style.display=manual?"":"none";
+    $("paneAuto").style.display=manual?"none":"";
+    $("modeManualBtn").classList.toggle("active",manual);
+    $("modeAutoBtn").classList.toggle("active",!manual);
+    $("modeHint").textContent=manual?"手动：自己注册、选题、发题评分":"自动：一键从注册到评分，多窗口并发";
+  }
+  $("modeManualBtn").addEventListener("click",function(){ setMode("manual"); });
+  $("modeAutoBtn").addEventListener("click",function(){ setMode("auto"); });
+
+  function renderAutoFull(d){
+    var pct=d.total?Math.round(d.done/d.total*100):0;
+    $("autoFullStatus").className="tag "+(d.running?"solid":(d.done&&d.fail===0?"pass":"mute"));
+    $("autoFullStatus").textContent=d.running?"运行中 "+d.done+"/"+d.total:(d.done?("完成 "+d.done+"/"+d.total):"就绪");
+    if(!d.done&&!d.running){ return; }
+    $("autoFullProgress").style.display="";
+    $("autoFullBar").style.width=pct+"%";
+    $("autoFullKpi").innerHTML=
+      "<div class='kpi'><span class='lb'>进度</span><span class='vl'>"+d.done+" / "+d.total+"</span></div>"+
+      "<div class='kpi'><span class='lb'>成功</span><span class='vl'>"+d.ok+"</span></div>"+
+      "<div class='kpi'><span class='lb'>失败</span><span class='vl'>"+d.fail+"</span></div>"+
+      "<div class='kpi'><span class='lb'>窗口</span><span class='vl'>"+d.workers+"</span></div>";
+    var lines=(d.results||[]).slice(-40).map(function(r){
+      var ok=r.ok?"<span class='tag pass'>✓</span>":"<span class='tag err' style='color:var(--red)'>✗</span>";
+      var score=r.ok?(" · 得分 "+(r.overall==null?"—":r.overall)+" · 致命 "+(r.fatal==null?"—":r.fatal)):"";
+      return ok+" <b>W"+(r.worker||"?")+"</b> · 案例 "+esc(r.case_id||"—")+score+(r.error?(" · <span style='color:var(--red)'>"+esc(r.error)+"</span>"):"");
+    });
+    $("autoFullLog").innerHTML=lines.length?lines.join("<br>"):"<span style='color:var(--text-3)'>等待首个结果…</span>";
+  }
+  function pollAutoFull(){
+    api("/api/bot/auto/status").then(function(d){
+      if(!d.ok) return;
+      renderAutoFull(d);
+      if(d.running){ AUTO_TIMER=setTimeout(pollAutoFull,2000); }
+      else { AUTO_TIMER=null; $("autoFullStartBtn").disabled=false; $("autoFullStopBtn").disabled=true;
+             $("autoFullStartBtn").innerHTML="🚀 启动全自动质检"; toast("自动质检已结束：成功 "+d.ok+" / 失败 "+d.fail); }
+    }).catch(function(){ AUTO_TIMER=setTimeout(pollAutoFull,3000); });
+  }
+  $("autoFullStartBtn").addEventListener("click",function(){
+    var workers=parseInt($("autoWorkers").value,10)||10, limit=parseInt($("autoLimit").value,10)||0,
+        start=parseInt($("autoStart").value,10)||0;
+    var btn=this; btn.disabled=true; btn.innerHTML="<span class='spin'></span>启动中…";
+    api("/api/bot/auto/start",{method:"POST",body:{workers:workers,limit:limit,start_index:start}}).then(function(d){
+      btn.disabled=false; btn.innerHTML="🚀 启动全自动质检";
+      if(!d.ok){ alert("启动失败："+(d.error||"未知")); return; }
+      $("autoFullStopBtn").disabled=false; $("autoFullProgress").style.display="";
+      $("autoFullStatus").className="tag solid"; $("autoFullStatus").textContent="启动中…";
+      toast(d.message||"已启动");
+      if(AUTO_TIMER) clearTimeout(AUTO_TIMER);
+      AUTO_TIMER=setTimeout(pollAutoFull,1500);
+    }).catch(function(e){ btn.disabled=false; btn.innerHTML="🚀 启动全自动质检"; alert("请求失败："+esc(e)); });
+  });
+  $("autoFullStopBtn").addEventListener("click",function(){
+    if(!confirm("确定停止？各窗口会在当前题目完成后停下，已完成的结果会保留。")) return;
+    api("/api/bot/auto/stop",{method:"POST",body:{}}).then(function(d){ toast(d.message||"已发出停止信号"); })
+      .catch(function(e){ alert("请求失败："+esc(e)); });
+  });
+
+  // ---------- 质检系统 ----------
   function loadReportCases(){
     api("/api/cases").then(function(d){
       var sel=$("reportCase");
@@ -1580,19 +1822,6 @@ body.locked{overflow:hidden}
       sel.innerHTML = d.cases.map(function(c){ return "<option value='"+esc(c.case_id)+"'>"+esc(c.case_id)+" · "+esc(c.destination||c.category||"")+(c.scene?" · "+esc(c.scene):"")+"</option>"; }).join("");
     });
   }
-  $("runReportBtn").addEventListener("click", function(){
-    var case_id=$("reportCase").value;
-    if(!case_id){ alert("请先选择案例"); return; }
-    var btn=$("runReportBtn"); btn.disabled=true; btn.innerHTML="<span class='spin'></span>评测中…";
-    var body={ case_id:case_id, engineA_source:$("engineASource").value, engineA_flaw:$("engineAFlaw").value, sample_size:20 };
-    api("/api/evaluate/report", {method:"POST", body:body}).then(function(d){
-      btn.disabled=false; btn.innerHTML="🚀 运行质检";
-      if(!d.ok){ $("reportResult").innerHTML="<div class='card mt14'><div class='empty'>评测失败："+esc(d.error)+"</div></div>"; return; }
-      renderReport(d.report, case_id);
-      loadDashboard(); loadRuns();
-    }).catch(function(e){ btn.disabled=false; btn.innerHTML="🚀 运行质检"; $("reportResult").innerHTML="<div class='card mt14'><div class='empty'>请求失败："+esc(e)+"</div></div>"; });
-  });
-
   $("genPreviewBtn").addEventListener("click", function(){
     var case_id=$("reportCase").value;
     if(!case_id){ alert("请先选择案例"); return; }
@@ -1609,23 +1838,174 @@ body.locked{overflow:hidden}
     }).catch(function(e){ btn.disabled=false; $("genPreview").style.display="block"; $("genPreview").innerHTML="<div class='empty'>请求失败："+esc(e)+"</div>"; });
   });
 
-  $("runPitfallBtn").addEventListener("click", function(){
-    var case_id=$("reportCase").value;
-    if(!case_id){ alert("请先在上方选择案例"); return; }
-    var btn=$("runPitfallBtn"); btn.disabled=true; btn.innerHTML="<span class='spin'></span>评测中…"; $("pitfallErr").textContent="";
-    api("/api/evaluate/pitfall", {method:"POST", body:{case_id:case_id, mode:$("pitfallMode").value}}).then(function(d){
-      btn.disabled=false; btn.innerHTML="🛡 运行避坑评测";
-      if(!d.ok){ $("pitfallErr").textContent="评测失败："+(d.error||"未知"); $("pitfallResult").innerHTML=""; return; }
-      renderPitfall(d);
-    }).catch(function(e){ btn.disabled=false; btn.innerHTML="🛡 运行避坑评测"; $("pitfallErr").textContent="请求失败："+esc(e); });
+  // ---- Bot 会话控制（Playwright CDP）----
+  function refreshBotStatus(){
+    api("/api/bot/status").then(function(d){
+      var el=$("botStatus");
+      if(!d.ok){ el.className="tag mute"; el.textContent="状态未知"; return; }
+      if(d.running){ el.className="tag pass"; el.textContent="浏览器已启动 · "+esc(d.bot_url||""); $("botCfgRow").style.display="block"; }
+      else { el.className="tag mute"; el.textContent="未启动"; }
+    }).catch(function(){ $("botStatus").className="tag mute"; $("botStatus").textContent="状态未知"; });
+  }
+  $("botLaunchBtn").addEventListener("click", function(){
+    var btn=$("botLaunchBtn"); btn.disabled=true; btn.innerHTML="<span class='spin'></span>注册中…";
+    $("botRegInfo").style.display="block";
+    $("botRegInfo").innerHTML="正在全新启动浏览器并自动注册，约需 10–20 秒，请勿关闭窗口…";
+    api("/api/bot/register", {method:"POST", body:{}}).then(function(d){
+      btn.disabled=false; btn.innerHTML="▶ 全新注册并启动";
+      if(!d.ok){ $("botRegInfo").innerHTML="<span style='color:var(--red)'>注册失败："+esc(d.error||"未知")+"</span>"; refreshBotStatus(); return; }
+      var phone=(d.phone||"").replace(/(\d{3})\d{4}(\d{4})/,"$1****$2");
+      $("botRegInfo").innerHTML="<span style='color:var(--green)'>✓ 注册成功并已进入聊天页</span>　手机号："+esc(phone)
+        +"　昵称："+esc(d.nickname||"")+"　性别："+esc(d.gender||"")+"　生日："+esc(d.birthday||"")
+        +"<br>现在可在下方「测 Bot · 出结果」选案例发题评分，或用「⚡ 自动批量测试」连续跑。";
+      refreshBotStatus();
+    }).catch(function(e){ btn.disabled=false; btn.innerHTML="▶ 全新注册并启动"; $("botRegInfo").innerHTML="<span style='color:var(--red)'>请求失败："+esc(e)+"</span>"; });
+  });
+  $("botProbeBtn").addEventListener("click", function(){
+    var btn=$("botProbeBtn"); btn.disabled=true; btn.innerHTML="<span class='spin'></span>探测中…";
+    api("/api/bot/probe", {method:"POST", body:{}}).then(function(d){
+      btn.disabled=false; btn.innerHTML="🔎 探测页面元素";
+      if(!d.ok){ $("botProbeInfo").style.display="block"; $("botProbeInfo").innerHTML="<div class='empty'>探测失败："+esc(d.error||"未知")+"</div>"; return; }
+      var ins=(d.inputs||[]).filter(function(x){return x.visible;});
+      var bts=(d.buttons||[]).filter(function(x){return x.txt||x.title||x.aria;}).slice(0,12);
+      var h="<div class='rule-box'><b>页面：</b>"+esc(d.title||"")+" ("+esc(d.url||"")+")<br><b>输入框候选：</b><br>";
+      h+= ins.length? ins.map(function(x){return "· &lt;"+esc(x.tag)+"&gt; placeholder='"+esc(x.ph)+"' class='"+esc(x.cls)+"'";}).join("<br>") : "（未发现，可能未登录或页面未加载完）";
+      h+="<br><b>按钮候选：</b><br>";
+      h+= bts.length? bts.map(function(x){return "· 文本='"+esc(x.txt)+"' title='"+esc(x.title)+"' aria='"+esc(x.aria)+"' class='"+esc(x.cls)+"'";}).join("<br>") : "（无）";
+      h+="</div>";
+      $("botProbeInfo").style.display="block"; $("botProbeInfo").innerHTML=h;
+      $("botCfgRow").style.display="block";
+    }).catch(function(e){ btn.disabled=false; btn.innerHTML="🔎 探测页面元素"; $("botProbeInfo").style.display="block"; $("botProbeInfo").innerHTML="<div class='empty'>请求失败："+esc(e)+"</div>"; });
+  });
+  $("botCloseBtn").addEventListener("click", function(){
+    api("/api/bot/close", {method:"POST", body:{}}).then(function(){ refreshBotStatus(); }).catch(function(){});
+  });
+  $("botSaveSelBtn").addEventListener("click", function(){
+    var body={ input:$("botInputSel").value.trim(), send:$("botSendSel").value.trim(), answer:$("botAnswerSel").value.trim() };
+    var btn=$("botSaveSelBtn"); btn.disabled=true;
+    api("/api/bot/selectors", {method:"POST", body:body}).then(function(d){
+      btn.disabled=false; $("botCfgMsg").textContent = d.ok?"已保存":"保存失败："+(d.error||"未知");
+    }).catch(function(e){ btn.disabled=false; $("botCfgMsg").textContent="请求失败："+esc(e); });
   });
 
-  function renderPitfall(d){
+  function scoreBotAnswer(case_id, bot_text, btn, label, followNote){
+    btn.disabled=true; btn.innerHTML="<span class='spin'></span>评分中…"; $("pitfallErr").textContent="";
+    api("/api/evaluate/pitfall", {method:"POST", body:{case_id:case_id, mode:"bot", bot_text:bot_text}}).then(function(d){
+      btn.disabled=false; btn.innerHTML=label;
+      if(!d.ok){ $("pitfallErr").textContent="评测失败："+(d.error||"未知"); $("pitfallResult").innerHTML=""; return; }
+      renderPitfall(d, followNote); loadDashboard(); loadRuns();
+    }).catch(function(e){ btn.disabled=false; btn.innerHTML=label; $("pitfallErr").textContent="请求失败："+esc(e); });
+  }
+  // 手动兜底：用粘贴内容评分
+  $("runPitfallBtn").addEventListener("click", function(){
+    var case_id=$("reportCase").value;
+    if(!case_id){ alert("请先选择案例"); return; }
+    var bot_text=($("botAnswerInput").value||"").trim();
+    if(!bot_text){ alert("请粘贴 Bot 的回答后再评测"); $("botAnswerInput").focus(); return; }
+    scoreBotAnswer(case_id, bot_text, $("runPitfallBtn"), "🛡 用粘贴内容评分");
+  });
+  // 自动：生成测试输入 → 发给 Bot 抓回答（含反问自动补全）→ 评分
+  $("runAutoBtn").addEventListener("click", function(){
+    var case_id=$("reportCase").value;
+    if(!case_id){ alert("请先选择案例"); return; }
+    var btn=$("runAutoBtn"); btn.disabled=true; btn.innerHTML="<span class='spin'></span>① 生成测试输入…"; $("pitfallErr").textContent="";
+    api("/api/generate", {method:"POST", body:{case_id:case_id}}).then(function(g){
+      if(!g.ok) throw new Error("生成测试输入失败："+(g.error||"未知"));
+      var question=(g.test&&g.test.generated_query)||"";
+      if(!question) throw new Error("该案例无生成的测试输入");
+      btn.innerHTML="<span class='spin'></span>② 发给 Bot，等待回答…";
+      return api("/api/bot/ask", {method:"POST", body:{question:question, auto_followup:true, max_followup:2}}).then(function(a){
+        if(!a.ok) throw new Error("抓取 Bot 回答失败："+(a.error||"未知"));
+        $("botAnswerInput").value=a.answer||"";
+        // 若发生反问补全，构造状态说明随评分结果一起渲染
+        var note="";
+        if(a.followup_used){
+          var first=(a.trace&&a.trace[0])||{};
+          var det=first.detection||{};
+          note="<div class='note mt10' style='border-left:3px solid var(--amber);padding-left:10px'>"
+            +"🔁 检测到 Bot 反问（"+esc(det.missing||"索要补充信息")+"），已自动补全一轮再抓取完整方案（共 "+(a.rounds||2)+" 轮）。</div>";
+        }
+        btn.innerHTML="<span class='spin'></span>③ 评分中…";
+        scoreBotAnswer(case_id, a.answer||"", btn, "🚀 发给 Bot 并评分", note);
+      });
+    }).catch(function(e){ btn.disabled=false; btn.innerHTML="🚀 发给 Bot 并评分"; $("pitfallErr").textContent=esc(e.message||e); });
+  });
+
+  // ===== 自动批量测试：逐条 生成题→发Bot→评分，可停止，出汇总 =====
+  var AUTO_STOP=false;
+  function autoLog(msg){ $("autoProgress").textContent=msg; }
+  function renderAutoSummary(rows){
+    if(!rows.length){ $("autoResult").innerHTML=""; return; }
+    var done=rows.filter(function(r){return r.ok;});
+    var avg=done.length? done.reduce(function(s,r){return s+(r.overall||0);},0)/done.length : null;
+    var fatalSum=done.reduce(function(s,r){return s+(r.fatal||0);},0);
+    var head="<div class='grid g-kpi' style='margin-bottom:10px'>"
+      +"<div class='kpi'><div class='k-label'>已完成</div><div class='k-val'>"+done.length+"<small>/ "+rows.length+"</small></div></div>"
+      +"<div class='kpi'><div class='k-label'>平均避坑得分</div><div class='k-val'>"+(avg!=null?Math.round(avg*100)+"%":"—")+"</div></div>"
+      +"<div class='kpi'><div class='k-label'>致命遗漏合计</div><div class='k-val' style='color:"+((fatalSum>0)?"var(--red)":"var(--green)")+"'>"+fatalSum+"</div></div>"
+      +"</div>";
+    var table="<table class='tbl'><thead><tr><th>#</th><th>案例</th><th class='t-right'>避坑得分</th><th class='t-right'>致命遗漏</th><th>状态</th></tr></thead><tbody>"
+      +rows.map(function(r,i){
+        var sc=r.ok&&r.overall!=null?Math.round(r.overall*100)+"%":"—";
+        var fm=r.ok&&r.fatal!=null?r.fatal:"—";
+        var st=r.ok?'<span class="tag pass">完成</span>':'<span class="tag danger">失败</span>';
+        return "<tr><td class='num'>"+(i+1)+"</td><td class='id'>"+esc(r.case_id||"—")+"</td><td class='t-right num'>"+sc+"</td><td class='t-right num'>"+fm+"</td><td>"+st+(r.err?"<span class='sub'>"+esc(r.err)+"</span>":"")+"</td></tr>";
+      }).join("")+"</tbody></table>";
+    $("autoResult").innerHTML=head+table;
+  }
+  // 单条：生成题→发Bot(含反问补全)→评分，返回 {ok,overall,fatal,err}
+  function autoRunOne(caseId){
+    return api("/api/generate",{method:"POST",body:{case_id:caseId}}).then(function(g){
+      if(!g.ok) throw new Error("生成失败："+(g.error||"未知"));
+      var q=(g.test&&g.test.generated_query)||"";
+      if(!q) throw new Error("无测试题目");
+      return api("/api/bot/ask",{method:"POST",body:{question:q,auto_followup:true,max_followup:2}});
+    }).then(function(a){
+      if(!a.ok) throw new Error("抓取Bot回答失败："+(a.error||"未知"));
+      return api("/api/evaluate/pitfall",{method:"POST",body:{case_id:caseId,mode:"bot",bot_text:a.answer||""}});
+    }).then(function(e){
+      if(!e.ok) throw new Error("评分失败："+(e.error||"未知"));
+      var agg=(e.result&&e.result.aggregate)||{};
+      return {ok:true,case_id:caseId,overall:agg.overall,fatal:agg.fatal_missed};
+    });
+  }
+  $("autoRunBtn").addEventListener("click", function(){
+    var n=parseInt($("autoN").value,10)||5; n=Math.max(1,Math.min(100,n));
+    AUTO_STOP=false;
+    var btn=$("autoRunBtn"), stopBtn=$("autoStopBtn");
+    btn.disabled=true; stopBtn.disabled=false;
+    $("autoResult").innerHTML="";
+    if(!ALL_CASES.length){
+      api("/api/cases").then(function(d){ ALL_CASES=d.cases||[]; startBatch(n,btn,stopBtn); });
+    } else { startBatch(n,btn,stopBtn); }
+  });
+  $("autoStopBtn").addEventListener("click", function(){ AUTO_STOP=true; autoLog("正在停止…"); });
+  function startBatch(n, btn, stopBtn){
+    var cases=ALL_CASES.slice(0,n);
+    if(!cases.length){ btn.disabled=false; stopBtn.disabled=true; autoLog("案例库为空"); return; }
+    var rows=[], i=0;
+    function next(){
+      if(AUTO_STOP){ autoLog("已停止（完成 "+(rows.length)+" 条）"); btn.disabled=false; stopBtn.disabled=true; renderAutoSummary(rows); loadRuns(); loadDashboard(); return; }
+      if(i>=cases.length){ autoLog("完成（共 "+rows.length+" 条）"); btn.disabled=false; stopBtn.disabled=true; renderAutoSummary(rows); loadRuns(); loadDashboard(); toast("自动测试完成："+rows.length+" 条"); return; }
+      var c=cases[i++];
+      var cid=c.case_id||c.id;
+      autoLog("第 "+i+"/"+cases.length+" 条 · 案例 "+cid+" …");
+      autoRunOne(cid).then(function(r){ rows.push(r); }).catch(function(e){ rows.push({ok:false,case_id:cid,err:e.message||String(e)}); }).then(function(){
+        renderAutoSummary(rows); next();
+      });
+    }
+    next();
+  }
+  refreshBotStatus();
+  // 每 5 秒跟后端对账浏览器状态：手动关/开浏览器窗口后，UI 会自动同步，不再停留在旧状态
+  setInterval(refreshBotStatus, 5000);
+
+  function renderPitfall(d, followNote){
     var res=d.result||{}, agg=res.aggregate||{}, fams=d.families||[];
     var overall=agg.overall, hit=agg.hit_rate, fatal=agg.fatal_missed||0;
     var colOf=function(v){ return v==null?"var(--text-2)":(v>=0.8?"var(--green)":(v>=0.5?"var(--amber)":"var(--red)")); };
     var kpi='<div class="grid g-kpi" style="margin-top:10px">'
-      +'<div class="kpi"><div class="k-label">避坑得分</div><div class="k-val" style="color:'+colOf(overall)+'">'+(overall!=null?Math.round(overall*100)+'%':'—')+'</div><div class="k-foot"><span class="flat">8维加权·致命项双倍权重</span></div></div>'
+      +'<div class="kpi"><div class="k-label">避坑得分</div><div class="k-val" style="color:'+colOf(overall)+'">'+(overall!=null?Math.round(overall*100)+'%':'—')+'</div><div class="k-foot"><span class="flat">8维等权·红线零容忍</span></div></div>'
       +'<div class="kpi"><div class="k-label">断言命中率</div><div class="k-val">'+(hit!=null?Math.round(hit*100)+'%':'—')+'</div><div class="k-foot"><span class="flat">命中/应判 '+(agg.assertions_judged||0)+'/'+(agg.assertions_total||0)+'</span></div></div>'
       +'<div class="kpi"><div class="k-label">致命风险</div><div class="k-val" style="color:'+(fatal>0?'var(--red)':'var(--green)')+'">'+fatal+'</div><div class="k-foot"><span class="flat">红线零容忍</span></div></div>'
       +'</div>';
@@ -1639,10 +2019,11 @@ body.locked{overflow:hidden}
       var ok=a.hit;
       var badge=ok===true?'<span class="tag pass">命中</span>':(ok===false?'<span class="tag danger">遗漏</span>':'<span class="tag mute">未判</span>');
       var fat=a.fatal?'<span class="tag warn">致命</span>':'';
-      return '<li><div class="al-top">'+badge+fat+'<span class="al-fam">'+esc(a.dimension_family||"")+'</span></div><div class="al-txt">'+esc(a.text||"")+'</div><div class="al-ev">证据：'+esc(a.evidence||"")+'</div></li>';
+      var rev=a.needs_review?'<span class="tag warn">低置信·待复核</span>':'';
+      return '<li><div class="al-top">'+badge+fat+rev+'<span class="al-fam">'+esc(a.dimension_family||"")+'</span></div><div class="al-txt">'+esc(a.text||"")+'</div><div class="al-ev">证据：'+esc(a.evidence||"")+'</div></li>';
     }).join('')+'</ul></div>';
     var bot='<div class="mt14"><div class="k">Bot 回答（'+(res.mode||'')+'）</div><div class="v block" style="white-space:pre-wrap;max-height:220px;overflow:auto">'+esc(res.bot_text||"—")+'</div></div>';
-    $("pitfallResult").innerHTML=kpi+heat+list+bot;
+    $("pitfallResult").innerHTML=(followNote||"")+kpi+heat+list+bot;
   }
 
   function renderReport(rep, case_id){

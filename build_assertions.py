@@ -125,22 +125,31 @@ def main():
             print("  ", c.get("case_id"), c.get("destination"), "|", (c.get("correct_response") or "")[:30])
         return
 
+    def flush():
+        json.dump(cases, open(CASES_FILE, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+
     done = 0
-    for c in targets:
+    FLUSH_EVERY = 10  # 每 10 条写回一次，断线后 --resume 可续跑
+    for i, c in enumerate(targets, 1):
         cid = c.get("case_id")
         asr, err = decompose(c, cfg)
+        if err:  # 失败重试一次（网络偶发 502/重置）
+            time.sleep(1)
+            asr, err = decompose(c, cfg)
         if err:
-            print(f"  [跳过] {cid}: {err}")
+            print(f"  [跳过] {cid}: {err}", flush=True)
             continue
         c["pitfall_assertions"] = asr
         done += 1
         fams = {}
         for a in asr:
             fams[a["dimension_family"]] = fams.get(a["dimension_family"], 0) + 1
-        print(f"  [OK] {cid}: {len(asr)} 条断言 | {fams}")
-        time.sleep(0.3)
+        print(f"  [{i}/{len(targets)}] {cid}: {len(asr)} 条断言 | {fams}", flush=True)
+        if i % FLUSH_EVERY == 0:
+            flush()
+        time.sleep(0.2)
 
-    json.dump(cases, open(CASES_FILE, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    flush()
     print(f"\n完成：成功分解 {done} 条，已写回 {CASES_FILE}")
 
 

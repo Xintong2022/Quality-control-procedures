@@ -16,6 +16,7 @@ import re
 import json
 import copy
 import uuid
+import time
 import threading
 import datetime
 import secrets
@@ -29,6 +30,7 @@ from trek_engine import (
     run_trek_engine, get_trek_scorer, get_trek_queries, get_trek_gold,
 )
 from pitfall_engine import run_pitfall_eval, FAMILIES as PITFALL_FAMILIES
+import bot_session
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CASES_FILE = os.path.join(BASE_DIR, "cases.json")
@@ -309,9 +311,9 @@ def build_test_from_case(case):
     """案例生成器：吃一条案例，产出可执行测试。
 
     字段接线（核心，按用户要求把字段接对）：
-      - user_prompt           → 测试基础输入（Bot 可见，A 区）
-      - buried_pitfalls       → 既造「对抗性客户输入」，又作轻量裁判「应规避」底牌（双重消费）
-      - correct_response      → 轻量裁判「期望做到」清单（底牌）
+      - user_prompt           → 测试基础输入（Bot 可见，A 区）—— 只发这一项，绝不泄题
+      - buried_pitfalls       → 仅作裁判「应规避」底牌（双重消费已取消，不再注入 Bot 输入）
+      - correct_response      → 仅作轻量裁判「期望做到」底牌
       - service_types/pitfall_types/scene → 决定测试类型与造题侧重
       - travel_time/group_size       → 行程规划类造题的约束参数
     """
@@ -331,16 +333,14 @@ def build_test_from_case(case):
     is_itinerary = bool(travel_time or group_size or itinerary_svc)
     test_type = "itinerary" if is_itinerary else "service_qa"
 
-    # 埋的坑 → 对抗性客户输入（把坑翻译成客户会怎么试探/表述）+ 裁判「应规避」清单
-    avoid_list = _split_sentences(buried)
-    probes = ["【模拟客户·按埋点施压】" + s for s in avoid_list]
-    # 正确应对 → 期望做到的行为清单
-    expected_behaviors = _split_sentences(correct)
-
-    # 组装发给 Bot 的测试输入（在原始客户原话基础上注入对抗点，透明标记）
+    # 发给 Bot 的测试输入 = 原始客户原话（不注入任何坑点/裁判底牌，避免泄题）
+    # buried_pitfalls / correct_response 只作为裁判底牌留在 return 里，绝不进入 Bot 输入
     generated_query = base
-    if probes:
-        generated_query = base + "\n\n[质检生成器注入·模拟客户追加需求]\n" + "\n".join(probes)
+
+    # 以下仅作裁判底牌 / 透明展示，不进入 generated_query
+    avoid_list = _split_sentences(buried)
+    expected_behaviors = _split_sentences(correct)
+    probes = []  # 兼容旧字段：不再生成对抗注入，始终为空
 
     constraints = {
         "travel_time": travel_time or None,
@@ -652,7 +652,7 @@ def run_engine_b(case, cfg, test=None):
     """轻量裁判（补 TREK 盲区）：只评软性服务质量——规避埋的坑 + 做到正确应对。
 
     不再作为与 TREK 并列的『第二评分器』，而是对 TREK 打不了的那部分做盲审。
-    测试输入来自案例生成器 build_test_from_case（用埋的坑造对抗输入）。
+    测试输入来自案例生成器 build_test_from_case（仅原始客户题目，不注入坑点）。
     """
     from openai import OpenAI
 
@@ -678,7 +678,7 @@ def run_engine_b(case, cfg, test=None):
         "error": None,
     }
 
-    # 1) 调 Bot 拿文本回答（用的是生成器产出的测试输入，含对抗注入）
+    # 1) 调 Bot 拿文本回答（只发原始客户题目，绝不夹带坑点底牌）
     bot_text = ""
     if bot_api:
         try:
@@ -1222,12 +1222,343 @@ def evaluate_pitfall():
     }
     if mode not in ("gold", "mock", "bot"):
         mode = "gold"
+    # 允许直接传入真实 Bot 回答文本（前端粘贴/第三方回传），无 bot_api 时也能评
+    bot_text = data.get("bot_text") or None
     try:
-        res = run_pitfall_eval(case, cfg, mode=mode, bot_api=cfg.get("bot_api"))
+        res = run_pitfall_eval(case, cfg, bot_text=bot_text, mode=mode, bot_api=cfg.get("bot_api"))
     except Exception as e:
         return jsonify({"ok": False, "error": f"避坑评测失败：{e}"}), 500
-    return jsonify({"ok": True, "mode": mode, "case_id": case_id, "result": res,
-                    "families": PITFALL_FAMILIES})
+    # 记录执行（合并评测入口后，避坑评测是唯一评测路径，需写 runs 供执行任务页/看板消费）
+    run_id = "RUN-" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    runs = load_runs()
+    agg = (res or {}).get("aggregate") or {}
+    # 完整结果随记录落库，供「质检报告」点开查看（bot_text 截断避免 runs.json 过大）
+    detail = dict(res or {})
+    if isinstance(detail.get("bot_text"), str) and len(detail["bot_text"]) > 6000:
+        detail["bot_text"] = detail["bot_text"][:6000] + "\n…（已截断）"
+    case_brief = {k: case.get(k) for k in ("scene", "destination", "user_prompt", "service_types", "travel_time", "group_size")}
+    runs.insert(0, {
+        "run_id": run_id,
+        "trigger": "手动 · 测Bot避坑评测",
+        "case_id": case_id,
+        "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "engineA_source": "避坑评测(bot)",
+        "engineB_enabled": bool(cfg.get("judge_api_key")),
+        "pitfall_overall": agg.get("overall"),
+        "pitfall_fatal_missed": agg.get("fatal_missed"),
+        "detail": detail,
+        "case_brief": case_brief,
+    })
+    save_runs(runs[:50])
+    return jsonify({"ok": True, "mode": mode, "case_id": case_id, "run_id": run_id,
+                    "result": res, "families": PITFALL_FAMILIES})
+
+
+# ---------------- Bot 自动模式（多窗口并发编排）----------------
+# 全局任务状态：由后台线程更新，前端轮询读取。用独立锁保护。
+_auto_lock = threading.Lock()
+AUTO_JOB = {
+    "running": False, "stop": False, "started_at": None, "finished_at": None,
+    "total": 0, "done": 0, "ok": 0, "fail": 0, "workers": 0,
+    "results": [], "errors": [], "case_ids": [],
+}
+
+
+def _auto_reset(total, workers, case_ids):
+    with _auto_lock:
+        AUTO_JOB.update({
+            "running": True, "stop": False,
+            "started_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "finished_at": None, "total": total, "done": 0, "ok": 0, "fail": 0,
+            "workers": workers, "results": [], "errors": [], "case_ids": case_ids,
+            "_claimed": 0,
+        })
+
+
+def _auto_stop():
+    with _auto_lock:
+        AUTO_JOB["stop"] = True
+
+
+def _auto_snapshot():
+    with _auto_lock:
+        d = {k: v for k, v in AUTO_JOB.items() if not k.startswith("_")}
+        d["results"] = list(AUTO_JOB["results"])
+        d["errors"] = list(AUTO_JOB["errors"])
+        d["case_ids"] = list(AUTO_JOB["case_ids"])
+        return d
+
+
+def _auto_add_result(rec, ok):
+    with _auto_lock:
+        AUTO_JOB["results"].append(rec)
+        AUTO_JOB["done"] += 1
+        if ok:
+            AUTO_JOB["ok"] += 1
+        else:
+            AUTO_JOB["fail"] += 1
+            if len(AUTO_JOB["errors"]) < 100:
+                AUTO_JOB["errors"].append({"case_id": rec.get("case_id"), "error": rec.get("error")})
+
+
+def _auto_one_worker(worker_id, case_queue, cfg_for_eval):
+    """单个 worker 线程：注册一次 → 按序领题 → 发题抓答 → 避坑评分 → 写 runs。
+    case_queue 是共享的有序列表，用 _auto_lock 保护游标，保证题目按序分配且不重复。
+    """
+    worker = bot_session.make_worker(worker_id)
+    wid = worker_id + 1
+    try:
+        # 1) 全新注册（每个 worker 一个独立账号/浏览器）
+        reg = bot_session.launch_and_register(worker=worker)
+        if not reg.get("ok"):
+            _auto_add_result({"worker": wid, "case_id": None, "ok": False,
+                              "error": f"worker{wid} 注册失败：{reg.get('error')}"}, False)
+            return
+        # 2) 循环按序领题
+        while True:
+            with _auto_lock:
+                if AUTO_JOB["stop"]:
+                    break
+                # 用独立游标按序领题，保证题目顺序分配且不重复
+                claimed = AUTO_JOB.get("_claimed", 0)
+                if claimed >= len(case_queue):
+                    break
+                case = case_queue[claimed]
+                AUTO_JOB["_claimed"] = claimed + 1
+
+            case_id = case.get("case_id")
+            try:
+                test = build_test_from_case(case)
+                question = test.get("generated_query") or case.get("user_prompt", "")
+                # 发给 bot（含反问自动补全）。bot 单轮响应约 60s，自动模式放宽等待到 180s、
+                # 最多补 2 轮（应对多选追问+授权），避免慢响应被误判超时。
+                ans = bot_session.ask_with_followup(
+                    question, worker=worker,
+                    cfg_override={"max_followup": 3, "wait_ms": 180000})
+                if not ans.get("ok"):
+                    _auto_add_result({"worker": wid, "case_id": case_id, "ok": False,
+                                      "error": ans.get("error", "发题失败")}, False)
+                    continue
+                # 避坑评分（传入真实 bot 回答文本，不再调外部 bot API）
+                res = run_pitfall_eval(case, cfg_for_eval, bot_text=ans.get("answer", ""), mode="bot")
+                agg = (res or {}).get("aggregate") or {}
+                _write_auto_run(case, case_id, wid, ans, res, agg)
+                _auto_add_result({
+                    "worker": wid, "case_id": case_id, "ok": True,
+                    "overall": agg.get("overall"), "fatal": agg.get("fatal_missed"),
+                    "rounds": ans.get("rounds"), "elapsed": ans.get("elapsed"),
+                }, True)
+            except Exception as e:
+                _auto_add_result({"worker": wid, "case_id": case_id, "ok": False,
+                                  "error": f"{type(e).__name__}: {e}"}, False)
+    except Exception as e:
+        _auto_add_result({"worker": wid, "case_id": None, "ok": False,
+                          "error": f"worker{wid} 异常：{type(e).__name__}: {e}"}, False)
+    finally:
+        try:
+            bot_session.close_browser(worker=worker)
+        except Exception:
+            pass
+
+
+def _write_auto_run(case, case_id, wid, ans, res, agg):
+    """把自动模式单条结果写入 runs.json（含完整详情，供质检报告点开查看）。"""
+    try:
+        runs = load_runs()
+        run_id = "RUN-AUTO-" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + f"-W{wid}"
+        detail = dict(res or {})
+        detail["bot_qa"] = {
+            "question_sent": ans.get("answer") is not None,
+            "rounds": ans.get("rounds"),
+            "followup_used": ans.get("followup_used"),
+            "answer": ans.get("answer", ""),
+            "trace": ans.get("trace", []),
+            "permissions_allowed": ans.get("permissions_allowed"),
+        }
+        if isinstance(detail.get("bot_text"), str) and len(detail["bot_text"]) > 6000:
+            detail["bot_text"] = detail["bot_text"][:6000] + "\n…（已截断）"
+        case_brief = {k: case.get(k) for k in
+                      ("scene", "destination", "user_prompt", "service_types", "travel_time", "group_size")}
+        runs.insert(0, {
+            "run_id": run_id,
+            "trigger": f"自动 · 多窗口W{wid}",
+            "case_id": case_id, "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "engineA_source": "避坑评测(bot·自动)",
+            "engineB_enabled": bool(_cfg_judge_key()),
+            "pitfall_overall": agg.get("overall"), "pitfall_fatal_missed": agg.get("fatal_missed"),
+            "detail": detail, "case_brief": case_brief,
+        })
+        save_runs(runs[:50])
+    except Exception:
+        pass
+
+
+def _cfg_judge_key():
+    try:
+        return load_settings().get("judge_api_key")
+    except Exception:
+        return ""
+
+
+def _auto_runner_thread(case_queue, n_workers, cfg_for_eval):
+    """后台总控：起 n_workers 个 worker 线程并发跑，全部结束后收尾。"""
+    try:
+        with _auto_lock:
+            AUTO_JOB["_claimed"] = 0
+        threads = []
+        for i in range(n_workers):
+            t = threading.Thread(target=_auto_one_worker, args=(i, case_queue, cfg_for_eval), daemon=True)
+            t.start()
+            threads.append(t)
+            time.sleep(1.5)  # 错峰启动浏览器，避免同时起 N 个 Chrome 把机器/端口挤爆
+        for t in threads:
+            t.join()
+    finally:
+        with _auto_lock:
+            AUTO_JOB["running"] = False
+            AUTO_JOB["finished_at"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+# ---------------- Bot 网页端会话（Playwright CDP）----------------
+@app.route("/api/bot/status", methods=["GET"])
+def bot_status():
+    try:
+        return jsonify({"ok": True, **bot_session.browser_status()})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/bot/launch", methods=["POST"])
+def bot_launch():
+    try:
+        res = bot_session.launch_browser()
+        return jsonify(res), (200 if res.get("ok") else 500)
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/bot/register", methods=["POST"])
+def bot_register():
+    """全新无登录启动 → 随机手机号注册 → 资料填写 → 进入聊天页。"""
+    try:
+        res = bot_session.launch_and_register()
+        return jsonify(res), (200 if res.get("ok") else 500)
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/bot/probe", methods=["POST"])
+def bot_probe():
+    try:
+        res = bot_session.probe_dom()
+        return jsonify(res), (200 if res.get("ok") else 500)
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/bot/selectors", methods=["POST"])
+def bot_selectors():
+    """保存选择器覆盖到 settings.json。"""
+    data = request.get_json(force=True, silent=True) or {}
+    try:
+        s = load_settings()
+        mapping = {
+            "input": "bot_input_selector",
+            "send": "bot_send_selector",
+            "answer": "bot_answer_selector",
+            "wait_ms": "bot_wait_ms",
+        }
+        for k, key in mapping.items():
+            if k in data and data[k] is not None:
+                s[key] = data[k]
+        save_settings(s)
+        return jsonify({"ok": True, "selectors": {k: s.get(v) for k, v in mapping.items()}})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/bot/close", methods=["POST"])
+def bot_close():
+    try:
+        return jsonify(bot_session.close_browser())
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/bot/ask", methods=["POST"])
+def bot_ask():
+    """把题目发给 bot 并抓回回答；若 bot 反问，自动追问一轮补全。
+
+    body:
+      question: 题目（必填）
+      auto_followup: 是否启用反问自动补全（默认 true）
+      max_followup: 最大轮数（含首轮，默认 2 = 最多补1轮）
+    """
+    data = request.get_json(force=True, silent=True) or {}
+    question = data.get("question", "")
+    if not question:
+        return jsonify({"ok": False, "error": "问题为空"}), 400
+    auto = data.get("auto_followup", True)
+    max_followup = int(data.get("max_followup", 2) or 2)
+    try:
+        if auto:
+            res = bot_session.ask_with_followup(question, cfg_override={"max_followup": max_followup})
+        else:
+            single = bot_session.send_and_capture(question)
+            res = dict(single, rounds=1, followup_used=False, trace=[])
+        return jsonify(res), (200 if res.get("ok") else 500)
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/bot/auto/start", methods=["POST"])
+def bot_auto_start():
+    """启动自动模式：N 个窗口并发，从注册到发题到评分全自动，题库按序分配。
+
+    body:
+      workers: 并发窗口数（1-10，默认 10）
+      limit:   最多测试条数（0 表示全部，默认 0）
+      start_index: 从第几条开始（默认 0，按 cases.json 顺序）
+    """
+    if _auto_snapshot()["running"]:
+        return jsonify({"ok": False, "error": "自动任务已在运行中"}), 409
+    data = request.get_json(force=True, silent=True) or {}
+    try:
+        n_workers = max(1, min(10, int(data.get("workers", 10) or 10)))
+        limit = max(0, int(data.get("limit", 0) or 0))
+        start_index = max(0, int(data.get("start_index", 0) or 0))
+    except Exception:
+        return jsonify({"ok": False, "error": "参数格式错误"}), 400
+    cases = load_cases()
+    selected = cases[start_index:] if start_index else list(cases)
+    if limit > 0:
+        selected = selected[:limit]
+    if not selected:
+        return jsonify({"ok": False, "error": "没有可测试的题目"}), 400
+    case_ids = [str(c.get("case_id")) for c in selected]
+    settings = load_settings()
+    cfg_for_eval = {
+        "judge_api_key": settings.get("judge_api_key", ""),
+        "judge_model": settings.get("judge_model", ""),
+        "judge_base_url": settings.get("judge_base_url", ""),
+    }
+    _auto_reset(len(selected), n_workers, case_ids)
+    t = threading.Thread(target=_auto_runner_thread,
+                         args=(selected, n_workers, cfg_for_eval), daemon=True)
+    t.start()
+    return jsonify({"ok": True, "total": len(selected), "workers": n_workers,
+                    "message": f"已启动 {n_workers} 个窗口，共 {len(selected)} 题"})
+
+
+@app.route("/api/bot/auto/stop", methods=["POST"])
+def bot_auto_stop():
+    _auto_stop()
+    return jsonify({"ok": True, "message": "已发出停止信号，各窗口将在当前题目完成后停止"})
+
+
+@app.route("/api/bot/auto/status", methods=["GET"])
+def bot_auto_status():
+    return jsonify({"ok": True, **_auto_snapshot()})
 
 
 # ---------------- 单次案例双引擎报告 ----------------
@@ -1345,6 +1676,24 @@ def dashboard():
 @app.route("/api/runs", methods=["GET"])
 def runs():
     return jsonify({"ok": True, "runs": load_runs()})
+
+
+@app.route("/api/runs/detail", methods=["GET"])
+def run_detail():
+    """按 run_id 取单条历史记录完整详情（含完整评测结果与案例快照）。"""
+    run_id = request.args.get("run_id", "")
+    rec = next((r for r in load_runs() if r.get("run_id") == run_id), None)
+    if not rec:
+        return jsonify({"ok": False, "error": f"未找到记录 {run_id}"}), 404
+    return jsonify({"ok": True, "run": rec})
+
+
+@app.route("/api/runs/clear", methods=["POST"])
+def clear_runs():
+    """清空全部质检报告记录（不可恢复，前端已二次确认）。"""
+    n = len(load_runs())
+    save_runs([])
+    return jsonify({"ok": True, "cleared": n})
 
 
 # ----------------------------------------------------------------------------

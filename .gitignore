@@ -2,6 +2,12 @@
 # 含裁判/生成 API Key、Flask session secret、管理员密码哈希
 settings.json
 
+# ===== Bot 自动化会话（含登录态，切勿提交）=====
+bot_profile/
+bot_profile_*/
+bot_session.json
+bot_session_w*.json
+
 # ===== 运行时生成 =====
 runs.json
 flask.log
@@ -25,3 +31,7 @@ Thumbs.db
 *.swp
 .idea/
 .vscode/
+bot_phones.json
+_probe*.json
+_probe_profile/
+_probe.py

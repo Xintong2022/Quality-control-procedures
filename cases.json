@@ -47,7 +47,39 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "先锁定客户实际抵达机场（成田NRT距市区约60km、羽田HND约15km）与航班落地时刻，再据此安排接机方案",
+        "dimension_family": "地理动线",
+        "fatal": false
+      },
+      {
+        "text": "若为红眼/深夜落地，提前预约深夜巴士或包车接机（成田23:00–06:00宵禁、羽田24h运营），避免错过末班电车滞留机场",
+        "dimension_family": "地理动线",
+        "fatal": true
+      },
+      {
+        "text": "告知客户吉卜力美术馆2026/11/4–11/18维修闭馆（含周二休馆），11/8无法参观，改约11/19之后或改去爱知吉卜力公园",
+        "dimension_family": "时间窗口",
+        "fatal": true
+      },
+      {
+        "text": "明确告知11月富士山登山季已于9/10结束、登顶道路封闭且官方明令禁止登山，改为五合目+河口湖远观行程",
+        "dimension_family": "安全健康",
+        "fatal": true
+      },
+      {
+        "text": "酒店按主要游玩动线选址（以市区为主则订市区），避免订在迪士尼/横滨导致通勤与接机成本陡增",
+        "dimension_family": "地理动线",
+        "fatal": false
+      },
+      {
+        "text": "与客户确认『哈利波特影城』指东京豐洲园区而非大阪USJ，并按确认地点排入行程",
+        "dimension_family": "地理动线",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "2",
@@ -86,7 +118,39 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "建议改用NCC持证司机包车，其拥有ZTL限行区合法通行权，可避免闯限罚款",
+        "dimension_family": "交规地方法规",
+        "fatal": false
+      },
+      {
+        "text": "若不包车，建议将车停在ZTL限行区外的停车场，改步行或乘电车进入古城",
+        "dimension_family": "交规地方法规",
+        "fatal": false
+      },
+      {
+        "text": "若坚持自驾进入古城，须在抵达前24–72小时把车牌号报给酒店，由酒店登记临时通行许可",
+        "dimension_family": "预订限流",
+        "fatal": false
+      },
+      {
+        "text": "自驾时须使用避开ZTL限行区的导航设置，防止误入罗马、佛罗伦萨历史中心等摄像头密集区",
+        "dimension_family": "交规地方法规",
+        "fatal": false
+      },
+      {
+        "text": "提示ZTL罚单通常滞后3–6个月才寄达，且租车公司会额外加收每张€40–60的手续费",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      },
+      {
+        "text": "提示单次闯入ZTL的罚款为€80–332，需提前告知客户该隐性成本",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "3",
@@ -124,7 +188,34 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "提示欧洲法定成年为18岁，常规连锁/商务酒店最低入住年龄18岁，未满18岁不可单独办理入住",
+        "dimension_family": "人群适配",
+        "fatal": true
+      },
+      {
+        "text": "要求至少安排1名成年同行，或由法定监护人出具签字授权同意书并附双方护照复印件",
+        "dimension_family": "证件合规",
+        "fatal": true
+      },
+      {
+        "text": "订房前向酒店确认是否接受未满18岁未成年人入住，并索取其同意书模板",
+        "dimension_family": "预订限流",
+        "fatal": false
+      },
+      {
+        "text": "申根签证材料同步补齐未成年人监护同意书及护照复印件，避免入境与入住双重受阻",
+        "dimension_family": "证件合规",
+        "fatal": true
+      },
+      {
+        "text": "法国段特别提示需父母/监护人签字的授权同意书加双方护照复印件，否则到店可能被拒住",
+        "dimension_family": "人群适配",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "4",
@@ -163,7 +254,39 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "提醒锡安Angels Landing（天使降临）步道必须提前在Recreation.gov抽签获取permit，无证攀登会被重罚",
+        "dimension_family": "预订限流",
+        "fatal": true
+      },
+      {
+        "text": "说明天使降临抽签分季节性抽签与出发前一天抽签两种渠道，需按行程日期对应申请窗口",
+        "dimension_family": "时间窗口",
+        "fatal": false
+      },
+      {
+        "text": "说明国际游客购买国家公园年票为$250，而非美国居民的$80，预算需按$250计算",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      },
+      {
+        "text": "提示部分国家公园入口无现金只收卡，需备好可用的信用卡/借记卡",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      },
+      {
+        "text": "确认租车驾驶人年龄是否满25岁，未满25岁需预留年轻司机附加费",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      },
+      {
+        "text": "提示优胜美地、拱门、锡安虽已取消timed-entry预约，但仍可能临时限流或停车管制，建议早到避峰",
+        "dimension_family": "时间窗口",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "5",
@@ -201,7 +324,34 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "下单前逐一核实每家候选温泉旅馆的『儿童可住政策与年龄下限』，排除13岁以下不可入住的成人-only旅馆",
+        "dimension_family": "人群适配",
+        "fatal": true
+      },
+      {
+        "text": "只推荐在官方页面或确认书中明确写明『欢迎儿童入住』的旅馆，不凭图片或描述推测",
+        "dimension_family": "人群适配",
+        "fatal": true
+      },
+      {
+        "text": "向客户书面说明所选旅馆的取消阶梯（如提前7–21天收30%–100%、旺季提前14天收20%）及免费取消截止日",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      },
+      {
+        "text": "确认报价是否含早晚两餐及榻榻米房型，避免到店才发现需另付餐费或无儿童餐",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      },
+      {
+        "text": "针对带6岁和9岁孩子的家庭，优先改推家庭友好型旅馆或带『私汤/贷切风吕』的房型，兼顾传统体验与带娃便利",
+        "dimension_family": "人群适配",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "6",
@@ -233,7 +383,39 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "核验护照剩余有效期是否>6个月、10年内签发且≥2空白页，不足6个月先办理换发再递签",
+        "dimension_family": "证件合规",
+        "fatal": true
+      },
+      {
+        "text": "代购申根专用医疗险，确认保额≥3万欧元且含紧急医疗运送与遗体遣返",
+        "dimension_family": "证件合规",
+        "fatal": true
+      },
+      {
+        "text": "确认保险保障期覆盖从入境到回国当天全程，不留空档",
+        "dimension_family": "证件合规",
+        "fatal": true
+      },
+      {
+        "text": "制作逐日行程单，确保每天城市与酒店订单、机票订单一一对应",
+        "dimension_family": "证件合规",
+        "fatal": false
+      },
+      {
+        "text": "提醒8月旺季需提前3–6周预约递签，避免预约排满耽误出行",
+        "dimension_family": "时间窗口",
+        "fatal": false
+      },
+      {
+        "text": "提示签证照片规格（白底、尺寸、近期拍摄）并核对材料清单",
+        "dimension_family": "证件合规",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "7",
@@ -265,7 +447,39 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "建议优先改买联程票，确保行李直挂且前段延误时由航司负责改签或赔付",
+        "dimension_family": "预订限流",
+        "fatal": true
+      },
+      {
+        "text": "若坚持分段购票，提醒中转预留≥3–4小时以覆盖入境取行李与重新值机",
+        "dimension_family": "时间窗口",
+        "fatal": true
+      },
+      {
+        "text": "确认首尔转机前后段是否同航站楼，若需换航站楼额外预留移动与再安检时间",
+        "dimension_family": "地理动线",
+        "fatal": false
+      },
+      {
+        "text": "核实经韩国转机是否需办理过境签或入境签证，并提前准备相应证件",
+        "dimension_family": "证件合规",
+        "fatal": true
+      },
+      {
+        "text": "提示分段票前段延误会导致后段作废且航司不予赔付的风险",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      },
+      {
+        "text": "提示跳段风险：弃坐前段会导致后段及全程机票作废",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "8",
@@ -305,7 +519,44 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "提示采尔马特为禁车村，自驾只能到Täsch停车场后换乘火车进村，需预留接驳时间",
+        "dimension_family": "交规地方法规",
+        "fatal": true
+      },
+      {
+        "text": "确认租车合同明确包含冬季雪胎，并了解防滑链使用条件（意大利等邻国11/15–4/15强制）",
+        "dimension_family": "交规地方法规",
+        "fatal": true
+      },
+      {
+        "text": "提示12月部分阿尔卑斯山口公路冬季封闭，规划自驾路线时避开封闭路段并备好绕行方案",
+        "dimension_family": "交规地方法规",
+        "fatal": true
+      },
+      {
+        "text": "预订少女峰齿轮火车票时提示大风大雪可能临时停运，建议购买可改签票并准备备选行程",
+        "dimension_family": "时间窗口",
+        "fatal": false
+      },
+      {
+        "text": "提示圣诞新年为欧洲全年最高价时段，酒店需提前数月锁价预订",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      },
+      {
+        "text": "少女峰火车票及雪场周边酒店尽早预订以锁定价格与位置",
+        "dimension_family": "预订限流",
+        "fatal": false
+      },
+      {
+        "text": "提示少女峰海拔高，备好保暖衣物并制定高原反应应对预案（含下撤方案）",
+        "dimension_family": "安全健康",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "9",
@@ -349,7 +600,34 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "出行前办理维州认可的NAATI认证英文翻译件或国际驾照IDP并配合国内驾照原件携带，仅持国内驾照原件不可驾车",
+        "dimension_family": "证件合规",
+        "fatal": true
+      },
+      {
+        "text": "提醒入境时如实申报所有食品、药品及动植物制品，未申报被查将面临重罚甚至起诉",
+        "dimension_family": "证件合规",
+        "fatal": true
+      },
+      {
+        "text": "确认租车公司对驾驶人年龄的要求（通常≥21，部分≥25）并核实是否需支付年轻司机附加费",
+        "dimension_family": "费用陷阱",
+        "fatal": false
+      },
+      {
+        "text": "提示墨尔本为右舵靠左行驶，出行前熟悉当地交规",
+        "dimension_family": "交规地方法规",
+        "fatal": false
+      },
+      {
+        "text": "提示乡村及夜间路段有野生动物出没风险，尽量避免夜间驾车",
+        "dimension_family": "安全健康",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "10",
@@ -388,7 +666,44 @@
     "source": "需求测试题库",
     "gen_method": "上传导入",
     "zone": "A+B",
-    "recent_score": null
+    "recent_score": null,
+    "pitfall_assertions": [
+      {
+        "text": "劝阻1月环岛自驾，改推荐南岸小环线（黄金圈+南岸）替代全程1号公路环岛",
+        "dimension_family": "地理动线",
+        "fatal": false
+      },
+      {
+        "text": "建议改用当地司导或跟团出行，避免新手雪地自驾被困风险",
+        "dimension_family": "交规地方法规",
+        "fatal": false
+      },
+      {
+        "text": "若坚持自驾，明确要求租四驱车并确认已装冬季雪胎",
+        "dimension_family": "交规地方法规",
+        "fatal": true
+      },
+      {
+        "text": "要求购买含道路救援的租车保险，覆盖暴风雪被困拖车",
+        "dimension_family": "安全健康",
+        "fatal": false
+      },
+      {
+        "text": "提醒每日出行前查询road.is官网确认1号公路封闭与结冰信息",
+        "dimension_family": "时间窗口",
+        "fatal": false
+      },
+      {
+        "text": "预订民宿前确认冬季正常营业且具备取暖设施",
+        "dimension_family": "预订限流",
+        "fatal": false
+      },
+      {
+        "text": "建议安装极光预报APP（如Aurora Forecast）并说明极光不可预测需管理预期",
+        "dimension_family": "时间窗口",
+        "fatal": false
+      }
+    ]
   },
   {
     "case_id": "11",
@@ -33157,6 +33472,222 @@
       "区域",
       "悬崖步梯",
       "火山"
+    ],
+    "source": "AI生成",
+    "gen_method": "LLM生成",
+    "zone": "A+B",
+    "recent_score": null
+  },
+  {
+    "case_id": "GEN-20261118105014-1",
+    "scene": "加拿大 黄刀",
+    "destination": "加拿大 黄刀",
+    "travel_period": "",
+    "user_prompt": "我们想明年2月去加拿大看极光，听说黄刀镇不错，两个大人带一个5岁的小孩，想住能看到极光的木屋酒店，帮忙安排下？",
+    "travel_time": "2027年2月 5天4晚",
+    "group_size": "2大1小",
+    "service_types": [
+      "酒店代订",
+      "极光"
+    ],
+    "pitfall_types": [
+      {
+        "level1": "季节",
+        "level2": "极光/极寒"
+      },
+      {
+        "level1": "签证",
+        "level2": "ETA"
+      },
+      {
+        "level1": "儿童",
+        "level2": "若带娃"
+      }
+    ],
+    "buried_pitfalls": "黄刀2月平均气温零下25至零下30度，夜间等极光可达零下35度，5岁儿童长时间户外极易冻伤；极光为自然现象不可保证100%看到；持中国护照入境加拿大需提前办理eTA（电子旅行授权），并非免签。\ncorrect_response 对应：\n1. 提醒客户极寒风险，建议为儿童准备连体防寒服、雪地靴、暖宝宝，并控制每次户外观赏时长在30分钟内，优先选择带室内玻璃顶/暖气房的极光 viewing 套房，孩子可在室内等待。\n2. 明确告知极光不可保证，建议至少停留4晚以提高观测概率，并介绍云量、KP指数对观测的影响。\n3. 核实护照有效期并协助办理eTA，说明eTA与机票绑定，需在购票前获批。",
+    "correct_response": "",
+    "category": "加拿大 黄刀",
+    "hard_assertions": {
+      "max_budget": null,
+      "max_daily_walking_km": null
+    },
+    "known_pitfalls": [
+      "儿童",
+      "季节",
+      "签证"
+    ],
+    "source": "AI生成",
+    "gen_method": "LLM生成",
+    "zone": "A+B",
+    "recent_score": null
+  },
+  {
+    "case_id": "GEN-20261118105014-2",
+    "scene": "土耳其 卡帕多奇亚",
+    "destination": "土耳其 卡帕多奇亚",
+    "travel_period": "",
+    "user_prompt": "想去卡帕多奇亚坐热气球，看网上照片超美，打算明年4月去，2个人，帮忙看下怎么安排最划算。",
+    "travel_time": "2027年4月 4天3晚",
+    "group_size": "2成人",
+    "service_types": [
+      "热气球",
+      "一日游"
+    ],
+    "pitfall_types": [
+      {
+        "level1": "季节",
+        "level2": "热气球停飞"
+      },
+      {
+        "level1": "安全",
+        "level2": "热气球"
+      },
+      {
+        "level1": "费用",
+        "level2": "昂贵"
+      }
+    ],
+    "buried_pitfalls": "热气球高度依赖天气，春季多风多雨，停飞率高（约30%–40%），很多游客飞了三四天都没坐上；正规运营公司价格约200–300欧/人，远低于此的『低价团』可能无保险或超载；热气球需日出前集合，需预留至少2–3个早晨作为备选。\ncorrect_response 对应：\n1. 提前告知春季停飞概率高，建议行程预留至少3个清晨作为备选，并将热气球安排在行程前段，若首日停飞可顺延。\n2. 推荐选择持有民航局认证、含全额保险的正规公司，明确报价含酒店接送、飞行约1小时、香槟庆祝，警惕远低于市场价的『黑飞』。\n3. 说明热气球不可退款但停飞全退的政策差异，协助购买可覆盖停飞的旅行保险。",
+    "correct_response": "",
+    "category": "土耳其 卡帕多奇亚",
+    "hard_assertions": {
+      "max_budget": null,
+      "max_daily_walking_km": null
+    },
+    "known_pitfalls": [
+      "季节",
+      "安全",
+      "费用"
+    ],
+    "source": "AI生成",
+    "gen_method": "LLM生成",
+    "zone": "A+B",
+    "recent_score": null
+  },
+  {
+    "case_id": "GEN-20261118105014-3",
+    "scene": "意大利 罗马-佛罗伦萨",
+    "destination": "意大利 罗马-佛罗伦萨",
+    "travel_period": "",
+    "user_prompt": "我和闺蜜明年5月去意大利，罗马进佛罗伦萨出，10天，不想跟团，想自由行，重点想看博物馆和美术馆，麻烦帮我做行程和订票。",
+    "travel_time": "2027年5月 10天",
+    "group_size": "2成人",
+    "service_types": [
+      "自由行行程规划",
+      "门票代订+酒店"
+    ],
+    "pitfall_types": [
+      {
+        "level1": "门票",
+        "level2": "强预约/限流"
+      },
+      {
+        "level1": "门票",
+        "level2": "闭馆日/预约"
+      },
+      {
+        "level1": "区域",
+        "level2": "小镇限流/停车"
+      }
+    ],
+    "buried_pitfalls": "乌菲兹美术馆、梵蒂冈博物馆、最后晚餐（米兰，若顺路）等热门馆强制提前预约且每日限流，旺季现场票基本售罄；多数博物馆周一闭馆，行程若未避开将白跑一趟；罗马ZTL限行区自驾进入会被罚款，佛罗伦萨老城区同样限行。\ncorrect_response 对应：\n1. 行程按『罗马4晚—佛罗伦萨3晚—可选比萨/五渔村』排布，所有重点博物馆按开放日倒推预约，提前1–2个月锁定乌菲兹、梵蒂冈、学院美术馆（大卫像）时段票。\n2. 标注各馆闭馆日（如乌菲兹周一闭馆），避免行程冲突，并为每个馆预留2–3小时参观时长，附电子票与入场时段提醒。\n3. 明确全程不租车，城市间用高铁（Frecciarossa/Italo），老城内步行+公交，避开ZTL限行罚款风险。",
+    "correct_response": "",
+    "category": "意大利 罗马-佛罗伦萨",
+    "hard_assertions": {
+      "max_budget": null,
+      "max_daily_walking_km": null
+    },
+    "known_pitfalls": [
+      "区域",
+      "门票"
+    ],
+    "source": "AI生成",
+    "gen_method": "LLM生成",
+    "zone": "A+B",
+    "recent_score": null
+  },
+  {
+    "case_id": "GEN-20261118105014-4",
+    "scene": "印尼 科莫多",
+    "destination": "印尼 科莫多",
+    "travel_period": "",
+    "user_prompt": "想去科莫多岛看科莫多龙，还想潜水，听说船宿很特别，明年6月两个大人一个10岁的孩子，行程你们帮我们排一下。",
+    "travel_time": "2027年6月 5天4晚",
+    "group_size": "2大1小",
+    "service_types": [
+      "船宿",
+      "潜水",
+      "出海"
+    ],
+    "pitfall_types": [
+      {
+        "level1": "健康",
+        "level2": "船证"
+      },
+      {
+        "level1": "安全",
+        "level2": "潜水/儿童"
+      },
+      {
+        "level1": "季节",
+        "level2": "季风/雨季"
+      }
+    ],
+    "buried_pitfalls": "科莫多船宿多为传统木质帆船，无医疗设施，需自备晕船药与基础药品，出发前需签署健康声明；10岁儿童多数潜店不接受体验潜水（最低12岁），仅可浮潜或SASY；6月已进入旱季但部分海域浪况仍不稳定，船宿跨岛航行受风浪影响可能调整路线。\ncorrect_response 对应：\n1. 提前确认船宿公司的安全资质、救生设备与儿童救生衣，告知客户备好晕船药、防晒、防水包，并建议选择口碑较好的稳定船宿运营商。\n2. 明确10岁儿童无法参加水肺体验潜水，安排浮潜、玻璃底船或海滩活动替代，成人如想潜水需出示潜水证并单独安排。\n3. 6月整体适合出海但需关注每日浪况，行程留出弹性，遇大浪由船长决定改线或取消，协助购买含海上活动的旅行保险。",
+    "correct_response": "",
+    "category": "印尼 科莫多",
+    "hard_assertions": {
+      "max_budget": null,
+      "max_daily_walking_km": null
+    },
+    "known_pitfalls": [
+      "健康",
+      "季节",
+      "安全"
+    ],
+    "source": "AI生成",
+    "gen_method": "LLM生成",
+    "zone": "A+B",
+    "recent_score": null
+  },
+  {
+    "case_id": "GEN-20261118105014-5",
+    "scene": "匈牙利 布达佩斯",
+    "destination": "匈牙利",
+    "travel_period": "",
+    "user_prompt": "明年12月想去布达佩斯过圣诞，泡温泉看夜景，2个大人，想住多瑙河边的好酒店，帮忙安排机票酒店和温泉门票。",
+    "travel_time": "2027年12月 5天4晚",
+    "group_size": "2成人",
+    "service_types": [
+      "酒店代订",
+      "机票",
+      "门票"
+    ],
+    "pitfall_types": [
+      {
+        "level1": "气候",
+        "level2": "冬寒"
+      },
+      {
+        "level1": "温泉",
+        "level2": "着装/健康"
+      },
+      {
+        "level1": "货币",
+        "level2": "福林/欧元"
+      }
+    ],
+    "buried_pitfalls": "布达佩斯12月平均气温零下1至4度，昼夜温差大，塞切尼温泉为露天温泉，泡汤时头发湿+冷风极易感冒；温泉对泳衣、泳帽有强制要求（多数池要求戴泳帽），自带毛巾或需另购；匈牙利官方货币为福林(HUF)，虽部分商家收欧元但汇率极不划算。\ncorrect_response 对应：\n1. 提醒12月严寒，建议入住多瑙河边带室内暖气良好的酒店，温泉安排在午后气温较高时段，备好保暖帽、防滑鞋、吹风机。\n2. 说明塞切尼等温泉强制泳帽规定，建议自备泳衣泳帽毛巾，告知有心血管、高血压等健康问题的客人谨慎长时间泡汤。\n3. 建议在国内或机场少量兑换福林，主要用信用卡支付，避免直接用欧元现金结算被高汇率坑，提醒圣诞市场人多注意扒手。",
+    "correct_response": "",
+    "category": "匈牙利",
+    "hard_assertions": {
+      "max_budget": null,
+      "max_daily_walking_km": null
+    },
+    "known_pitfalls": [
+      "气候",
+      "温泉",
+      "货币"
     ],
     "source": "AI生成",
     "gen_method": "LLM生成",
