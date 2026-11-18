@@ -1698,6 +1698,8 @@ def clear_runs():
 
 # ----------------------------------------------------------------------------
 if __name__ == "__main__":
-    print("旅游 AI 质检平台后端启动 → http://localhost:8501")
+    # 端口：优先环境变量 PORT（Render/PaaS 部署），本地默认 8501
+    port = int(os.environ.get("PORT", "8501"))
+    print(f"Aloka质量检测平台后端启动 → http://localhost:{port}")
     print(f"TREK_AVAILABLE={TREK_AVAILABLE}")
-    app.run(host="0.0.0.0", port=8501, debug=False, threaded=True)
+    app.run(host="0.0.0.0", port=port, debug=False, threaded=True)

@@ -1,0 +1,14 @@
+# Render Blueprint — Aloka质量检测平台
+# 部署：Render Dashboard → New → Blueprint → 选择本仓库即可
+services:
+  - type: web
+    name: aloka-qa-platform
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python -m playwright install --with-deps chromium
+    startCommand: python server.py
+    healthCheckPath: /api/health
+    # 免费层注意事项：
+    # 1) 15 分钟无流量会休眠，首次访问需等待约 50 秒冷启动
+    # 2) 512MB 内存仅够 Web 端操作与单窗口评测；10 窗口并发 Bot 自动化建议升级付费
+    # 3) 磁盘非持久：重新部署后 runs.json/cases.json 等运行时数据会重置
