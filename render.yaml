@@ -11,6 +11,10 @@ services:
         value: 3.11.9
       - key: PLAYWRIGHT_BROWSERS_PATH
         value: /opt/render/project/src/.cache/ms-playwright
+      # 访问密码：在 Render Dashboard → Environment 中设置 APP_PASSWORD，
+      # 设置后公网访问必须先登录（密码持久，重新部署不丢失）
+      - key: APP_PASSWORD
+        sync: false  # 由用户在 Dashboard 手动填入，避免明文进仓库
     # 构建三步，全部容错：
     # 1) 升级 pip 避免老解析器装新包失败
     # 2) 装 Python 依赖

@@ -17,9 +17,22 @@
    `https://aloka-qa-platform.onrender.com`
    这就是你的公网访问链接，手机/任何电脑都能打开。
 
+## 公网访问保护（务必设置）
+
+推荐方式：**环境变量密码**（持久，重新部署不丢失）：
+
+1. Render Dashboard → 你的服务 → **Environment** 标签
+2. **Add Environment Variable**：
+   - Key: `APP_PASSWORD`
+   - Value: 你的密码（建议 8 位以上）
+3. 保存后服务自动重新部署，之后访问公网链接会先弹出登录页，输入该密码才能进入
+
+> 该密码同时是会话密钥的来源之一（SECRET_KEY 也可在 Environment 中一并设置随机串）。
+> 网页「设置」页设置的密码存在 settings.json 里，**Render 免费层重新部署会丢失**，云端请用环境变量方式。
+
 ## 首次访问
 
-- 平台处于免登录开放态（仓库不含 settings.json）。**建议立即进入「设置」设置管理员密码**，否则任何拿到链接的人都能操作。
+- 平台处于免登录开放态（仓库不含 settings.json）。**立即按上面方式设置 `APP_PASSWORD`**，否则任何拿到链接的人都能操作。
 
 ## 免费层限制（重要）
 

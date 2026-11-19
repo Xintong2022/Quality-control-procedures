@@ -94,6 +94,10 @@ def save_runs(runs):
 # 管理员登录 / 密码
 # ----------------------------------------------------------------------------
 def _load_or_create_secret():
+    # 优先环境变量 SECRET_KEY（PaaS 部署用，避免磁盘重置导致 session 全部失效）
+    env = os.environ.get("SECRET_KEY")
+    if env:
+        return env
     s = _read_json(SETTINGS_FILE, {})
     if not s.get("_secret_key"):
         s["_secret_key"] = secrets.token_hex(32)
@@ -129,6 +133,15 @@ def _auth_guard():
     p = request.path
     if p in _AUTH_EXEMPT or not p.startswith("/api/"):
         return None
+    # 优先级 1：环境变量密码（PaaS 部署，持久且不进仓库）。设置后强制启用登录。
+    env_pw = os.environ.get("APP_PASSWORD")
+    if env_pw:
+        if session.get("admin_authed"):
+            return None
+        if p == "/api/login":
+            return None  # 放行登录接口本身，由 login() 校验环境变量密码
+        return jsonify({"ok": False, "error": "未登录或登录已失效", "need_login": True}), 401
+    # 优先级 2：settings.json 中网页设置的密码
     s = load_settings()
     if not s.get("admin_password_hash"):
         return None  # 未设密码 → 开放模式（向后兼容）
@@ -1041,15 +1054,26 @@ def settings():
 @app.route("/api/auth/status")
 def auth_status():
     s = load_settings()
+    env_pw = bool(os.environ.get("APP_PASSWORD"))
     return jsonify({
         "ok": True,
-        "password_set": bool(s.get("admin_password_hash")),
+        "password_set": env_pw or bool(s.get("admin_password_hash")),
         "authenticated": bool(session.get("admin_authed")),
+        "from_env": env_pw,  # 密码来自环境变量时，前端隐藏"设置/删除密码"入口
     })
 
 
 @app.route("/api/login", methods=["POST"])
 def login():
+    # 环境变量密码优先（PaaS 部署）
+    env_pw = os.environ.get("APP_PASSWORD")
+    if env_pw:
+        data = request.get_json(force=True, silent=True) or {}
+        if hmac.compare_digest((data.get("password") or ""), env_pw):
+            session["admin_authed"] = True
+            session.permanent = True
+            return jsonify({"ok": True})
+        return jsonify({"ok": False, "error": "密码错误"}), 401
     s = load_settings()
     if not s.get("admin_password_hash"):
         return jsonify({"ok": False, "error": "尚未设置登录密码，无需登录"}), 400
